@@ -7,7 +7,7 @@ void main() {
 class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'BusTracking_App',
+      title: 'BusTracking App',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
