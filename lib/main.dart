@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: ProviderInjector.providers,
       child: MaterialApp(
-        title: "Blog App",
+        title: "SafeWay",
         theme: theme.appTheme,
         builder: (context, widget) => Navigator(
           key: locator<DialogService>().dialogNavigationKey,
