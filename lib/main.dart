@@ -32,6 +32,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: ProviderInjector.providers,
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: "SafeWay",
         theme: theme.appTheme,
         builder: (context, widget) => Navigator(
