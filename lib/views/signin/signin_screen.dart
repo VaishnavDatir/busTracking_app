@@ -74,24 +74,8 @@ class _SigninScreenState extends State<SigninScreen>
 }
 
 class DriverScreenLogin extends StatelessWidget {
-  const DriverScreenLogin({
-    Key key,
-  }) : super(key: key);
+  String email, password;
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          TextField(),
-          TextField(),
-        ],
-      ),
-    );
-  }
-}
-
-class PassengerScreenLogin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -102,19 +86,50 @@ class PassengerScreenLogin extends StatelessWidget {
             height: kLargeSpace,
           ),
           Text(
-            "Get the latest details for your daily traveling",
-            style: appTheme.primaryTextTheme.headline4,
+            "Let's start the journey!",
+            style: appTheme.primaryTextTheme.headline4.copyWith(
+              color: kTextLightGrey,
+            ),
           ),
           SizedBox(
-            height: kLargeSpace * 2,
+            height: kLargeSpace * 1,
           ),
-          TextField(),
-          SizedBox(
-            height: kXLSpace,
+          TextField(
+            keyboardType: TextInputType.emailAddress,
+            onChanged: (value) {
+              email = value;
+            },
+            decoration: InputDecoration(
+                prefixIcon: Icon(
+                  Icons.email_sharp,
+                  color: kTextBlack,
+                ),
+                labelText: 'Email'),
           ),
-          TextField(),
+          SizedBox(height: kXLSpace),
+          TextField(
+            keyboardType: TextInputType.text,
+            decoration: InputDecoration(
+                prefixIcon: Icon(
+                  Icons.lock,
+                  color: kTextBlack,
+                ),
+                labelText: 'Password'),
+          ),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: FlatButton(
+              onPressed: () {},
+              child: Text(
+                "Forgot Password ? ",
+                style: TextStyle(
+                  color: kPrimaryColor,
+                ),
+              ),
+            ),
+          ),
           SizedBox(
-            height: kLargeSpace,
+            height: kMediumSpace,
           ),
           Align(
             alignment: Alignment.centerRight,
@@ -122,7 +137,76 @@ class PassengerScreenLogin extends StatelessWidget {
               onPressed: () {},
               child: Text("Sign in"),
             ),
-          )
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class PassengerScreenLogin extends StatelessWidget {
+  String email, password;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(kLargeSpace),
+      child: Column(
+        children: [
+          SizedBox(
+            height: kLargeSpace,
+          ),
+          Text("Get the latest details for your daily traveling",
+              style: appTheme.primaryTextTheme.headline4
+                  .copyWith(color: kTextLightGrey)),
+          SizedBox(
+            height: kLargeSpace * 1,
+          ),
+          TextFormField(
+            keyboardType: TextInputType.emailAddress,
+            onChanged: (value) {
+              email = value;
+            },
+            decoration: InputDecoration(
+                prefixIcon: Icon(
+                  Icons.email_sharp,
+                  color: kTextBlack,
+                ),
+                labelText: 'Email'),
+          ),
+          SizedBox(
+            height: kXLSpace,
+          ),
+          TextFormField(
+            keyboardType: TextInputType.text,
+            decoration: InputDecoration(
+                prefixIcon: Icon(
+                  Icons.lock,
+                  color: kTextBlack,
+                ),
+                labelText: 'Password'),
+          ),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: FlatButton(
+              onPressed: () {},
+              child: Text(
+                "Forgot Password ? ",
+                style: TextStyle(
+                  color: kPrimaryColor,
+                ),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: kMediumSpace,
+          ),
+          Align(
+            alignment: Alignment.centerRight,
+            child: RaisedButton(
+              onPressed: () {},
+              child: Text("Sign in"),
+            ),
+          ),
         ],
       ),
     );
