@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'colors.dart';
+import 'dimensions.dart';
 
 final ThemeData appTheme = buildAppTheme();
 final ThemeData systemTheme = setSystemTheme();
@@ -28,34 +29,13 @@ ThemeData buildAppTheme() {
             GoogleFonts.comfortaaTextTheme(),
           ),
         ),
-    buttonTheme: ThemeData.dark().buttonTheme.copyWith(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-          textTheme: ButtonTextTheme.normal,
+    buttonTheme: ThemeData.light().buttonTheme.copyWith(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(kRadius / 5)),
           buttonColor: kPrimaryColor,
         ),
     floatingActionButtonTheme: FloatingActionButtonThemeData(
       backgroundColor: kPrimaryColor,
-    ),
-    inputDecorationTheme: InputDecorationTheme(
-      enabledBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: kPrimaryColor, width: 1),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: kPrimaryColor, width: 1),
-      ),
-      errorBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: kErrorRed, width: 1),
-      ),
-      disabledBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: kPrimaryColor, width: 1),
-      ),
-      focusedErrorBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: kErrorRed, width: 1),
-      ),
-      border: OutlineInputBorder(
-        borderSide: BorderSide(color: kPrimaryColor, width: 1),
-      ),
     ),
   );
 }

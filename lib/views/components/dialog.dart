@@ -20,9 +20,9 @@ class _DialogManagerState extends State<DialogManager> {
   @override
   void initState() {
     super.initState();
-    _dialogService.registerDialogListener(_showDialog);
-    _dialogService.registerLoadingDialog(_showLoadingDialog);
-    _dialogService.dialogDismissListener(_dismissDialog);
+    _dialogService.registerDialogListenerFun(_showDialog);
+    _dialogService.registerLoadingDialogFun(_showLoadingDialog);
+    _dialogService.dialogDismissListenerFun(_dismissDialog);
   }
 
   @override
@@ -79,10 +79,12 @@ class _DialogManagerState extends State<DialogManager> {
               Radius.circular(kRadius / 4),
             ),
           ),
-          title: Text(
-            request.title,
-            style: appTheme.primaryTextTheme.headline3,
-          ),
+          title: request.title.isEmpty
+              ? null
+              : Text(
+                  request.title,
+                  style: appTheme.primaryTextTheme.headline3,
+                ),
           content: Text(
             request.description != null ? request.description : "",
             style: appTheme.textTheme.bodyText2.copyWith(
@@ -91,17 +93,20 @@ class _DialogManagerState extends State<DialogManager> {
             textAlign: TextAlign.left,
           ),
           actions: <Widget>[
-            TextButton(
-              child: Text(
-                request.buttonNegativeTitle,
-                style: appTheme.textTheme.subtitle2
-                    .copyWith(color: kTextLightGrey),
-              ),
-              onPressed: () {
-                _dialogService.dialogComplete(AlertResponse(confirmed: false));
-                Navigator.of(context).pop();
-              },
-            ),
+            request.showNegativeButton
+                ? TextButton(
+                    child: Text(
+                      request.buttonNegativeTitle,
+                      style: appTheme.textTheme.bodyText1
+                          .copyWith(color: kTextLightGrey),
+                    ),
+                    onPressed: () {
+                      _dialogService
+                          .dialogComplete(AlertResponse(confirmed: false));
+                      Navigator.of(context).pop();
+                    },
+                  )
+                : Container(),
             TextButton(
               child: Text(
                 request.buttonTitle,

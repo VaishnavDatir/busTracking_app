@@ -12,15 +12,15 @@ class DialogService {
   Function _dialogDismissListener;
   GlobalKey<NavigatorState> get dialogNavigationKey => _dialogNavigationKey;
 
-  void registerDialogListener(Function(AlertRequest) showDialogListener) {
+  void registerDialogListenerFun(Function(AlertRequest) showDialogListener) {
     _showDialogListener = showDialogListener;
   }
 
-  void registerLoadingDialog(Function showLoadingDialog) {
+  void registerLoadingDialogFun(Function showLoadingDialog) {
     _showLoadingDialogListner = showLoadingDialog;
   }
 
-  void dialogDismissListener(Function dialogDismissListener) {
+  void dialogDismissListenerFun(Function dialogDismissListener) {
     _dialogDismissListener = dialogDismissListener;
   }
 
@@ -33,9 +33,10 @@ class DialogService {
   }
 
   Future<AlertResponse> showDialog(
-      {String title,
+      {String title = "",
       String description = "",
       String buttonTitle = 'OK',
+      bool showNegativeButton = false,
       String buttonNegativeTitle = 'Cancel'}) {
     _dialogCompleter = Completer<AlertResponse>();
     _showDialogListener(
@@ -43,6 +44,7 @@ class DialogService {
         title: title,
         description: description,
         buttonTitle: buttonTitle,
+        showNegativeButton: showNegativeButton,
         buttonNegativeTitle: buttonNegativeTitle,
       ),
     );

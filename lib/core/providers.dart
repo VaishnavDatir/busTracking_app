@@ -1,11 +1,11 @@
-import 'package:BusTracking_App/core/service_import.dart';
-
-import '../core/locator.dart';
-import '../core/services/navigator_service.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
+import '../core/locator.dart';
+import '../core/services/navigator_service.dart';
 import 'locator.dart';
+import 'service_import.dart';
+import 'services/auth_service.dart';
 import 'services/dialog_service.dart';
 import 'services/sharedprefs_service.dart';
 
@@ -15,15 +15,6 @@ class ProviderInjector {
     Provider.value(value: locator<SharedPrefsService>()),
     Provider.value(value: locator<DialogService>()),
     Provider.value(value: locator<ServiceImport>()),
+    Provider.value(value: locator<AuthService>()),
   ];
-
-  // static List<SingleChildWidget> _independentServices = [
-  //   Provider.value(value: locator<NavigationService>()),
-  //   Provider.value(value: locator<SharedPrefsService>()),
-  //   Provider.value(value: locator<DialogService>()),
-  // ];
-
-  // static List<SingleChildWidget> _dependentServices = [];
-
-  // static List<SingleChildWidget> _consumableServices = [];
 }

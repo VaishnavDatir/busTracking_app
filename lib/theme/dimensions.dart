@@ -1,5 +1,6 @@
 const kDividerSize = 2.0;
 
+const kZeroSpace = 0.0;
 const kSmallSpace = 4.0;
 const kMediumSpace = 8.0;
 const kLargeSpace = 16.0;

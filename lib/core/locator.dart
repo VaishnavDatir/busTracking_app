@@ -1,8 +1,8 @@
-import 'package:BusTracking_App/core/service_import.dart';
-
-import '../core/services/navigator_service.dart';
 import 'package:get_it/get_it.dart';
 
+import '../core/services/navigator_service.dart';
+import 'service_import.dart';
+import 'services/auth_service.dart';
 import 'services/dialog_service.dart';
 import 'services/sharedprefs_service.dart';
 
@@ -15,5 +15,6 @@ class LocatorInjector {
     locator.registerLazySingleton(() => NavigationService());
     locator.registerLazySingleton(() => DialogService());
     locator.registerLazySingleton(() => ServiceImport());
+    locator.registerLazySingleton(() => AuthService());
   }
 }

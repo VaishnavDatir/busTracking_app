@@ -1,214 +1,121 @@
-import 'package:BusTracking_App/theme/colors.dart';
-import 'package:BusTracking_App/theme/dimensions.dart';
-import 'package:BusTracking_App/theme/themes.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:stacked/stacked.dart';
+
+import '../../theme/colors.dart';
+import '../../theme/dimensions.dart';
+import '../../theme/themes.dart';
+import '../components/customTextInputField.dart';
+import 'signin_viewmodel.dart';
 
 class SigninScreen extends StatefulWidget {
   @override
   _SigninScreenState createState() => _SigninScreenState();
 }
 
-class _SigninScreenState extends State<SigninScreen>
-    with TickerProviderStateMixin {
-  TabController _tabController;
-
-  @override
-  void initState() {
-    _tabController = TabController(length: 2, vsync: this);
-    super.initState();
-  }
-
+class _SigninScreenState extends State<SigninScreen> {
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [
-          Container(
-            width: double.infinity,
-            height: kXXXLSpace * 4,
-            color: kPrimaryColor,
-            child: Center(
-              child: Text("Sign in",
-                  textAlign: TextAlign.center,
-                  style: appTheme.textTheme.bodyText2.copyWith(
-                      fontWeight: FontWeight.w700,
-                      fontSize: kLargeSpace * 2,
-                      color: kWhite)),
-            ),
-          ),
-          TabBar(
-            controller: _tabController,
-            labelPadding: EdgeInsets.fromLTRB(0, 2, 0, 2),
-            unselectedLabelColor: kTextLightGrey,
-            indicatorColor: kPrimaryColor,
-            indicatorWeight: 3,
-            labelStyle: appTheme.textTheme.bodyText2
-                .copyWith(fontWeight: FontWeight.w600),
-            // unselectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
-            tabs: [
-              Tab(
-                child: Text(
-                  "Passenger",
-                  style: TextStyle(fontSize: 18.0),
-                ),
-              ),
-              Tab(
-                child: Text(
-                  "Driver",
-                  style: TextStyle(fontSize: 18.0),
-                  textAlign: TextAlign.center,
-                ),
-              )
-            ],
-            isScrollable: false,
-          ),
-          Expanded(
-            child: TabBarView(
-              controller: _tabController,
-              children: [PassengerScreenLogin(), DriverScreenLogin()],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
 
-class DriverScreenLogin extends StatelessWidget {
-  String email, password;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(kLargeSpace),
-      child: Column(
-        children: [
-          SizedBox(
-            height: kLargeSpace,
-          ),
-          Text(
-            "Let's start the journey!",
-            style: appTheme.primaryTextTheme.headline4.copyWith(
-              color: kTextLightGrey,
+    return ViewModelBuilder<SignInViewModel>.nonReactive(
+      viewModelBuilder: () => SignInViewModel(),
+      builder: (context, model, child) {
+        return Scaffold(
+          body: Container(
+            height: screenHeight,
+            child: Column(
+              children: <Widget>[
+                Expanded(
+                  flex: 2,
+                  child: Container(
+                    color: kPrimaryColor,
+                    child: Center(
+                      child: Text("Sign in",
+                          textAlign: TextAlign.center,
+                          style: appTheme.primaryTextTheme.headline4.copyWith(
+                              fontSize: kLargeSpace * 2, color: kWhite)),
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: kLargeSpace),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: kLargeSpace,
+                        ),
+                        Text(
+                          "Welcome back!",
+                          style: appTheme.primaryTextTheme.headline4.copyWith(
+                            color: kBlack,
+                          ),
+                        ),
+                        SizedBox(
+                          height: kLargeSpace,
+                        ),
+                        CustomTextInputField(
+                          controller: model.emailTC,
+                          focusNode: model.emailFN,
+                          keyboardType: TextInputType.emailAddress,
+                          prefixIcon: Icon(Icons.email_sharp),
+                          hintText: 'Email',
+                        ),
+                        SizedBox(height: kXLSpace),
+                        CustomTextInputField(
+                            controller: model.passwordTC,
+                            focusNode: model.passwordFN,
+                            keyboardType: TextInputType.text,
+                            obscureText: model.isObscureText,
+                            prefixIcon: Icon(Icons.lock),
+                            hintText: 'Password',
+                            suffixIcon: IconButton(
+                              icon: Icon(model.isObscureText
+                                  ? Icons.visibility_off
+                                  : Icons.visibility),
+                              onPressed: () => model.changeObsecureValue(),
+                            )),
+                        SizedBox(
+                          height: kMediumSpace,
+                        ),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: RaisedButton(
+                            onPressed: () => model.handleSignInTap(context),
+                            child: Text(
+                              "Sign in",
+                              style: appTheme.textTheme.button
+                                  .copyWith(color: kWhite),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: kXLSpace),
+                        RichText(
+                            text: TextSpan(
+                                style: appTheme.textTheme.bodyText2,
+                                children: <TextSpan>[
+                              TextSpan(
+                                text: "Don't have an account ? ",
+                              ),
+                              TextSpan(
+                                  style: appTheme.textTheme.bodyText2.copyWith(
+                                      color: kPrimaryColor,
+                                      fontWeight: FontWeight.bold),
+                                  text: "Sign up",
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () => model.gotoSignUpScreen())
+                            ])),
+                        SizedBox(height: kLargeSpace),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
-          SizedBox(
-            height: kLargeSpace * 1,
-          ),
-          TextField(
-            keyboardType: TextInputType.emailAddress,
-            onChanged: (value) {
-              email = value;
-            },
-            decoration: InputDecoration(
-                prefixIcon: Icon(
-                  Icons.email_sharp,
-                  color: kTextBlack,
-                ),
-                labelText: 'Email'),
-          ),
-          SizedBox(height: kXLSpace),
-          TextField(
-            keyboardType: TextInputType.text,
-            decoration: InputDecoration(
-                prefixIcon: Icon(
-                  Icons.lock,
-                  color: kTextBlack,
-                ),
-                labelText: 'Password'),
-          ),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: FlatButton(
-              onPressed: () {},
-              child: Text(
-                "Forgot Password ? ",
-                style: TextStyle(
-                  color: kPrimaryColor,
-                ),
-              ),
-            ),
-          ),
-          SizedBox(
-            height: kMediumSpace,
-          ),
-          Align(
-            alignment: Alignment.centerRight,
-            child: RaisedButton(
-              onPressed: () {},
-              child: Text("Sign in"),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class PassengerScreenLogin extends StatelessWidget {
-  String email, password;
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(kLargeSpace),
-      child: Column(
-        children: [
-          SizedBox(
-            height: kLargeSpace,
-          ),
-          Text("Get the latest details for your daily traveling",
-              style: appTheme.primaryTextTheme.headline4
-                  .copyWith(color: kTextLightGrey)),
-          SizedBox(
-            height: kLargeSpace * 1,
-          ),
-          TextFormField(
-            keyboardType: TextInputType.emailAddress,
-            onChanged: (value) {
-              email = value;
-            },
-            decoration: InputDecoration(
-                prefixIcon: Icon(
-                  Icons.email_sharp,
-                  color: kTextBlack,
-                ),
-                labelText: 'Email'),
-          ),
-          SizedBox(
-            height: kXLSpace,
-          ),
-          TextFormField(
-            keyboardType: TextInputType.text,
-            decoration: InputDecoration(
-                prefixIcon: Icon(
-                  Icons.lock,
-                  color: kTextBlack,
-                ),
-                labelText: 'Password'),
-          ),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: FlatButton(
-              onPressed: () {},
-              child: Text(
-                "Forgot Password ? ",
-                style: TextStyle(
-                  color: kPrimaryColor,
-                ),
-              ),
-            ),
-          ),
-          SizedBox(
-            height: kMediumSpace,
-          ),
-          Align(
-            alignment: Alignment.centerRight,
-            child: RaisedButton(
-              onPressed: () {},
-              child: Text("Sign in"),
-            ),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }
