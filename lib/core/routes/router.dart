@@ -1,3 +1,4 @@
+import 'package:BusTracking_App/views/stop_search/stopSearchScreen.dart';
 import 'package:flutter/material.dart';
 
 import '../../views/driver_screens/driver_home/driverHome_screen.dart';
@@ -33,6 +34,12 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case kDriverHomeScreen:
       return MaterialPageRoute(builder: (context) => DriverHomeScreen());
       break;
+
+/* <------------- Component Screen -----------> */
+    case kStopSearchScreen:
+      return MaterialPageRoute(
+        builder: (context) => StopSearchScreen(settings.arguments),
+      );
 
     default:
       return MaterialPageRoute(builder: (context) => UnknownRoutePage());

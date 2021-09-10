@@ -6,7 +6,7 @@ import '../../core/service_import.dart';
 
 class HomeViewModel extends BaseViewModel with ServiceImport {
   initializeScreen() async {
-    await Future.delayed(Duration(seconds: 3));
+    await Future.delayed(Duration(seconds: 2));
     bool isSignedIn =
         await sharedPrefsService.read(Constants.sharedPrefsIsSignedIn) ?? false;
     if (isSignedIn) {
@@ -17,6 +17,7 @@ class HomeViewModel extends BaseViewModel with ServiceImport {
       } else {
         navigationService.popEverythingAndNavigateTo(kPassengerHomeScreen);
       }
+      busService.getAllStops();
     } else {
       navigationService.popEverythingAndNavigateTo(kSigninScreen);
     }

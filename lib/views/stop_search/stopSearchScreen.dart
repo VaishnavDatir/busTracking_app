@@ -1,0 +1,103 @@
+import 'package:BusTracking_App/core/models/stops_model.dart';
+import 'package:BusTracking_App/theme/colors.dart';
+import 'package:BusTracking_App/theme/dimensions.dart';
+import 'package:BusTracking_App/views/components/customTextInputField.dart';
+import 'package:BusTracking_App/views/stop_search/stopSearch_viewmodel.dart';
+import 'package:flutter/material.dart';
+import 'package:stacked/stacked.dart';
+
+class StopSearchScreen extends StatefulWidget {
+  final StopsData screenData;
+  StopSearchScreen(this.screenData);
+  @override
+  _StopSearchScreenState createState() => _StopSearchScreenState();
+}
+
+class _StopSearchScreenState extends State<StopSearchScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return ViewModelBuilder<StopSearchScreenViewModel>.reactive(
+      viewModelBuilder: () => StopSearchScreenViewModel(),
+      onModelReady: (model) => model.initializeScreen(widget.screenData),
+      builder: (context, model, child) {
+        return Scaffold(
+          body: SafeArea(
+            child: Container(
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: kMediumSpace,
+                  ),
+                  Container(
+                      margin: EdgeInsets.symmetric(
+                          horizontal: kMediumSpace, vertical: kMediumSpace),
+                      child: CustomTextInputField(
+                        controller: model.searchTextController,
+                        hintText: "Search",
+                        prefixIcon: Icon(Icons.search),
+                        addContentPadding: true,
+                        onChanged: (value) =>
+                            model.filterSearchResults(value.toString()),
+                      )),
+                  Expanded(
+                    child: model.stopsDataList.length == 0
+                        ? Container(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "¯" + r"\" + "_(ツ)_/¯",
+                                  style: TextStyle(
+                                      fontSize: kXXLSpace,
+                                      color: kDarkPrimaryColor),
+                                ),
+                                SizedBox(height: kLargeSpace),
+                                Text("Can't find any stops.")
+                              ],
+                            ),
+                          )
+                        : ListView.separated(
+                            shrinkWrap: true,
+                            itemCount: model.stopsDataList.length,
+                            itemBuilder: (context, index) {
+                              return Container(
+                                child: ListTile(
+                                  onTap: () => model.handleStopTap(
+                                      model.stopsDataList[index]),
+                                  leading: Container(
+                                      height: double.infinity,
+                                      padding: EdgeInsets.all(kSmallSpace),
+                                      decoration: BoxDecoration(
+                                          color: kBGCardBorder.withOpacity(0.1),
+                                          shape: BoxShape.circle),
+                                      child: Icon(
+                                        Icons.location_city,
+                                        size: kIconSize,
+                                        color: kPrimaryColor,
+                                      )),
+                                  title: Text(model
+                                      .stopsDataList[index].stopName
+                                      .toString()),
+                                  subtitle: Text(model
+                                      .stopsDataList[index].stopCity
+                                      .toString()),
+                                ),
+                              );
+                            },
+                            separatorBuilder: (context, index) {
+                              return Divider(
+                                color: kBGCard,
+                                height: 4,
+                              );
+                            },
+                          ),
+                  )
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+}

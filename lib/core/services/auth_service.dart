@@ -1,11 +1,9 @@
 import 'dart:convert';
 
-import 'package:BusTracking_App/core/constants.dart';
-import 'package:BusTracking_App/core/models/userDetails_model.dart';
-import 'package:BusTracking_App/core/routes/router_path.dart';
-import 'package:BusTracking_App/core/service_import.dart';
 import 'package:http/http.dart' as http;
 
+import '../routes/router_path.dart';
+import '../service_import.dart';
 import 'api/endpoints.dart';
 
 class AuthService extends ServiceImport {
@@ -70,35 +68,10 @@ class AuthService extends ServiceImport {
     }
   }
 
-  logout() {
+  void logout() {
     dialogService.showLoadingDialog();
     sharedPrefsService.clear();
     navigationService.popEverythingAndNavigateTo(kHomeScreen);
     dialogService.dialogDismiss();
-  }
-
-  Future getUserData() async {
-    print("called AuthService:getUserData");
-
-    try {
-      Uri url = Uri.http(Endpoints.localhost, Endpoints.getUserData);
-      String token = sharedPrefsService.read(Constants.sharedPrefsToken);
-
-      var response =
-          await http.get(url, headers: {'Authorization': 'Bearer $token'});
-
-      print("Response in AuthService:getUserData: " + response.body.toString());
-
-      UserDetails _userDetails = userDetailsFromJson(response.body);
-      return _userDetails;
-    } catch (e) {
-      print("Error in AuthService:getUserData: " + e.toString());
-
-      UserDetails res = UserDetails(
-          success: false,
-          message: "There was an error while getting data try again later");
-
-      return res;
-    }
   }
 }

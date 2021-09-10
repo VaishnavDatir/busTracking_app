@@ -5,8 +5,8 @@ class NavigationService {
 
   GlobalKey<NavigatorState> get navigationKey => _navigationKey;
 
-  pop() {
-    return _navigationKey.currentState.pop();
+  pop({dynamic arguments}) {
+    return _navigationKey.currentState.pop(arguments);
   }
 
   popWithContext(BuildContext ctx) {

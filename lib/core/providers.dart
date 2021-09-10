@@ -6,8 +6,10 @@ import '../core/services/navigator_service.dart';
 import 'locator.dart';
 import 'service_import.dart';
 import 'services/auth_service.dart';
+import 'services/bus_service.dart';
 import 'services/dialog_service.dart';
 import 'services/sharedprefs_service.dart';
+import 'services/user_service.dart';
 
 class ProviderInjector {
   static List<SingleChildWidget> providers = [
@@ -16,5 +18,7 @@ class ProviderInjector {
     Provider.value(value: locator<DialogService>()),
     Provider.value(value: locator<ServiceImport>()),
     Provider.value(value: locator<AuthService>()),
+    Provider.value(value: locator<UserService>()),
+    Provider.value(value: locator<BusService>()),
   ];
 }

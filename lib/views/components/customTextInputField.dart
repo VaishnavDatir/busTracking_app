@@ -1,3 +1,4 @@
+import 'package:BusTracking_App/theme/dimensions.dart';
 import 'package:flutter/material.dart';
 
 import '../../theme/colors.dart';
@@ -14,29 +15,35 @@ class CustomTextInputField extends StatelessWidget {
   final TextCapitalization textCapitalization;
   final Function onSubmit;
   final Function onChanged;
+  final Function onTap;
   final int maxLength;
   final int maxLines;
   final bool disabled;
   final TextInputType keyboardType;
+  final TextInputAction textInputAction;
   final FocusNode focusNode;
-  const CustomTextInputField({
-    Key key,
-    this.hint,
-    @required this.controller,
-    @required this.hintText,
-    this.obscureText = false,
-    this.iconButton,
-    this.prefixIcon,
-    this.suffixIcon,
-    this.onSubmit,
-    this.onChanged,
-    this.maxLength,
-    this.maxLines,
-    this.textCapitalization = TextCapitalization.none,
-    this.keyboardType = TextInputType.text,
-    this.disabled = false,
-    this.focusNode,
-  }) : super(key: key);
+  final bool addContentPadding;
+  const CustomTextInputField(
+      {Key key,
+      this.hint,
+      @required this.controller,
+      @required this.hintText,
+      this.obscureText = false,
+      this.iconButton,
+      this.prefixIcon,
+      this.suffixIcon,
+      this.onSubmit,
+      this.onTap,
+      this.onChanged,
+      this.maxLength,
+      this.maxLines,
+      this.textCapitalization = TextCapitalization.none,
+      this.keyboardType = TextInputType.text,
+      this.textInputAction = TextInputAction.done,
+      this.disabled = false,
+      this.focusNode,
+      this.addContentPadding = false})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -52,18 +59,24 @@ class CustomTextInputField extends StatelessWidget {
       style: appTheme.textTheme.bodyText1,
       obscureText: obscureText,
       keyboardType: keyboardType,
+      textInputAction: textInputAction,
       textCapitalization: textCapitalization,
+      onTap: onTap,
       decoration: InputDecoration(
-          /* contentPadding: EdgeInsets.symmetric(
-              vertical: kLargeSpace, horizontal: kSmallSpace * 3), */
-          prefixIcon: prefixIcon,
-          suffixIcon: suffixIcon,
-          hintText: hintText,
-          border: OutlineInputBorder(),
-          enabledBorder:
-              OutlineInputBorder(borderSide: BorderSide(color: kTextGrey)),
-          focusedBorder:
-              OutlineInputBorder(borderSide: BorderSide(color: kPrimaryColor))),
+        contentPadding: addContentPadding
+            ? EdgeInsets.symmetric(
+                vertical: kSmallSpace, horizontal: kSmallSpace * 3)
+            : null,
+        prefixIcon: prefixIcon,
+        suffixIcon: suffixIcon,
+        hintText: hintText,
+        border: OutlineInputBorder(),
+        enabledBorder:
+            OutlineInputBorder(borderSide: BorderSide(color: kTextGrey)),
+        focusedBorder: disabled
+            ? OutlineInputBorder(borderSide: BorderSide(color: kTextGrey))
+            : OutlineInputBorder(borderSide: BorderSide(color: kPrimaryColor)),
+      ),
     );
   }
 }

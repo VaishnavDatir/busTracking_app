@@ -1,8 +1,9 @@
+import 'package:flutter/widgets.dart';
+import 'package:stacked/stacked.dart';
+
 import '../../core/constants.dart';
 import '../../core/routes/router_path.dart';
 import '../../core/service_import.dart';
-import 'package:flutter/widgets.dart';
-import 'package:stacked/stacked.dart';
 
 class SignUpViewModel extends BaseViewModel with ServiceImport {
   TextEditingController _nameTextController = TextEditingController();
@@ -53,7 +54,7 @@ class SignUpViewModel extends BaseViewModel with ServiceImport {
       _name = _nameTextController.text.toString().trim();
       _emailId = _emailTC.text.toString().trim();
       _password = _passwordTC.text.toString().trim();
-      String _type = _isDriver ? "driver" : "passenger";
+      String _type = _isDriver ? "Driver" : "Passenger";
 
       Map<String, dynamic> signUpResponse =
           await authService.signUpUser(_name, _emailId, _password, _type);
@@ -69,7 +70,10 @@ class SignUpViewModel extends BaseViewModel with ServiceImport {
           await sharedPrefsService.write(
               Constants.sharedPrefsUserId, signInResponse["userId"]);
 
-          bool _isDriver = signInResponse["type"].toString().contains("driver");
+          bool _isDriver = signInResponse["type"]
+              .toString()
+              .toLowerCase()
+              .contains("driver");
           await sharedPrefsService.write(
               Constants.sharedPrefsUserType, _isDriver);
 

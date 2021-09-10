@@ -7,3 +7,6 @@ const String kPassengerHomeScreen = "/kPassengerHomeScreen";
 
 /* <----------- Driver Screens--------------> */
 const String kDriverHomeScreen = "/kDriverHomeScreen";
+
+/* <------------ Component Screen ------------- */
+const String kStopSearchScreen = "/kStopSearchScreen";

@@ -1,4 +1,4 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../core/constants.dart';
@@ -6,6 +6,8 @@ import '../../core/routes/router_path.dart';
 import '../../core/service_import.dart';
 
 class SignInViewModel extends BaseViewModel with ServiceImport {
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
   TextEditingController _emailTC = TextEditingController();
   TextEditingController get emailTC => this._emailTC;
   FocusNode _emailFN = FocusNode();
@@ -52,7 +54,8 @@ class SignInViewModel extends BaseViewModel with ServiceImport {
         await sharedPrefsService.write(
             Constants.sharedPrefsUserId, signInResponse["userId"]);
 
-        bool _isDriver = signInResponse["type"].toString().contains("driver");
+        bool _isDriver =
+            signInResponse["type"].toString().toLowerCase().contains("driver");
         await sharedPrefsService.write(
             Constants.sharedPrefsUserType, _isDriver);
 
@@ -73,6 +76,7 @@ class SignInViewModel extends BaseViewModel with ServiceImport {
   }
 
   gotoSignUpScreen() {
+    FocusScope.of(scaffoldKey.currentContext).unfocus();
     navigationService.navigateTo(kSignupScreen);
   }
 }
