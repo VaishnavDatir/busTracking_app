@@ -27,6 +27,13 @@ class Endpoints {
   ///To create bus (POST Request)
   static const String createBusPost = "/bus/createbusroute";
 
+  ///Search bus according to source and destination
+  static const String searchBusBySourceAndDestination =
+      "/bus/searchBusFromSourceToDestination";
+
+  ///To Get bus details (GET Request)
+  static const String getBusDetail = "/bus/busDetail";
+
   // <------------------------------ Stops ----------------------------------->
   ///To Get list of all Stops (GET Request)
   static const String getAllStops = "/bus/allstops";

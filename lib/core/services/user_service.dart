@@ -6,28 +6,27 @@ import '../service_import.dart';
 import 'api/endpoints.dart';
 
 class UserService extends ServiceImport {
+  UserDetails _userDetails;
+  UserDetails get userDetails => this._userDetails;
+
   Future getUserData() async {
     print("called AuthService:getUserData");
 
     try {
       Uri url = Uri.http(Endpoints.localhost, Endpoints.getUserData);
-      String token = sharedPrefsService.read(Constants.sharedPrefsToken);
 
-      var response =
-          await http.get(url, headers: {'Authorization': 'Bearer $token'});
+      var response = await http.get(url,
+          headers: {'Authorization': 'Bearer ${authService.userToken}'});
 
-      print("Response in AuthService:getUserData: " + response.body.toString());
+      // print("Response in AuthService:getUserData: " + response.body.toString());
 
-      UserDetails _userDetails = userDetailsFromJson(response.body);
-      return _userDetails;
+      _userDetails = userDetailsFromJson(response.body);
     } catch (e) {
       print("Error in AuthService:getUserData: " + e.toString());
 
-      UserDetails res = UserDetails(
+      _userDetails = UserDetails(
           success: false,
           message: "There was an error while getting data try again later");
-
-      return res;
     }
   }
 }

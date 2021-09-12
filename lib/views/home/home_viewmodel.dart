@@ -10,6 +10,8 @@ class HomeViewModel extends BaseViewModel with ServiceImport {
     bool isSignedIn =
         await sharedPrefsService.read(Constants.sharedPrefsIsSignedIn) ?? false;
     if (isSignedIn) {
+      await authService.getUserToken();
+      await userService.getUserData();
       bool isDriver =
           await sharedPrefsService.read(Constants.sharedPrefsUserType);
       if (isDriver) {
@@ -18,6 +20,7 @@ class HomeViewModel extends BaseViewModel with ServiceImport {
         navigationService.popEverythingAndNavigateTo(kPassengerHomeScreen);
       }
       busService.getAllStops();
+      busService.getAllBusList();
     } else {
       navigationService.popEverythingAndNavigateTo(kSigninScreen);
     }

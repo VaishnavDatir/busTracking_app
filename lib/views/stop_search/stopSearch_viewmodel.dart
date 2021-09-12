@@ -17,7 +17,7 @@ class StopSearchScreenViewModel extends BaseViewModel with ServiceImport {
   TextEditingController searchTextController = TextEditingController();
   FocusNode searchFN = FocusNode();
 
-  void initializeScreen(StopsData screenData) async {
+  void initializeScreen() async {
     setBusy(true);
     // print("GOT: " + screenData.id?.toString() ?? "ASD");
     _stops = busService.stops;
@@ -60,5 +60,11 @@ class StopSearchScreenViewModel extends BaseViewModel with ServiceImport {
 
   void handleStopTap(StopsData _selectedStop) {
     navigationService.pop(arguments: _selectedStop);
+  }
+
+  Future refreshStopList() async {
+    await busService.getAllStops();
+    initializeScreen();
+    notifyListeners();
   }
 }

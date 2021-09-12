@@ -10,3 +10,6 @@ const String kDriverHomeScreen = "/kDriverHomeScreen";
 
 /* <------------ Component Screen ------------- */
 const String kStopSearchScreen = "/kStopSearchScreen";
+
+/* <------------ Bus Screen ------------- */
+const String kBusDetailScreen = "/kBusDetailScreen";

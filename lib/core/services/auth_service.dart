@@ -1,12 +1,22 @@
 import 'dart:convert';
 
+import 'package:BusTracking_App/core/models/dialog_model.dart';
 import 'package:http/http.dart' as http;
 
+import '../constants.dart';
 import '../routes/router_path.dart';
 import '../service_import.dart';
 import 'api/endpoints.dart';
 
 class AuthService extends ServiceImport {
+  String _userToken;
+  String get userToken => this._userToken;
+
+  Future getUserToken() async {
+    print("called AuthService:getUserToken");
+    _userToken = await sharedPrefsService.read(Constants.sharedPrefsToken);
+  }
+
   Future signInUser(String emailId, String password) async {
     print("called AuthService:signInUser");
     try {
@@ -19,7 +29,7 @@ class AuthService extends ServiceImport {
 
       var jsonResponse = jsonDecode(res.body);
 
-      print("Response in AuthService:signInUser: " + jsonResponse.toString());
+      // print("Response in AuthService:signInUser: " + jsonResponse.toString());
 
       return jsonResponse;
     } catch (e) {
@@ -53,7 +63,7 @@ class AuthService extends ServiceImport {
 
       var jsonResponse = jsonDecode(res.body);
 
-      print("Response in AuthService:signUpUser: " + jsonResponse.toString());
+      // print("Response in AuthService:signUpUser: " + jsonResponse.toString());
 
       return jsonResponse;
     } catch (e) {
@@ -68,10 +78,22 @@ class AuthService extends ServiceImport {
     }
   }
 
-  void logout() {
+  void logout() async {
+    print("called AuthService:logout");
+
     dialogService.showLoadingDialog();
-    sharedPrefsService.clear();
-    navigationService.popEverythingAndNavigateTo(kHomeScreen);
+    AlertResponse _dialogRes = await dialogService.showDialog(
+        title: "Logout.",
+        description: "Are you sure you want to logout?",
+        showNegativeButton: true,
+        buttonNegativeTitle: "No",
+        buttonTitle: "Yes");
+
+    if (_dialogRes.confirmed) {
+      sharedPrefsService.clear();
+      navigationService.popEverythingAndNavigateTo(kHomeScreen);
+    }
+
     dialogService.dialogDismiss();
   }
 }

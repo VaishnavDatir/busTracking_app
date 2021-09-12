@@ -1,4 +1,3 @@
-import 'package:BusTracking_App/core/models/stops_model.dart';
 import 'package:BusTracking_App/theme/colors.dart';
 import 'package:BusTracking_App/theme/dimensions.dart';
 import 'package:BusTracking_App/views/components/customTextInputField.dart';
@@ -7,8 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 class StopSearchScreen extends StatefulWidget {
-  final StopsData screenData;
-  StopSearchScreen(this.screenData);
   @override
   _StopSearchScreenState createState() => _StopSearchScreenState();
 }
@@ -18,7 +15,7 @@ class _StopSearchScreenState extends State<StopSearchScreen> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<StopSearchScreenViewModel>.reactive(
       viewModelBuilder: () => StopSearchScreenViewModel(),
-      onModelReady: (model) => model.initializeScreen(widget.screenData),
+      onModelReady: (model) => model.initializeScreen(),
       builder: (context, model, child) {
         return Scaffold(
           body: SafeArea(
@@ -56,40 +53,44 @@ class _StopSearchScreenState extends State<StopSearchScreen> {
                               ],
                             ),
                           )
-                        : ListView.separated(
-                            shrinkWrap: true,
-                            itemCount: model.stopsDataList.length,
-                            itemBuilder: (context, index) {
-                              return Container(
-                                child: ListTile(
-                                  onTap: () => model.handleStopTap(
-                                      model.stopsDataList[index]),
-                                  leading: Container(
-                                      height: double.infinity,
-                                      padding: EdgeInsets.all(kSmallSpace),
-                                      decoration: BoxDecoration(
-                                          color: kBGCardBorder.withOpacity(0.1),
-                                          shape: BoxShape.circle),
-                                      child: Icon(
-                                        Icons.location_city,
-                                        size: kIconSize,
-                                        color: kPrimaryColor,
-                                      )),
-                                  title: Text(model
-                                      .stopsDataList[index].stopName
-                                      .toString()),
-                                  subtitle: Text(model
-                                      .stopsDataList[index].stopCity
-                                      .toString()),
-                                ),
-                              );
-                            },
-                            separatorBuilder: (context, index) {
-                              return Divider(
-                                color: kBGCard,
-                                height: 4,
-                              );
-                            },
+                        : RefreshIndicator(
+                            onRefresh: () => model.refreshStopList(),
+                            child: ListView.separated(
+                              shrinkWrap: true,
+                              itemCount: model.stopsDataList.length,
+                              itemBuilder: (context, index) {
+                                return Container(
+                                  child: ListTile(
+                                    onTap: () => model.handleStopTap(
+                                        model.stopsDataList[index]),
+                                    leading: Container(
+                                        height: double.infinity,
+                                        padding: EdgeInsets.all(kMediumSpace),
+                                        decoration: BoxDecoration(
+                                            color:
+                                                kBGCardBorder.withOpacity(0.1),
+                                            shape: BoxShape.circle),
+                                        child: Icon(
+                                          Icons.location_city,
+                                          size: kIconSize,
+                                          color: kPrimaryColor,
+                                        )),
+                                    title: Text(model
+                                        .stopsDataList[index].stopName
+                                        .toString()),
+                                    subtitle: Text(model
+                                        .stopsDataList[index].stopCity
+                                        .toString()),
+                                  ),
+                                );
+                              },
+                              separatorBuilder: (context, index) {
+                                return Divider(
+                                  color: kBGCard,
+                                  height: 4,
+                                );
+                              },
+                            ),
                           ),
                   )
                 ],

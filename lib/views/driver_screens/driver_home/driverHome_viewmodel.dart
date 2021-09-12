@@ -12,13 +12,7 @@ class DriverHomeViewModel extends BaseViewModel with ServiceImport {
 
   initializeScreen() async {
     setBusy(true);
-    _userDetails = await userService.getUserData();
-    if (_userDetails.success == false) {
-      await dialogService.showDialog(
-          description: _userDetails.message.toString() ??
-              "There was an error while getting data.");
-      handleLogout();
-    }
+    _userDetails = userService.userDetails;
 
     _isDriverOnBus = _userDetails.data.isActive;
     setBusy(false);

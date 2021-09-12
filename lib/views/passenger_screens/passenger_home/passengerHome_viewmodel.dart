@@ -1,19 +1,27 @@
+import 'package:BusTracking_App/core/models/bus_model.dart';
 import 'package:BusTracking_App/core/models/stops_model.dart';
 import 'package:BusTracking_App/core/models/userDetails_model.dart';
 import 'package:BusTracking_App/core/routes/router_path.dart';
+import 'package:BusTracking_App/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../core/service_import.dart';
 
 class PassengerViewModel extends BaseViewModel with ServiceImport {
+  /* <----------------------- PAGE -------------------------> */
+
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   TextEditingController sourceTextController = TextEditingController();
   TextEditingController destinationTextController = TextEditingController();
 
+  /* <------------------------------------------------------> */
+
   UserDetails _userDetails;
   UserDetails get userDetails => _userDetails;
+
+  /* <----------------------- STOP -------------------------> */
 
   StopsData _sourceStop = StopsData(id: null, stopName: null, stopCity: null);
   StopsData get sourceStop => this._sourceStop;
@@ -23,10 +31,24 @@ class PassengerViewModel extends BaseViewModel with ServiceImport {
 
   StopsData _selectedStop;
 
+  /* <------------------------------------------------------> */
+
+  /* <------------------------ BUS -------------------------> */
+
+  bool _showBottomBusSheet = false;
+  bool get showBottomBusSheet => this._showBottomBusSheet;
+
+  BusModel _busModel;
+  BusModel get busModel => this._busModel;
+
+  List<BusModelData> _busModelData;
+  List<BusModelData> get busModelData => this._busModelData;
+  /* <------------------------------------------------------> */
+
   void initializeScreen() async {
     setBusy(true);
 
-    _userDetails = await userService.getUserData();
+    _userDetails = userService.userDetails;
 
     if (_userDetails.success == false) {
       await dialogService.showDialog(
@@ -60,6 +82,26 @@ class PassengerViewModel extends BaseViewModel with ServiceImport {
     notifyListeners();
   }
 
+  void serachBus() async {
+    dialogService.showLoadingDialog();
+    if (_sourceStop != null && _destinationStop != null) {
+      _busModel = await busService.searchBusBySourceAndDestination(
+        sourceId: _sourceStop.id,
+        destinationId: _destinationStop.id,
+      );
+
+      if (_busModel.success) {
+        _busModelData = _busModel.data;
+        _showBottomBusSheet = true;
+      }
+    } else {
+      await dialogService.showDialog(
+          description: "Please specify required stops");
+    }
+    notifyListeners();
+    dialogService.dialogDismiss();
+  }
+
   Future<StopsData> getStop() async {
     _selectedStop = await navigationService.navigateTo(kStopSearchScreen);
     return _selectedStop ?? StopsData();
@@ -83,5 +125,18 @@ class PassengerViewModel extends BaseViewModel with ServiceImport {
 
   void openDrawer() {
     scaffoldKey.currentState.openDrawer();
+  }
+
+  void hideBottomBusSheet() {
+    _showBottomBusSheet = false;
+    notifyListeners();
+  }
+
+  handleOnBusTap(String busId) {
+    navigationService.navigateTo(kBusDetailScreen, arguments: {
+      "busId": busId,
+      "sourceStop": _sourceStop.id,
+      "destinationStop": _destinationStop.id,
+    });
   }
 }

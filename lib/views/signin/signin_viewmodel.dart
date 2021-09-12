@@ -61,6 +61,9 @@ class SignInViewModel extends BaseViewModel with ServiceImport {
 
         await sharedPrefsService.write(Constants.sharedPrefsIsSignedIn, true);
 
+        await authService.getUserToken();
+        await userService.getUserData();
+
         if (_isDriver) {
           navigationService.popEverythingAndNavigateTo(kDriverHomeScreen);
         } else {

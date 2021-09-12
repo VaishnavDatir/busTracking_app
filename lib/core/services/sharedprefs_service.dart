@@ -16,12 +16,12 @@ class SharedPrefsService {
 
   dynamic read(String key) {
     var value = _preferences.get(key);
-    print('(TRACE) SharePrefsService read: key: $key value: $value');
+    print('(TRACE) SharePrefsService READ: key: $key value: $value');
     return value;
   }
 
   write<T>(String key, T content) async {
-    print('(TRACE) SharePrefsService write: key: $key value: $content');
+    print('(TRACE) SharePrefsService WRITE: key: $key value: $content');
 
     if (content is String) {
       await _preferences.setString(key, content);

@@ -1,3 +1,4 @@
+import 'package:BusTracking_App/views/bus_detail/bus_detail_screenn.dart';
 import 'package:BusTracking_App/views/stop_search/stopSearchScreen.dart';
 import 'package:flutter/material.dart';
 
@@ -38,8 +39,15 @@ Route<dynamic> generateRoute(RouteSettings settings) {
 /* <------------- Component Screen -----------> */
     case kStopSearchScreen:
       return MaterialPageRoute(
-        builder: (context) => StopSearchScreen(settings.arguments),
+        builder: (context) => StopSearchScreen(),
       );
+
+/* <---------------- Bus Screen --------------> */
+    case kBusDetailScreen:
+      return MaterialPageRoute(
+        builder: (context) => BusDetailScreen(settings.arguments),
+      );
+      break;
 
     default:
       return MaterialPageRoute(builder: (context) => UnknownRoutePage());

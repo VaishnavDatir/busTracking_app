@@ -12,6 +12,7 @@ const kRadius = 30.0;
 
 const kIconSize = 28.0;
 const kSmallIconSize = 18.0;
+const kMediumIconSize = 24.0;
 const kLargeIconSize = 48.0;
 
 const kButtonHeight = 56.0;
