@@ -24,9 +24,7 @@ class DriverHomeViewModel extends BaseViewModel with ServiceImport {
     notifyListeners();
   }
 
-  handleGoOnDuty() {
-    // authService.logout();
-  }
+  handleGoOnDuty() {}
 
   handleLogout() {
     authService.logout();

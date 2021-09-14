@@ -66,6 +66,7 @@ class PassengerViewModel extends BaseViewModel with ServiceImport {
   }
 
   void handleSourceStopFieldTap({bool isDestination}) async {
+    hideBottomBusSheet();
     await getStop();
 
     if (_selectedStop == null) {
@@ -84,7 +85,10 @@ class PassengerViewModel extends BaseViewModel with ServiceImport {
 
   void serachBus() async {
     dialogService.showLoadingDialog();
-    if (_sourceStop != null && _destinationStop != null) {
+    if (_sourceStop == _destinationStop) {
+      await dialogService.showDialog(
+          description: "Source and Destination stop cannot be same");
+    } else if (_sourceStop != null && _destinationStop != null) {
       _busModel = await busService.searchBusBySourceAndDestination(
         sourceId: _sourceStop.id,
         destinationId: _destinationStop.id,
