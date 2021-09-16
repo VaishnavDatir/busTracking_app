@@ -22,7 +22,7 @@ class SignUpScreen extends StatelessWidget {
               children: [
                 Text(
                   "Let's get started!",
-                  style: appTheme.primaryTextTheme.headline2
+                  style: appTheme.primaryTextTheme.headline5
                       .copyWith(fontWeight: FontWeight.bold),
                 ),
                 SizedBox(

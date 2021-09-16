@@ -1,13 +1,12 @@
-import 'package:BusTracking_App/core/constants.dart';
-import 'package:BusTracking_App/views/components/customTextInputField.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
+import '../../../core/constants.dart';
 import '../../../theme/colors.dart';
 import '../../../theme/dimensions.dart';
 import '../../../theme/themes.dart';
+import '../../components/customTextInputField.dart';
 import 'passengerHome_viewmodel.dart';
-import 'dart:math';
 
 class PassengerHomeScreen extends StatelessWidget {
   @override
@@ -203,7 +202,7 @@ class PassengerHomeScreen extends StatelessWidget {
                   child: Center(
                     child: Text(
                       "${model.userDetails.data.name.toString().substring(0, 1)}",
-                      style: appTheme.textTheme.headline2
+                      style: appTheme.textTheme.headline5
                           .copyWith(color: kDarkPrimaryColor),
                     ),
                   ),

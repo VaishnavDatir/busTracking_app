@@ -1,11 +1,10 @@
-import 'package:BusTracking_App/core/models/bus_model.dart';
-import 'package:BusTracking_App/core/models/stops_model.dart';
-import 'package:BusTracking_App/core/models/userDetails_model.dart';
-import 'package:BusTracking_App/core/routes/router_path.dart';
-import 'package:BusTracking_App/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
+import '../../../core/models/bus_model.dart';
+import '../../../core/models/stops_model.dart';
+import '../../../core/models/userDetails_model.dart';
+import '../../../core/routes/router_path.dart';
 import '../../../core/service_import.dart';
 
 class PassengerViewModel extends BaseViewModel with ServiceImport {

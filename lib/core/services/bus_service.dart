@@ -1,9 +1,9 @@
-import 'package:BusTracking_App/core/models/busDetail_model.dart';
-import 'package:BusTracking_App/core/models/bus_model.dart';
-import 'package:BusTracking_App/core/models/stops_model.dart';
-import 'package:BusTracking_App/core/service_import.dart';
 import 'package:http/http.dart' as http;
 
+import '../models/busDetail_model.dart';
+import '../models/bus_model.dart';
+import '../models/stops_model.dart';
+import '../service_import.dart';
 import 'api/endpoints.dart';
 
 class BusService extends ServiceImport {
@@ -44,8 +44,8 @@ class BusService extends ServiceImport {
       var response = await http.post(url,
           body: {"sourceID": "$sourceId", "destinationID": "$destinationId"});
 
-      /* print("Response in BusService:searchBusBySourceAndDestination: " +
-          response.body.toString()); */
+      print("Response in BusService:searchBusBySourceAndDestination: " +
+          response.body.toString());
 
       BusModel _busModel = busFromJson(response.body);
       return _busModel;
@@ -64,8 +64,8 @@ class BusService extends ServiceImport {
 
       var response = await http.get(url);
 
-      /* print(
-          "Response in BusService:getAllBusList: " + response.body.toString()); */
+      print(
+          "Response in BusService:getAllBusList: " + response.body.toString());
 
       _busModel = busFromJson(response.body);
     } catch (e) {

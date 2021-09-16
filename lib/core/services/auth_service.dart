@@ -1,9 +1,9 @@
 import 'dart:convert';
 
-import 'package:BusTracking_App/core/models/dialog_model.dart';
 import 'package:http/http.dart' as http;
 
 import '../constants.dart';
+import '../models/dialog_model.dart';
 import '../routes/router_path.dart';
 import '../service_import.dart';
 import 'api/endpoints.dart';
@@ -29,7 +29,7 @@ class AuthService extends ServiceImport {
 
       var jsonResponse = jsonDecode(res.body);
 
-      // print("Response in AuthService:signInUser: " + jsonResponse.toString());
+      print("Response in AuthService:signInUser: " + jsonResponse.toString());
 
       return jsonResponse;
     } catch (e) {
@@ -63,7 +63,7 @@ class AuthService extends ServiceImport {
 
       var jsonResponse = jsonDecode(res.body);
 
-      // print("Response in AuthService:signUpUser: " + jsonResponse.toString());
+      print("Response in AuthService:signUpUser: " + jsonResponse.toString());
 
       return jsonResponse;
     } catch (e) {
@@ -82,6 +82,7 @@ class AuthService extends ServiceImport {
     print("called AuthService:logout");
 
     dialogService.showLoadingDialog();
+
     AlertResponse _dialogRes = await dialogService.showDialog(
         title: "Logout.",
         description: "Are you sure you want to logout?",

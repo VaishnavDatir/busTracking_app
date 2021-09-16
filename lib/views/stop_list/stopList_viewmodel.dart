@@ -1,34 +1,31 @@
+import 'package:BusTracking_App/core/models/stops_model.dart';
+import 'package:BusTracking_App/core/service_import.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
-import '../../core/models/stops_model.dart';
-import '../../core/service_import.dart';
-
-class StopSearchScreenViewModel extends BaseViewModel with ServiceImport {
-  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-
+class StopListViewModel extends BaseViewModel with ServiceImport {
   Stops _stops;
   Stops get stops => this._stops;
-
-  List<StopsData> _stopsDataListMain;
 
   List<StopsData> _stopsDataList;
   List<StopsData> get stopsDataList => this._stopsDataList;
 
+  List<StopsData> _stopsDataListMain;
   TextEditingController searchTextController = TextEditingController();
-  FocusNode searchFN = FocusNode();
 
-  void initializeScreen() async {
-    setBusy(true);
-    // print("GOT: " + screenData.id?.toString() ?? "ASD");
+  initializeScreen() {
     _stops = busService.stops;
-    if (_stops.success) {
-      _stopsDataList = _stops.data;
+
+    if (stops.success) {
+      _stopsDataList = stops.data;
       _stopsDataListMain = _stops.data;
-    } else {
-      _stopsDataList = [];
     }
-    setBusy(false);
+    notifyListeners();
+  }
+
+  refreshStopList() async {
+    await busService.getAllStops();
+    initializeScreen();
     notifyListeners();
   }
 
@@ -56,16 +53,6 @@ class StopSearchScreenViewModel extends BaseViewModel with ServiceImport {
 
   void resetSearchResults() {
     _stopsDataList = _stopsDataListMain;
-    notifyListeners();
-  }
-
-  void handleStopTap(StopsData _selectedStop) {
-    navigationService.pop(arguments: _selectedStop);
-  }
-
-  Future refreshStopList() async {
-    await busService.getAllStops();
-    initializeScreen();
     notifyListeners();
   }
 }

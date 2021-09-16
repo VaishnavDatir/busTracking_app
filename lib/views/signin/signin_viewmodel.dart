@@ -63,6 +63,8 @@ class SignInViewModel extends BaseViewModel with ServiceImport {
 
         await authService.getUserToken();
         await userService.getUserData();
+        await busService.getAllStops();
+        await busService.getAllBusList();
 
         if (_isDriver) {
           navigationService.popEverythingAndNavigateTo(kDriverHomeScreen);

@@ -1,6 +1,7 @@
-import 'package:BusTracking_App/core/models/busDetail_model.dart';
-import 'package:BusTracking_App/core/service_import.dart';
 import 'package:stacked/stacked.dart';
+
+import '../../core/models/busDetail_model.dart';
+import '../../core/service_import.dart';
 
 class BusDetailViewModel extends BaseViewModel with ServiceImport {
   BusDetailModel _busDetailModel;
@@ -22,8 +23,8 @@ class BusDetailViewModel extends BaseViewModel with ServiceImport {
       _busDetailData = _busDetailModel.busDetailData;
     }
 
-    sourceStopId = screenDetails["sourceStop"];
-    destinationStopId = screenDetails["destinationStop"];
+    sourceStopId = screenDetails["sourceStop"] ?? null;
+    destinationStopId = screenDetails["destinationStop"] ?? null;
 
     setBusy(false);
     notifyListeners();

@@ -1,11 +1,11 @@
-import 'package:BusTracking_App/core/constants.dart';
-import 'package:BusTracking_App/theme/colors.dart';
-import 'package:BusTracking_App/theme/dimensions.dart';
-import 'package:BusTracking_App/theme/themes.dart';
+import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
+import '../../core/constants.dart';
+import '../../theme/colors.dart';
+import '../../theme/dimensions.dart';
+import '../../theme/themes.dart';
 import 'bus_detail_viewmodel.dart';
-import 'package:flutter/material.dart';
 
 class BusDetailScreen extends StatelessWidget {
   final Map<String, dynamic> screenData;
@@ -95,7 +95,8 @@ class BusDetailScreen extends StatelessWidget {
         children: [
           Text(
             "Bus Route",
-            style: appTheme.textTheme.headline4,
+            style: appTheme.textTheme.headline6
+                .copyWith(fontWeight: FontWeight.bold),
           ),
           Stepper(
             physics: NeverScrollableScrollPhysics(),
@@ -168,7 +169,8 @@ class BusDetailScreen extends StatelessWidget {
         children: [
           Text(
             "Bus Timings",
-            style: appTheme.textTheme.headline4,
+            style: appTheme.textTheme.headline6
+                .copyWith(fontWeight: FontWeight.bold),
           ),
           Wrap(
             spacing: kSmallSpace,

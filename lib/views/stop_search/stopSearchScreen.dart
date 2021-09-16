@@ -1,9 +1,10 @@
-import 'package:BusTracking_App/theme/colors.dart';
-import 'package:BusTracking_App/theme/dimensions.dart';
-import 'package:BusTracking_App/views/components/customTextInputField.dart';
-import 'package:BusTracking_App/views/stop_search/stopSearch_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+
+import '../../theme/colors.dart';
+import '../../theme/dimensions.dart';
+import '../components/customTextInputField.dart';
+import 'stopSearch_viewmodel.dart';
 
 class StopSearchScreen extends StatefulWidget {
   @override

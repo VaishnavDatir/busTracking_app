@@ -1,4 +1,4 @@
-import 'package:BusTracking_App/theme/dimensions.dart';
+import '../../theme/dimensions.dart';
 import 'package:flutter/material.dart';
 
 import '../../theme/colors.dart';

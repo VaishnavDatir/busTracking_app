@@ -20,3 +20,7 @@ const kButtonHeight = 56.0;
 const kTabbarHeight = 78.0;
 
 const kAppbarElevation = 12.0;
+
+const kTextTitleSize = 20.0;
+const kTextParagraphSize = 14.0;
+const kListItemTitles = 16.0;

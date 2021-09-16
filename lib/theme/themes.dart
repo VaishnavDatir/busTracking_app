@@ -43,56 +43,71 @@ ThemeData buildAppTheme() {
 TextTheme buildAppTextTheme(TextTheme textTheme) {
   return textTheme.copyWith(
     headline1: textTheme.headline1.copyWith(
-        fontSize: 30.0,
+        fontSize: 96.0,
+        fontWeight: FontWeight.w300,
+        color: kTextBlack,
+        letterSpacing: -1.5),
+    headline2: textTheme.headline2.copyWith(
+        fontSize: 60.0,
+        fontWeight: FontWeight.w300,
+        color: kTextBlack,
+        letterSpacing: -0.5),
+    headline3: textTheme.headline3.copyWith(
+        fontSize: 48.0,
         fontWeight: FontWeight.w400,
         color: kTextBlack,
-        letterSpacing: 1),
-    headline2: textTheme.headline2.copyWith(
-        fontSize: 24.0,
-        fontWeight: FontWeight.w700,
-        color: kTextBlack,
-        letterSpacing: 1),
-    headline3: textTheme.headline3.copyWith(
-        fontSize: 22.0,
-        fontWeight: FontWeight.w600,
-        color: kTextBlack,
-        letterSpacing: 1),
+        letterSpacing: 0),
     headline4: textTheme.headline4.copyWith(
-        fontSize: 20.0,
+        fontSize: 34.0,
         fontWeight: FontWeight.w700,
         color: kTextBlack,
-        letterSpacing: 1),
-    subtitle1: textTheme.subtitle1.copyWith(
-        fontSize: 17.0,
+        letterSpacing: 0.25),
+    headline5: textTheme.headline5.copyWith(
+        fontSize: 24.0,
+        fontWeight: FontWeight.w400,
+        color: kTextBlack,
+        letterSpacing: 0),
+    headline6: textTheme.headline6.copyWith(
+        fontSize: 20.0,
         fontWeight: FontWeight.w500,
         color: kTextBlack,
-        letterSpacing: 1),
-    subtitle2: textTheme.subtitle2.copyWith(
+        letterSpacing: 0.15),
+    subtitle1: textTheme.subtitle1.copyWith(
         fontSize: 16.0,
-        fontWeight: FontWeight.w600,
+        fontWeight: FontWeight.w400,
         color: kTextBlack,
-        letterSpacing: 1),
+        letterSpacing: 0.15),
+    subtitle2: textTheme.subtitle2.copyWith(
+        fontSize: 14.0,
+        fontWeight: FontWeight.w500,
+        color: kTextBlack,
+        letterSpacing: 0.1),
     bodyText1: textTheme.bodyText1.copyWith(
-      fontSize: 17.0,
+      fontSize: 16.0,
       fontWeight: FontWeight.w400,
       color: kTextBlack,
       letterSpacing: 0.5,
     ),
     bodyText2: textTheme.bodyText2.copyWith(
         fontSize: 14.0,
-        fontWeight: FontWeight.w400,
+        fontWeight: FontWeight.w500,
         color: kTextBlack,
-        letterSpacing: 1),
+        letterSpacing: 0.25),
     button: textTheme.button.copyWith(
-        fontSize: 17.0,
-        fontWeight: FontWeight.w700,
+        fontSize: 14.0,
+        fontWeight: FontWeight.w500,
         color: kTextBlack,
-        letterSpacing: 1),
+        letterSpacing: 1.25),
     caption: textTheme.caption.copyWith(
         fontSize: 12.0,
         fontWeight: FontWeight.w400,
         color: kTextBlack,
-        letterSpacing: 1),
+        letterSpacing: 0.4),
+    overline: textTheme.overline.copyWith(
+        fontSize: 10.0,
+        fontWeight: FontWeight.w400,
+        color: kTextBlack,
+        letterSpacing: 1.5),
   );
 }
 

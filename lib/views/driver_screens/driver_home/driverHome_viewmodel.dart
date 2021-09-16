@@ -1,3 +1,4 @@
+import 'package:BusTracking_App/core/routes/router_path.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../core/models/userDetails_model.dart';
@@ -22,6 +23,14 @@ class DriverHomeViewModel extends BaseViewModel with ServiceImport {
   changeIsDriverOnBus(bool value) {
     _isDriverOnBus = value;
     notifyListeners();
+  }
+
+  showBusList() {
+    navigationService.navigateTo(kBusListScreen);
+  }
+
+  showStopList() {
+    navigationService.navigateTo(kStopListScreen);
   }
 
   handleGoOnDuty() {}

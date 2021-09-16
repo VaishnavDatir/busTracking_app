@@ -1,6 +1,5 @@
 import 'package:http/http.dart' as http;
 
-import '../constants.dart';
 import '../models/userDetails_model.dart';
 import '../service_import.dart';
 import 'api/endpoints.dart';
@@ -18,7 +17,7 @@ class UserService extends ServiceImport {
       var response = await http.get(url,
           headers: {'Authorization': 'Bearer ${authService.userToken}'});
 
-      // print("Response in AuthService:getUserData: " + response.body.toString());
+      print("Response in AuthService:getUserData: " + response.body.toString());
 
       _userDetails = userDetailsFromJson(response.body);
     } catch (e) {

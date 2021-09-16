@@ -1,7 +1,6 @@
-import 'package:BusTracking_App/core/services/bus_service.dart';
-
 import 'locator.dart';
 import 'services/auth_service.dart';
+import 'services/bus_service.dart';
 import 'services/dialog_service.dart';
 import 'services/navigator_service.dart';
 import 'services/sharedprefs_service.dart';

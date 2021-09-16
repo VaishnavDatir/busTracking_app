@@ -17,7 +17,7 @@ class HomeScreen extends StatelessWidget {
             child: Center(
               child: Text(
                 Constants.appName,
-                style: appTheme.primaryTextTheme.headline2,
+                style: appTheme.primaryTextTheme.headline5,
               ),
             ),
           ),

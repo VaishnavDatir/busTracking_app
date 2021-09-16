@@ -62,7 +62,7 @@ class DriverHomeScreen extends StatelessWidget {
                   child: Center(
                     child: Text(
                       "${model.userDetails.data.name.toString().substring(0, 1)}",
-                      style: appTheme.textTheme.headline2
+                      style: appTheme.textTheme.headline5
                           .copyWith(color: kDarkPrimaryColor),
                     ),
                   ),
@@ -76,6 +76,16 @@ class DriverHomeScreen extends StatelessWidget {
                   style: TextStyle(color: kTextOffWhite),
                 ),
               ),
+            ),
+            ListTile(
+              leading: Icon(Icons.list),
+              title: Text("Stop List"),
+              onTap: () => model.showStopList(),
+            ),
+            ListTile(
+              leading: Icon(Icons.list_alt_rounded),
+              title: Text("Bus List"),
+              onTap: () => model.showBusList(),
             ),
             ListTile(
               leading: Icon(Icons.directions_bus_sharp),

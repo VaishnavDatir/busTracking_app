@@ -3,6 +3,7 @@
 //     final busDetailModel = busDetailModelFromJson(jsonString);
 
 import 'dart:convert';
+
 import './stops_model.dart';
 
 BusDetailModel busDetailModelFromJson(String str) =>
