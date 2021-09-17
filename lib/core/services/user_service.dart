@@ -12,7 +12,7 @@ class UserService extends ServiceImport {
     print("called AuthService:getUserData");
 
     try {
-      Uri url = Uri.http(Endpoints.localhost, Endpoints.getUserData);
+      Uri url = Uri.https(Endpoints.herokuServer, Endpoints.getUserData);
 
       var response = await http.get(url,
           headers: {'Authorization': 'Bearer ${authService.userToken}'});

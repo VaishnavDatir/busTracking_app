@@ -17,11 +17,11 @@ class BusService extends ServiceImport {
     print("called BusService:getAllStops");
 
     try {
-      Uri url = Uri.http(Endpoints.localhost, Endpoints.getAllStops);
+      Uri url = Uri.https(Endpoints.herokuServer, Endpoints.getAllStops);
 
       var response = await http.get(url);
 
-      // print("Response in BusService:getAllStops: " + response.body.toString());
+      print("Response in BusService:getAllStops: " + response.body.toString());
 
       _stops = stopsFromJson(response.body);
     } catch (e) {
@@ -38,8 +38,8 @@ class BusService extends ServiceImport {
     print("called BusService:searchBusBySourceAndDestination");
 
     try {
-      Uri url = Uri.http(
-          Endpoints.localhost, Endpoints.searchBusBySourceAndDestination);
+      Uri url = Uri.https(
+          Endpoints.herokuServer, Endpoints.searchBusBySourceAndDestination);
 
       var response = await http.post(url,
           body: {"sourceID": "$sourceId", "destinationID": "$destinationId"});
@@ -60,7 +60,7 @@ class BusService extends ServiceImport {
   Future getAllBusList() async {
     print("called BusService:getAllBusList");
     try {
-      Uri url = Uri.http(Endpoints.localhost, Endpoints.getAllBuses);
+      Uri url = Uri.https(Endpoints.herokuServer, Endpoints.getAllBuses);
 
       var response = await http.get(url);
 
@@ -79,7 +79,7 @@ class BusService extends ServiceImport {
     print("called BusService:getBusDetail");
     try {
       Uri url =
-          Uri.http(Endpoints.localhost, Endpoints.getBusDetail + "/$busId");
+          Uri.https(Endpoints.herokuServer, Endpoints.getBusDetail + "/$busId");
 
       var response = await http.get(url,
           headers: {"Authorization": "Bearer ${authService.userToken}"});
