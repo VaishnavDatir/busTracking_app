@@ -11,7 +11,7 @@ class BusListScreen extends StatelessWidget {
       viewModelBuilder: () => BusListViewModel(),
       onModelReady: (model) => model.initializeScreen(),
       builder: (context, model, child) {
-        return Scaffold(
+        var scaffold = Scaffold(
           appBar: AppBar(
             title: Text(
               "Bus List",
@@ -50,6 +50,7 @@ class BusListScreen extends StatelessWidget {
                 )
               : Container(),
         );
+        return scaffold;
       },
     );
   }
