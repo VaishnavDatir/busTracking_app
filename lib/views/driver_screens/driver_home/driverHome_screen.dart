@@ -9,7 +9,7 @@ import 'driverHome_viewmodel.dart';
 class DriverHomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ViewModelBuilder<DriverHomeViewModel>.nonReactive(
+    return ViewModelBuilder<DriverHomeViewModel>.reactive(
       viewModelBuilder: () => DriverHomeViewModel(),
       onModelReady: (model) => model.initializeScreen(),
       builder: (context, model, child) {

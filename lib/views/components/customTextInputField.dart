@@ -70,12 +70,13 @@ class CustomTextInputField extends StatelessWidget {
         prefixIcon: prefixIcon,
         suffixIcon: suffixIcon,
         hintText: hintText,
-        border: OutlineInputBorder(),
+        border: UnderlineInputBorder(),
         enabledBorder:
-            OutlineInputBorder(borderSide: BorderSide(color: kTextGrey)),
+            UnderlineInputBorder(borderSide: BorderSide(color: kTextGrey)),
         focusedBorder: disabled
-            ? OutlineInputBorder(borderSide: BorderSide(color: kTextGrey))
-            : OutlineInputBorder(borderSide: BorderSide(color: kPrimaryColor)),
+            ? UnderlineInputBorder(borderSide: BorderSide(color: kTextGrey))
+            : UnderlineInputBorder(
+                borderSide: BorderSide(color: kPrimaryColor)),
       ),
     );
   }

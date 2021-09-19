@@ -53,7 +53,7 @@ class _SigninScreenState extends State<SigninScreen> {
                           ),
                           Text(
                             "Welcome back!",
-                            style: appTheme.primaryTextTheme.headline4.copyWith(
+                            style: appTheme.primaryTextTheme.headline5.copyWith(
                               color: kBlack,
                             ),
                           ),
@@ -72,7 +72,7 @@ class _SigninScreenState extends State<SigninScreen> {
                             },
                             textInputAction: TextInputAction.go,
                           ),
-                          SizedBox(height: kXLSpace),
+                          SizedBox(height: kLargeSpace),
                           CustomTextInputField(
                               controller: model.passwordTC,
                               focusNode: model.passwordFN,

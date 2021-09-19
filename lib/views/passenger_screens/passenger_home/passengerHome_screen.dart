@@ -23,25 +23,28 @@ class PassengerHomeScreen extends StatelessWidget {
                     child: CircularProgressIndicator(),
                   ),
                 )
-              : Scaffold(
-                  key: model.scaffoldKey,
-                  drawer: buildDrawer(model),
-                  body: SafeArea(
-                    child: Stack(
-                      children: [
-                        buildMap(), // YET TO IMPLEMENT
-                        buildTopSearchBar(model),
-                        buildBottomBusSheet(model),
-                      ],
+              : WillPopScope(
+                  onWillPop: () => model.handleExit(),
+                  child: Scaffold(
+                    key: model.scaffoldKey,
+                    drawer: buildDrawer(model),
+                    body: SafeArea(
+                      child: Stack(
+                        children: [
+                          buildMap(), // YET TO IMPLEMENT
+                          buildTopSearchBar(model),
+                          buildBottomBusSheet(model),
+                        ],
+                      ),
                     ),
-                  ),
-                  floatingActionButton: FloatingActionButton(
-                    child: Icon(
-                      Icons.location_pin,
-                      color: kWhite,
-                      size: kIconSize,
+                    floatingActionButton: FloatingActionButton(
+                      child: Icon(
+                        Icons.location_pin,
+                        color: kWhite,
+                        size: kIconSize,
+                      ),
+                      onPressed: () => model.fabClick(),
                     ),
-                    onPressed: () => model.fabClick(),
                   ),
                 ),
         );
@@ -87,7 +90,7 @@ class PassengerHomeScreen extends StatelessWidget {
                                       horizontal: kMediumSpace),
                                   child: Text(
                                     "Available Buses",
-                                    style: appTheme.textTheme.headline3,
+                                    style: appTheme.textTheme.headline4,
                                   ),
                                 ),
                                 Container(

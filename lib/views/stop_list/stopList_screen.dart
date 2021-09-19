@@ -15,7 +15,7 @@ class StopsListScreen extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             title: Text(
-              "Bus List",
+              "Stop List",
               style: TextStyle(
                   fontSize: kTextTitleSize, fontWeight: FontWeight.bold),
             ),

@@ -15,6 +15,7 @@ class SignUpScreen extends StatelessWidget {
       viewModelBuilder: () => SignUpViewModel(),
       builder: (context, model, child) {
         return Scaffold(
+          resizeToAvoidBottomInset: false,
           appBar: AppBar(),
           body: Container(
             padding: EdgeInsets.symmetric(horizontal: kLargeSpace),
@@ -22,7 +23,7 @@ class SignUpScreen extends StatelessWidget {
               children: [
                 Text(
                   "Let's get started!",
-                  style: appTheme.primaryTextTheme.headline5
+                  style: appTheme.primaryTextTheme.headline6
                       .copyWith(fontWeight: FontWeight.bold),
                 ),
                 SizedBox(
@@ -34,8 +35,9 @@ class SignUpScreen extends StatelessWidget {
                       : "Create an account to get live bus locations",
                   style: appTheme.textTheme.caption.copyWith(color: kTextGrey),
                 ),
-                SizedBox(height: kXLSpace),
+                SizedBox(height: kLargeSpace),
                 CustomTextInputField(
+                  // addContentPadding: true,
                   hintText: "Name",
                   focusNode: model.nameTextFN,
                   keyboardType: TextInputType.name,
@@ -47,6 +49,7 @@ class SignUpScreen extends StatelessWidget {
                 ),
                 SizedBox(height: kLargeSpace),
                 CustomTextInputField(
+                  // addContentPadding: true,
                   controller: model.emailTC,
                   focusNode: model.emailFN,
                   keyboardType: TextInputType.emailAddress,
@@ -57,6 +60,7 @@ class SignUpScreen extends StatelessWidget {
                 ),
                 SizedBox(height: kLargeSpace),
                 CustomTextInputField(
+                    // addContentPadding: true,
                     controller: model.passwordTC,
                     focusNode: model.passwordFN,
                     keyboardType: TextInputType.text,
@@ -94,7 +98,7 @@ class SignUpScreen extends StatelessWidget {
                                 : "Are you a driver?\n",
                           ),
                           TextSpan(
-                              style: appTheme.textTheme.bodyText2.copyWith(
+                              style: appTheme.textTheme.bodyText1.copyWith(
                                   color: kPrimaryColor,
                                   fontWeight: FontWeight.bold),
                               text: model.isDriver
@@ -104,7 +108,7 @@ class SignUpScreen extends StatelessWidget {
                                 ..onTap = () => model.changeSignUpType())
                         ])),
                 SizedBox(
-                  height: kLargeSpace,
+                  height: kXLSpace,
                 ),
               ],
             ),

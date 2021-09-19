@@ -142,4 +142,8 @@ class PassengerViewModel extends BaseViewModel with ServiceImport {
       "destinationStop": _destinationStop.id,
     });
   }
+
+  handleExit() {
+    dialogService.showDialog();
+  }
 }
