@@ -1,3 +1,4 @@
+import 'package:BusTracking_App/views/add_stop/add_stop_screen.dart';
 import 'package:BusTracking_App/views/bus_list/busList_screen.dart';
 import 'package:BusTracking_App/views/stop_list/stopList_screen.dart';
 import 'package:flutter/material.dart';
@@ -15,39 +16,57 @@ import 'router_path.dart';
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
     case kHomeScreen:
-      return MaterialPageRoute(builder: (context) => HomeScreen());
+      return MaterialPageRoute(
+        builder: (context) => HomeScreen(),
+      );
       break;
 
     case kSigninScreen:
-      return MaterialPageRoute(builder: (context) => SigninScreen());
+      return MaterialPageRoute(
+        builder: (context) => SigninScreen(),
+      );
       break;
 
     case kSignupScreen:
-      return MaterialPageRoute(builder: (context) => SignUpScreen());
+      return MaterialPageRoute(
+        builder: (context) => SignUpScreen(),
+      );
       break;
 
 /* <--------- Passenger Screens--------------> */
 
     case kPassengerHomeScreen:
-      return MaterialPageRoute(builder: (context) => PassengerHomeScreen());
+      return MaterialPageRoute(
+        builder: (context) => PassengerHomeScreen(),
+      );
       break;
 
 /* <----------- Driver Screens--------------> */
 
     case kDriverHomeScreen:
-      return MaterialPageRoute(builder: (context) => DriverHomeScreen());
+      return MaterialPageRoute(
+        builder: (context) => DriverHomeScreen(),
+      );
       break;
 
-/* <------------- Component Screen -----------> */
+/* <------------- Stop Screen -----------> */
     case kStopSearchScreen:
       return MaterialPageRoute(
         builder: (context) => StopSearchScreen(),
       );
+      break;
 
     case kStopListScreen:
       return MaterialPageRoute(
         builder: (context) => StopsListScreen(),
       );
+      break;
+
+    case kAddStopScreen:
+      return MaterialPageRoute(
+        builder: (context) => AddStopScreen(),
+      );
+      break;
 
 /* <---------------- Bus Screen --------------> */
     case kBusDetailScreen:
@@ -62,7 +81,9 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       );
 
     default:
-      return MaterialPageRoute(builder: (context) => UnknownRoutePage());
+      return MaterialPageRoute(
+        builder: (context) => UnknownRoutePage(),
+      );
       break;
   }
 }

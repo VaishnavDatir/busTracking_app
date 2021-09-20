@@ -1,4 +1,5 @@
 import 'package:BusTracking_App/core/models/stops_model.dart';
+import 'package:BusTracking_App/core/routes/router_path.dart';
 import 'package:BusTracking_App/core/service_import.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
@@ -56,5 +57,8 @@ class StopListViewModel extends BaseViewModel with ServiceImport {
     notifyListeners();
   }
 
-  addstop() {}
+  addstop() async {
+    await navigationService.navigateTo(kAddStopScreen);
+    initializeScreen();
+  }
 }

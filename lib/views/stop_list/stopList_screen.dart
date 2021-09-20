@@ -1,5 +1,6 @@
 import 'package:BusTracking_App/theme/colors.dart';
 import 'package:BusTracking_App/theme/dimensions.dart';
+import 'package:BusTracking_App/theme/themes.dart';
 import 'package:BusTracking_App/views/components/customTextInputField.dart';
 import 'package:BusTracking_App/views/stop_list/stopList_viewmodel.dart';
 import 'package:flutter/material.dart';
@@ -91,6 +92,19 @@ class StopsListScreen extends StatelessWidget {
                           ),
                         ),
                 )
+              ],
+            ),
+          ),
+          floatingActionButton: FloatingActionButton.extended(
+            onPressed: () => model.addstop(),
+            label: Row(
+              children: [
+                Icon(
+                  Icons.add,
+                  color: kWhite,
+                ),
+                Text("Create Stop",
+                    style: appTheme.textTheme.button.copyWith(color: kWhite)),
               ],
             ),
           ),

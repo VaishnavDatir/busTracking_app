@@ -77,8 +77,10 @@ class StopLocation {
   List<double> coordinates;
 
   factory StopLocation.fromJson(Map<String, dynamic> json) => StopLocation(
-        coordinates:
-            List<double>.from(json["coordinates"].map((x) => x.toDouble())),
+        coordinates: json["coordinates"] == null
+            ? null
+            : List<double>.from(json["coordinates"]
+                .map((x) => x == null ? null : x.toDouble())),
       );
 
   Map<String, dynamic> toJson() => {

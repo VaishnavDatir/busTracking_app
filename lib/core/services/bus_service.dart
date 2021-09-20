@@ -99,7 +99,7 @@ class BusService extends ServiceImport {
   }
 
   Future createStop(String stopName, String stopCity) async {
-    print("called BusService:createStop");
+    print("called BusService:createStop with $stopName - $stopCity");
     try {
       Uri url = Uri.https(Endpoints.herokuServer, Endpoints.createStopPost);
 

@@ -29,11 +29,16 @@ ThemeData buildAppTheme() {
             GoogleFonts.comfortaaTextTheme(),
           ),
         ),
-    buttonTheme: ThemeData.light().buttonTheme.copyWith(
+    /*  buttonTheme: ThemeData.light().buttonTheme.copyWith(
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(kRadius / 5)),
           buttonColor: kPrimaryColor,
-        ),
+        ), */
+    buttonTheme: ButtonThemeData(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(kRadius / 5)),
+      buttonColor: kPrimaryColor,
+    ),
     floatingActionButtonTheme: FloatingActionButtonThemeData(
       backgroundColor: kPrimaryColor,
     ),
@@ -96,7 +101,7 @@ TextTheme buildAppTextTheme(TextTheme textTheme) {
     button: textTheme.button.copyWith(
         fontSize: 14.0,
         fontWeight: FontWeight.w500,
-        color: kTextBlack,
+        color: kWhite,
         letterSpacing: 1.25),
     caption: textTheme.caption.copyWith(
         fontSize: 12.0,
