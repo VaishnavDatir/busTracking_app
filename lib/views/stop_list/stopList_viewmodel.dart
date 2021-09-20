@@ -55,4 +55,6 @@ class StopListViewModel extends BaseViewModel with ServiceImport {
     _stopsDataList = _stopsDataListMain;
     notifyListeners();
   }
+
+  addstop() {}
 }

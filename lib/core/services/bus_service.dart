@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 
 import '../models/busDetail_model.dart';
@@ -93,6 +95,27 @@ class BusService extends ServiceImport {
       print("Error in BusService:getBusDetail: " + e.toString());
 
       return BusDetailModel(success: false);
+    }
+  }
+
+  Future createStop(String stopName, String stopCity) async {
+    print("called BusService:createStop");
+    try {
+      Uri url = Uri.https(Endpoints.herokuServer, Endpoints.createStopPost);
+
+      var response = await http.post(url,
+          body: {"stopName": "$stopName", "stopCity": "$stopCity"},
+          headers: {"Authorization": "Bearer ${authService.userToken}"});
+
+      print("Response in BusService:createStop: " + response.body.toString());
+
+      Map<String, dynamic> resp = jsonDecode(response.body);
+
+      return resp;
+    } catch (e) {
+      print("Error in BusService:createStop: " + e.toString());
+      Map<String, dynamic> resp = {"success": false};
+      return resp;
     }
   }
 }
