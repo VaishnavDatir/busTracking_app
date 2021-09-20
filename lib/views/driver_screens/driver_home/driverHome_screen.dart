@@ -19,22 +19,26 @@ class DriverHomeScreen extends StatelessWidget {
                   child: CircularProgressIndicator(),
                 ),
               )
-            : Scaffold(
-                appBar: AppBar(),
-                drawer: buildDrawer(model),
-                body: Stack(
-                  children: [
-                    Card(
-                      child: SwitchListTile(
-                        value: model.isDriverOnBus,
-                        onChanged: (value) => model.changeIsDriverOnBus(value),
-                        title: Text(
-                          "On Duty",
-                          style: TextStyle(color: kBlack),
+            : WillPopScope(
+                onWillPop: () => model.handleExit(),
+                child: Scaffold(
+                  appBar: AppBar(),
+                  drawer: buildDrawer(model),
+                  body: Stack(
+                    children: [
+                      Card(
+                        child: SwitchListTile(
+                          value: model.isDriverOnBus,
+                          onChanged: (value) =>
+                              model.changeIsDriverOnBus(value),
+                          title: Text(
+                            "On Duty",
+                            style: TextStyle(color: kBlack),
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               );
       },

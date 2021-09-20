@@ -1,4 +1,6 @@
+import 'package:BusTracking_App/core/models/dialog_model.dart';
 import 'package:BusTracking_App/core/routes/router_path.dart';
+import 'package:flutter/services.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../core/models/userDetails_model.dart';
@@ -37,5 +39,18 @@ class DriverHomeViewModel extends BaseViewModel with ServiceImport {
 
   handleLogout() {
     authService.logout();
+  }
+
+  handleExit() async {
+    AlertResponse exit = await dialogService.showDialog(
+      title: "Exit",
+      description: "Are you sure you want to exit?",
+      showNegativeButton: true,
+      buttonNegativeTitle: "Cancel",
+      buttonTitle: "Yes",
+    );
+    if (exit.confirmed) {
+      SystemNavigator.pop();
+    }
   }
 }

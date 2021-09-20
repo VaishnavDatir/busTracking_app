@@ -1,4 +1,8 @@
+import 'dart:io';
+
+import 'package:BusTracking_App/core/models/dialog_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../core/models/bus_model.dart';
@@ -143,7 +147,16 @@ class PassengerViewModel extends BaseViewModel with ServiceImport {
     });
   }
 
-  handleExit() {
-    dialogService.showDialog();
+  handleExit() async {
+    AlertResponse exit = await dialogService.showDialog(
+      title: "Exit",
+      description: "Are you sure you want to exit?",
+      showNegativeButton: true,
+      buttonNegativeTitle: "Cancel",
+      buttonTitle: "Yes",
+    );
+    if (exit.confirmed) {
+      SystemNavigator.pop();
+    }
   }
 }
