@@ -1,9 +1,11 @@
-import 'package:BusTracking_App/theme/colors.dart';
-import 'package:BusTracking_App/theme/dimensions.dart';
-import 'package:BusTracking_App/views/bus_list/busList_viewmodel.dart';
-import 'package:BusTracking_App/views/components/customTextInputField.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+
+import '../../theme/colors.dart';
+import '../../theme/dimensions.dart';
+import '../../theme/themes.dart';
+import '../components/customTextInputField.dart';
+import 'busList_viewmodel.dart';
 
 class BusListScreen extends StatelessWidget {
   @override
@@ -31,7 +33,6 @@ class BusListScreen extends StatelessWidget {
                             controller: model.searchTextController,
                             hintText: "Search",
                             prefixIcon: Icon(Icons.search),
-                            addContentPadding: true,
                             onChanged: (value) =>
                                 model.filterSearchResults(value.toString()),
                           )),
@@ -88,6 +89,19 @@ class BusListScreen extends StatelessWidget {
                   ),
                 )
               : Container(),
+          floatingActionButton: FloatingActionButton.extended(
+            onPressed: () => model.addBuss(),
+            label: Row(
+              children: [
+                Icon(
+                  Icons.add,
+                  color: kWhite,
+                ),
+                Text("Create Bus",
+                    style: appTheme.textTheme.button.copyWith(color: kWhite)),
+              ],
+            ),
+          ),
         );
       },
     );

@@ -16,3 +16,4 @@ const String kAddStopScreen = "/kAddStopScreen";
 /* <------------ Bus Screen ------------- */
 const String kBusDetailScreen = "/kBusDetailScreen";
 const String kBusListScreen = "/kBusListScreen";
+const String kAddBusScreen = "/kAddBusScreen";

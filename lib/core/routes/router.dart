@@ -1,14 +1,15 @@
-import 'package:BusTracking_App/views/add_stop/add_stop_screen.dart';
-import 'package:BusTracking_App/views/bus_list/busList_screen.dart';
-import 'package:BusTracking_App/views/stop_list/stopList_screen.dart';
 import 'package:flutter/material.dart';
 
+import '../../views/add_bus/addBus_screen.dart';
+import '../../views/add_stop/add_stop_screen.dart';
 import '../../views/bus_detail/bus_detail_screenn.dart';
+import '../../views/bus_list/busList_screen.dart';
 import '../../views/driver_screens/driver_home/driverHome_screen.dart';
 import '../../views/home/homescreen.dart';
 import '../../views/passenger_screens/passenger_home/passengerHome_screen.dart';
 import '../../views/signin/signin_screen.dart';
 import '../../views/signup/signup_screen.dart';
+import '../../views/stop_list/stopList_screen.dart';
 import '../../views/stop_search/stopSearchScreen.dart';
 import '../../views/unknown_route_page.dart';
 import 'router_path.dart';
@@ -79,6 +80,13 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(
         builder: (context) => BusListScreen(),
       );
+      break;
+
+    case kAddBusScreen:
+      return MaterialPageRoute(
+        builder: (context) => CreateBusScreen(),
+      );
+      break;
 
     default:
       return MaterialPageRoute(

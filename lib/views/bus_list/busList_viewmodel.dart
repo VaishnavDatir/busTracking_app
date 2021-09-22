@@ -1,8 +1,9 @@
-import 'package:BusTracking_App/core/models/bus_model.dart';
-import 'package:BusTracking_App/core/routes/router_path.dart';
-import 'package:BusTracking_App/core/service_import.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+
+import '../../core/models/bus_model.dart';
+import '../../core/routes/router_path.dart';
+import '../../core/service_import.dart';
 
 class BusListViewModel extends BaseViewModel with ServiceImport {
   BusModel _busModel;
@@ -56,5 +57,9 @@ class BusListViewModel extends BaseViewModel with ServiceImport {
   void resetSearchResults() {
     _busModelData = _busDataListMain;
     notifyListeners();
+  }
+
+  void addBuss() {
+    navigationService.navigateTo(kAddBusScreen);
   }
 }

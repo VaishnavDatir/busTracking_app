@@ -1,5 +1,5 @@
-import 'package:BusTracking_App/core/models/dialog_model.dart';
-import 'package:BusTracking_App/core/routes/router_path.dart';
+import '../../../core/models/dialog_model.dart';
+import '../../../core/routes/router_path.dart';
 import 'package:flutter/services.dart';
 import 'package:stacked/stacked.dart';
 

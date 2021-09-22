@@ -1,6 +1,7 @@
-import 'package:BusTracking_App/core/service_import.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:stacked/stacked.dart';
+
+import '../../core/service_import.dart';
 
 class AddStopViewModel extends BaseViewModel with ServiceImport {
   TextEditingController stopNameController = TextEditingController();

@@ -1,8 +1,9 @@
-import 'package:BusTracking_App/core/models/stops_model.dart';
-import 'package:BusTracking_App/core/routes/router_path.dart';
-import 'package:BusTracking_App/core/service_import.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+
+import '../../core/models/stops_model.dart';
+import '../../core/routes/router_path.dart';
+import '../../core/service_import.dart';
 
 class StopListViewModel extends BaseViewModel with ServiceImport {
   Stops _stops;

@@ -1,9 +1,10 @@
-import 'package:BusTracking_App/theme/dimensions.dart';
-import 'package:BusTracking_App/theme/themes.dart';
-import 'package:BusTracking_App/views/add_stop/add_stop_viewmodel.dart';
-import 'package:BusTracking_App/views/components/customTextInputField.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+
+import '../../theme/dimensions.dart';
+import '../../theme/themes.dart';
+import '../components/customTextInputField.dart';
+import 'add_stop_viewmodel.dart';
 
 class AddStopScreen extends StatelessWidget {
   @override
@@ -13,7 +14,7 @@ class AddStopScreen extends StatelessWidget {
       builder: (context, model, child) {
         return Scaffold(
           appBar: AppBar(
-            title: Text("Add stop"),
+            title: Text("Create stop"),
           ),
           body: Padding(
             padding: EdgeInsets.symmetric(horizontal: kMediumSpace),
