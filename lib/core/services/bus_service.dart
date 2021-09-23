@@ -62,7 +62,7 @@ class BusService extends ServiceImport {
   Future getAllBusList() async {
     print("called BusService:getAllBusList");
     try {
-      Uri url = Uri.https(Endpoints.herokuServer, Endpoints.getAllBuses);
+      Uri url = Uri.http(Endpoints.localhost, Endpoints.getAllBuses);
 
       var response = await http.get(url);
 
@@ -83,8 +83,10 @@ class BusService extends ServiceImport {
       Uri url =
           Uri.https(Endpoints.herokuServer, Endpoints.getBusDetail + "/$busId");
 
-      var response = await http.get(url,
-          headers: {"Authorization": "Bearer ${authService.userToken}"});
+      var response = await http.get(url, headers: {
+        "Authorization": "Bearer ${authService.userToken}",
+        'Content-Type': 'application/json'
+      });
 
       print("Response in BusService:getBusDetail: " + response.body.toString());
 
@@ -103,9 +105,13 @@ class BusService extends ServiceImport {
     try {
       Uri url = Uri.https(Endpoints.herokuServer, Endpoints.createStopPost);
 
-      var response = await http.post(url,
-          body: {"stopName": "$stopName", "stopCity": "$stopCity"},
-          headers: {"Authorization": "Bearer ${authService.userToken}"});
+      var response = await http.post(url, body: {
+        "stopName": "$stopName",
+        "stopCity": "$stopCity"
+      }, headers: {
+        "Authorization": "Bearer ${authService.userToken}",
+        'Content-Type': 'application/json'
+      });
 
       print("Response in BusService:createStop: " + response.body.toString());
 
@@ -114,6 +120,46 @@ class BusService extends ServiceImport {
       return resp;
     } catch (e) {
       print("Error in BusService:createStop: " + e.toString());
+      Map<String, dynamic> resp = {"success": false};
+      return resp;
+    }
+  }
+
+  Future createBus(
+    String busNumber,
+    String busType,
+    String busProvider,
+    List busTimings,
+    List busStops,
+  ) async {
+    print("called BusService:createBus with $busNumber");
+    try {
+      Uri url = Uri.https(Endpoints.herokuServer, Endpoints.createBusPost);
+
+      var bodyData = json.encode({
+        "busNumber": busNumber,
+        "busType": busType,
+        "busProvider": busProvider,
+        "busTimings": busTimings,
+        "busStops": busStops
+      });
+
+      var response = await http.post(
+        url,
+        body: bodyData,
+        headers: {
+          "Authorization": "Bearer ${authService.userToken}",
+          'Content-Type': 'application/json'
+        },
+      );
+
+      print("Response in BusService:createBus: " + response.body.toString());
+
+      Map<String, dynamic> resp = jsonDecode(response.body);
+
+      return resp;
+    } catch (e) {
+      print("Error in BusService:createBus " + e.toString());
       Map<String, dynamic> resp = {"success": false};
       return resp;
     }

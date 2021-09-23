@@ -59,7 +59,13 @@ class BusListViewModel extends BaseViewModel with ServiceImport {
     notifyListeners();
   }
 
-  void addBuss() {
-    navigationService.navigateTo(kAddBusScreen);
+  void addBuss() async {
+    await navigationService.navigateTo(kAddBusScreen);
+    initializeScreen();
+  }
+
+  doRefresh() async {
+    await busService.getAllBusList();
+    initializeScreen();
   }
 }

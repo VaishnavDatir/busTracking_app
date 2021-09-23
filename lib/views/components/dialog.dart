@@ -37,7 +37,7 @@ class _DialogManagerState extends State<DialogManager> {
   void _showLoadingDialog() {
     showDialog(
       context: context,
-      barrierDismissible: false,
+      barrierDismissible: true, //TODO: MAKE IT FALSE
       builder: (context) {
         return Dialog(
           backgroundColor: kWhite,
