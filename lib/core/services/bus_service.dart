@@ -62,7 +62,7 @@ class BusService extends ServiceImport {
   Future getAllBusList() async {
     print("called BusService:getAllBusList");
     try {
-      Uri url = Uri.http(Endpoints.localhost, Endpoints.getAllBuses);
+      Uri url = Uri.https(Endpoints.herokuServer, Endpoints.getAllBuses);
 
       var response = await http.get(url);
 
