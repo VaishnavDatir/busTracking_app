@@ -105,10 +105,8 @@ class BusService extends ServiceImport {
     try {
       Uri url = Uri.https(Endpoints.herokuServer, Endpoints.createStopPost);
 
-      var response = await http.post(url, body: {
-        "stopName": "$stopName",
-        "stopCity": "$stopCity"
-      }, headers: {
+      var bodyData = json.encode({"stopName": stopName, "stopCity": stopCity});
+      var response = await http.post(url, body: bodyData, headers: {
         "Authorization": "Bearer ${authService.userToken}",
         'Content-Type': 'application/json'
       });
