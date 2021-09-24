@@ -69,7 +69,7 @@ class _DialogManagerState extends State<DialogManager> {
   void _showDialog(AlertRequest request) {
     showDialog<String>(
       context: context,
-      barrierDismissible: true,
+      barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: kWhite,
