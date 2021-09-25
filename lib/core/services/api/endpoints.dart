@@ -11,7 +11,21 @@ class Endpoints {
   static const String herokuServerHttps =
       "https://bus-tracking-app.herokuapp.com";
 
+  // <------------------------------ User ------------------------------------>
+  /// To get User Details (GET Request)
   static const String getUserData = "/auth/getUserData";
+
+  /// To update user location (POST Request)
+  static const String updateUserLocation = "/user/updateLocation";
+
+  /// To update user isActive status (Post Request)
+  static const String updateUserIsActive = "/user/updateIsActive";
+
+  /// To assign driver on bus (Post Request)
+  static const String setDriverOnBus = "/user/setDriverOnBus";
+
+  /// To remove driver from bus (GET Request)
+  static const String removeDriverOnBus = "/user/removeDriverOnBus";
 
   // <------------------------------ Auth ------------------------------------>
   /// To Sign up user (POST Request)

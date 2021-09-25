@@ -1,3 +1,4 @@
+import 'package:BusTracking_App/core/routes/router_path.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../core/models/busDetail_model.dart';
@@ -13,10 +14,16 @@ class BusDetailViewModel extends BaseViewModel with ServiceImport {
   String sourceStopId;
   String destinationStopId;
 
+  bool driverGoingOnDuty;
+
+  String busId;
+
   initializeScreen(Map<String, dynamic> screenDetails) async {
     setBusy(true);
 
-    String busId = screenDetails["busId"];
+    busId = screenDetails["busId"];
+    driverGoingOnDuty = screenDetails["driverGoingOnDuty"] ?? false;
+
     _busDetailModel = await busService.getBusDetail(busId);
 
     if (_busDetailModel.success) {
@@ -26,12 +33,36 @@ class BusDetailViewModel extends BaseViewModel with ServiceImport {
     sourceStopId = screenDetails["sourceStop"] ?? null;
     destinationStopId = screenDetails["destinationStop"] ?? null;
 
-    setBusy(false);
     notifyListeners();
+    setBusy(false);
   }
 
   fabReverseRoute() {
     _busDetailData.busStops = _busDetailData.busStops.reversed.toList();
     notifyListeners();
+  }
+
+  setDriverForBus() async {
+    dialogService.showLoadingDialog();
+
+    Map<String, dynamic> response = await userService.updateUserIsActive(true);
+
+    if (response["success"]) {
+      Map<String, dynamic> response1 = await userService.setDriverOnBus(busId);
+
+      await userService.getUserData();
+
+      await dialogService.showDialog(
+          title: response1["success"].toString(),
+          description: response1["message"]);
+
+      navigationService.popEverythingAndNavigateTo(kDriverHomeScreen);
+    } else {
+      await dialogService.showDialog(
+          description:
+              "There was an error while assiging bus for you. Try again later");
+    }
+
+    dialogService.dialogDismiss();
   }
 }

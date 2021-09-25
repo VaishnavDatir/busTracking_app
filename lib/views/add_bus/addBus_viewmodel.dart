@@ -1,11 +1,9 @@
-import 'dart:developer';
-
-import 'package:BusTracking_App/core/models/stops_model.dart';
-import 'package:BusTracking_App/core/routes/router_path.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 
+import '../../core/models/stops_model.dart';
+import '../../core/routes/router_path.dart';
 import '../../core/service_import.dart';
 
 class CreateBusViewModel extends BaseViewModel with ServiceImport {

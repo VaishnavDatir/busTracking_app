@@ -1,10 +1,11 @@
+import 'package:flutter/material.dart';
+import 'package:stacked/stacked.dart';
+
 import '../../theme/colors.dart';
 import '../../theme/dimensions.dart';
 import '../../theme/themes.dart';
 import '../components/customTextInputField.dart';
 import 'stopList_viewmodel.dart';
-import 'package:flutter/material.dart';
-import 'package:stacked/stacked.dart';
 
 class StopsListScreen extends StatelessWidget {
   @override

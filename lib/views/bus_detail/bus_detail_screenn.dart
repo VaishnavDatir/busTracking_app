@@ -69,15 +69,25 @@ class BusDetailScreen extends StatelessWidget {
                             ],
                           ),
                         ),
-                  floatingActionButton: FloatingActionButton(
-                    tooltip: "Reverse route",
-                    child: Icon(
-                      Icons.import_export_rounded,
-                      size: kIconSize,
-                      color: kWhite,
-                    ),
-                    onPressed: () => model.fabReverseRoute(),
-                  ),
+                  floatingActionButton: model.driverGoingOnDuty
+                      ? FloatingActionButton.extended(
+                          onPressed: () => model.setDriverForBus(),
+                          icon: Icon(
+                            Icons.done,
+                            color: kWhite,
+                          ),
+                          label: Text("Select this bus",
+                              style: appTheme.textTheme.button
+                                  .copyWith(color: kWhite)))
+                      : FloatingActionButton(
+                          tooltip: "Reverse route",
+                          child: Icon(
+                            Icons.import_export_rounded,
+                            size: kIconSize,
+                            color: kWhite,
+                          ),
+                          onPressed: () => model.fabReverseRoute(),
+                        ),
                 ),
         );
       },
@@ -131,28 +141,6 @@ class BusDetailScreen extends StatelessWidget {
                       content: Container(),
                     )),
           ),
-          /* ListView.builder(
-            itemCount: model.busDetailData.busStops.length,
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            itemBuilder: (context, index) {
-              return ListTile(
-                leading: Container(
-                  height: double.infinity,
-                  padding: EdgeInsets.all(1),
-                  decoration: BoxDecoration(
-                      color: kPrimaryColor.withOpacity(0.2),
-                      shape: BoxShape.circle),
-                  child: Icon(
-                    Icons.circle,
-                    color: kPrimaryColor,
-                  ),
-                ),
-                title: Text(model.busDetailData.busStops[index].stopName),
-                subtitle: Text(model.busDetailData.busStops[index].stopCity),
-              );
-            },
-          ) */
         ],
       ),
     );
@@ -198,7 +186,10 @@ class BusDetailScreen extends StatelessWidget {
             size: kLargeIconSize,
             color: kPrimaryColor,
           )),
-      title: Text(model.busDetailData.busNumber),
+      title: Text(
+        model.busDetailData.busNumber,
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
       subtitle: Text(model.busDetailData.busType),
       trailing: Chip(label: Text(model.busDetailData.busProvider)),
     );

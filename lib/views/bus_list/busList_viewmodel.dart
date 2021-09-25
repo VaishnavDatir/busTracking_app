@@ -16,7 +16,20 @@ class BusListViewModel extends BaseViewModel with ServiceImport {
 
   TextEditingController searchTextController = TextEditingController();
 
-  initializeScreen() async {
+  bool driverGoingOnDuty;
+
+  initializeScreen(Map<String, dynamic> screenData) async {
+    setBusy(true);
+
+    driverGoingOnDuty =
+        screenData == null ? false : screenData["driverGoingOnDuty"] ?? false;
+    setScreenData();
+
+    notifyListeners();
+    setBusy(false);
+  }
+
+  setScreenData() async {
     _busModel = busService.busModel;
     if (_busModel.success) {
       _busDataListMain = busModel.data;
@@ -29,6 +42,7 @@ class BusListViewModel extends BaseViewModel with ServiceImport {
   handleOnBusTap(String busId) {
     navigationService.navigateTo(kBusDetailScreen, arguments: {
       "busId": busId,
+      "driverGoingOnDuty": driverGoingOnDuty,
     });
   }
 
@@ -61,11 +75,11 @@ class BusListViewModel extends BaseViewModel with ServiceImport {
 
   void addBuss() async {
     await navigationService.navigateTo(kAddBusScreen);
-    initializeScreen();
+    setScreenData();
   }
 
   doRefresh() async {
     await busService.getAllBusList();
-    initializeScreen();
+    setScreenData();
   }
 }

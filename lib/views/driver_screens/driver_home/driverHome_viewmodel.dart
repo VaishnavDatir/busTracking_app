@@ -1,9 +1,9 @@
-import '../../../core/models/dialog_model.dart';
-import '../../../core/routes/router_path.dart';
 import 'package:flutter/services.dart';
 import 'package:stacked/stacked.dart';
 
+import '../../../core/models/dialog_model.dart';
 import '../../../core/models/userDetails_model.dart';
+import '../../../core/routes/router_path.dart';
 import '../../../core/service_import.dart';
 
 class DriverHomeViewModel extends BaseViewModel with ServiceImport {
@@ -22,20 +22,44 @@ class DriverHomeViewModel extends BaseViewModel with ServiceImport {
     notifyListeners();
   }
 
-  changeIsDriverOnBus(bool value) {
-    _isDriverOnBus = value;
+  changeIsDriverOnBus() async {
+    dialogService.showLoadingDialog();
+
+    Map<String, dynamic> response = await userService.removeDriverOnBus();
+    await userService.getUserData();
+
+    await dialogService.showDialog(
+        title: response["success"].toString(),
+        description: response["message"]);
+
+    initializeScreen();
+
     notifyListeners();
+
+    dialogService.dialogDismiss();
   }
 
   showBusList() {
-    navigationService.navigateTo(kBusListScreen);
+    navigationService.navigateTo(
+      kBusListScreen,
+    );
   }
 
   showStopList() {
     navigationService.navigateTo(kStopListScreen);
   }
 
-  handleGoOnDuty() {}
+  handleGoOnDuty() async {
+    if (_isDriverOnBus) {
+      await dialogService.showDialog(
+          description:
+              "Your already on duty.\nTo select new bus go off-duty and then select.");
+    } else {
+      await navigationService.navigateTo(kBusListScreen, arguments: {
+        "driverGoingOnDuty": true,
+      });
+    }
+  }
 
   handleLogout() {
     authService.logout();

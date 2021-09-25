@@ -78,7 +78,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
 
     case kBusListScreen:
       return MaterialPageRoute(
-        builder: (context) => BusListScreen(),
+        builder: (context) => BusListScreen(settings.arguments),
       );
       break;
 
