@@ -56,7 +56,7 @@ class BusListScreen extends StatelessWidget {
                                               MainAxisAlignment.center,
                                           children: [
                                             Text(
-                                              "¯" + r"\" + "_(ツ)_/¯",
+                                              "(˚Δ˚)b",
                                               style: TextStyle(
                                                   fontSize: kXXLSpace,
                                                   color: kDarkPrimaryColor),
@@ -104,7 +104,21 @@ class BusListScreen extends StatelessWidget {
                           ),
                         ),
                       )
-                    : Container(),
+                    : Container(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "(^_^)b",
+                              style: TextStyle(
+                                  fontSize: kXXLSpace,
+                                  color: kDarkPrimaryColor),
+                            ),
+                            SizedBox(height: kLargeSpace),
+                            Text("There was an error while getting data!")
+                          ],
+                        ),
+                      ),
                 floatingActionButton: model.driverGoingOnDuty
                     ? null
                     : FloatingActionButton.extended(

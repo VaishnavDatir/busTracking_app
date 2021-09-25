@@ -48,7 +48,7 @@ class _DialogManagerState extends State<DialogManager> {
             ),
           ),
           child: Padding(
-            padding: EdgeInsets.all(kXXLSpace),
+            padding: EdgeInsets.all(kXLSpace),
             child: Row(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -58,7 +58,10 @@ class _DialogManagerState extends State<DialogManager> {
                   SizedBox(
                     width: 20,
                   ),
-                  Text("Please wait...")
+                  Text(
+                    "Please wait...",
+                    style: appTheme.primaryTextTheme.bodyText1,
+                  )
                 ]),
           ),
         );
@@ -83,7 +86,7 @@ class _DialogManagerState extends State<DialogManager> {
               ? null
               : Text(
                   request.title,
-                  style: appTheme.primaryTextTheme.headline3,
+                  style: appTheme.primaryTextTheme.headline4,
                 ),
           content: Text(
             request.description != null ? request.description : "",
