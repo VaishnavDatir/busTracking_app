@@ -221,6 +221,16 @@ class PassengerHomeScreen extends StatelessWidget {
               ),
             ),
             ListTile(
+              leading: Icon(Icons.list),
+              title: Text("Stop List"),
+              onTap: () => model.showStopList(),
+            ),
+            ListTile(
+              leading: Icon(Icons.list_alt_rounded),
+              title: Text("Bus List"),
+              onTap: () => model.showBusList(),
+            ),
+            ListTile(
               leading: Icon(Icons.logout),
               title: Text("Logout"),
               onTap: () => model.handleLogout(),

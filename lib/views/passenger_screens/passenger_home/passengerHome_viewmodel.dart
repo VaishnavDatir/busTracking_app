@@ -62,6 +62,16 @@ class PassengerViewModel extends BaseViewModel with ServiceImport {
     notifyListeners();
   }
 
+  showBusList() {
+    navigationService.navigateTo(
+      kBusListScreen,
+    );
+  }
+
+  showStopList() {
+    navigationService.navigateTo(kStopListScreen);
+  }
+
   void handleLogout() {
     authService.logout();
   }
