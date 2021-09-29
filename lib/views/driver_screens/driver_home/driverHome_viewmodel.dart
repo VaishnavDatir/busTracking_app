@@ -26,6 +26,9 @@ class DriverHomeViewModel extends BaseViewModel with ServiceImport {
     dialogService.showLoadingDialog();
 
     Map<String, dynamic> response = await userService.removeDriverOnBus();
+
+    locationService.stop();
+
     await userService.getUserData();
 
     await dialogService.showDialog(

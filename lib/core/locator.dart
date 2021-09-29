@@ -5,6 +5,7 @@ import 'service_import.dart';
 import 'services/auth_service.dart';
 import 'services/bus_service.dart';
 import 'services/dialog_service.dart';
+import 'services/location_service.dart';
 import 'services/sharedprefs_service.dart';
 import 'services/user_service.dart';
 
@@ -20,5 +21,6 @@ class LocatorInjector {
     locator.registerLazySingleton(() => AuthService());
     locator.registerLazySingleton(() => UserService());
     locator.registerLazySingleton(() => BusService());
+    locator.registerLazySingleton(() => LocationService());
   }
 }

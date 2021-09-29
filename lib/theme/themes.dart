@@ -18,7 +18,7 @@ ThemeData buildAppTheme() {
     cardColor: kWhite,
     errorColor: kErrorRed,
     primaryTextTheme: buildAppTextTheme(GoogleFonts.poppinsTextTheme()),
-    textTheme: buildAppTextTheme(GoogleFonts.montserratTextTheme()),
+    textTheme: buildAppTextTheme(GoogleFonts.latoTextTheme()),
     appBarTheme: ThemeData.light().appBarTheme.copyWith(
           elevation: 0,
           // titleTextStyle: GoogleFonts.comfortaa(),
@@ -26,7 +26,7 @@ ThemeData buildAppTheme() {
           color: kTransparent,
           brightness: Brightness.light,
           textTheme: buildAppTextTheme(
-            GoogleFonts.comfortaaTextTheme(),
+            GoogleFonts.promptTextTheme(),
           ),
         ),
     /*  buttonTheme: ThemeData.light().buttonTheme.copyWith(
