@@ -1,7 +1,7 @@
-import 'package:BusTracking_App/core/routes/router_path.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../core/models/busDetail_model.dart';
+import '../../core/routes/router_path.dart';
 import '../../core/service_import.dart';
 
 class BusDetailViewModel extends BaseViewModel with ServiceImport {
@@ -50,7 +50,8 @@ class BusDetailViewModel extends BaseViewModel with ServiceImport {
     if (response["success"]) {
       Map<String, dynamic> response1 = await userService.setDriverOnBus(busId);
 
-      await locationService.getLocation();
+      locationService.setBusData(response1["data"]);
+      await locationService.getLiveLocation();
 
       await userService.getUserData();
 

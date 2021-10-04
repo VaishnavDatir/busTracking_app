@@ -61,6 +61,8 @@ class SignInViewModel extends BaseViewModel with ServiceImport {
 
         await sharedPrefsService.write(Constants.sharedPrefsIsSignedIn, true);
 
+        streamSocket.socketConnect();
+
         await authService.getUserToken();
         await userService.getUserData();
         await busService.getAllStops();

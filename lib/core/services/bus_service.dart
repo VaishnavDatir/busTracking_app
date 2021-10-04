@@ -19,7 +19,9 @@ class BusService extends ServiceImport {
     print("called BusService:getAllStops");
 
     try {
-      Uri url = Uri.https(Endpoints.herokuServer, Endpoints.getAllStops);
+      Uri url = Endpoints.isDev
+          ? Uri.http(Endpoints.localhost, Endpoints.getAllStops)
+          : Uri.https(Endpoints.herokuServer, Endpoints.getAllStops);
 
       var response = await http.get(url);
 
@@ -40,8 +42,11 @@ class BusService extends ServiceImport {
     print("called BusService:searchBusBySourceAndDestination");
 
     try {
-      Uri url = Uri.https(
-          Endpoints.herokuServer, Endpoints.searchBusBySourceAndDestination);
+      Uri url = Endpoints.isDev
+          ? Uri.http(
+              Endpoints.localhost, Endpoints.searchBusBySourceAndDestination)
+          : Uri.https(Endpoints.herokuServer,
+              Endpoints.searchBusBySourceAndDestination);
 
       var response = await http.post(url,
           body: {"sourceID": "$sourceId", "destinationID": "$destinationId"});
@@ -62,7 +67,9 @@ class BusService extends ServiceImport {
   Future getAllBusList() async {
     print("called BusService:getAllBusList");
     try {
-      Uri url = Uri.https(Endpoints.herokuServer, Endpoints.getAllBuses);
+      Uri url = Endpoints.isDev
+          ? Uri.http(Endpoints.localhost, Endpoints.getAllBuses)
+          : Uri.https(Endpoints.herokuServer, Endpoints.getAllBuses);
 
       var response = await http.get(url);
 
@@ -80,8 +87,10 @@ class BusService extends ServiceImport {
   Future<BusDetailModel> getBusDetail(String busId) async {
     print("called BusService:getBusDetail");
     try {
-      Uri url =
-          Uri.https(Endpoints.herokuServer, Endpoints.getBusDetail + "/$busId");
+      Uri url = Endpoints.isDev
+          ? Uri.http(Endpoints.localhost, Endpoints.getBusDetail + "/$busId")
+          : Uri.https(
+              Endpoints.herokuServer, Endpoints.getBusDetail + "/$busId");
 
       var response = await http.get(url, headers: {
         "Authorization": "Bearer ${authService.userToken}",
@@ -103,7 +112,9 @@ class BusService extends ServiceImport {
   Future createStop(String stopName, String stopCity) async {
     print("called BusService:createStop with $stopName - $stopCity");
     try {
-      Uri url = Uri.https(Endpoints.herokuServer, Endpoints.createStopPost);
+      Uri url = Endpoints.isDev
+          ? Uri.http(Endpoints.localhost, Endpoints.createStopPost)
+          : Uri.https(Endpoints.herokuServer, Endpoints.createStopPost);
 
       var bodyData = json.encode({"stopName": stopName, "stopCity": stopCity});
       var response = await http.post(url, body: bodyData, headers: {
@@ -132,7 +143,9 @@ class BusService extends ServiceImport {
   ) async {
     print("called BusService:createBus with $busNumber");
     try {
-      Uri url = Uri.https(Endpoints.herokuServer, Endpoints.createBusPost);
+      Uri url = Endpoints.isDev
+          ? Uri.http(Endpoints.localhost, Endpoints.createBusPost)
+          : Uri.https(Endpoints.herokuServer, Endpoints.createBusPost);
 
       var bodyData = json.encode({
         "busNumber": busNumber,

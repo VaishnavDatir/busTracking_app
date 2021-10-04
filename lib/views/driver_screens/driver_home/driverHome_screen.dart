@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong/latlong.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../theme/colors.dart';
 import '../../../theme/dimensions.dart';
 import '../../../theme/themes.dart';
+import '../../components/customMarkar.dart';
 import 'driverHome_viewmodel.dart';
 
 class DriverHomeScreen extends StatelessWidget {
@@ -22,23 +25,115 @@ class DriverHomeScreen extends StatelessWidget {
             : WillPopScope(
                 onWillPop: () => model.handleExit(),
                 child: Scaffold(
+                  extendBodyBehindAppBar: true,
                   appBar: AppBar(),
                   drawer: buildDrawer(model),
                   body: Stack(
                     children: [
-                      model.isDriverOnBus
-                          ? Card(
-                              child: SwitchListTile(
-                                value: model.isDriverOnBus,
-                                onChanged: (value) =>
-                                    model.changeIsDriverOnBus(),
-                                title: Text(
-                                  "On Duty",
-                                  style: TextStyle(color: kBlack),
-                                ),
+                      StreamBuilder(
+                        stream: model.stream,
+                        builder: (context, snapshot) {
+                          List<Marker> markers = List<Marker>();
+                          List streamData =
+                              snapshot.data == null ? [] : snapshot.data;
+                          // model.buildMarkers(streamData);
+                          if (streamData.isNotEmpty) {
+                            // print(streamData.toString());
+                            streamData.forEach((element) {
+                              markers.add(Marker(
+                                height: 65,
+                                width: 95,
+                                point: LatLng(
+                                    double.parse(element["data"]["latitude"]),
+                                    double.parse(element["data"]["longitude"])),
+                                builder: (context) {
+                                  return Container(
+                                    decoration: ShapeDecoration(
+                                      color: element["client_id"].toString() ==
+                                              model.clientId.toString()
+                                          ? kPrimaryColor
+                                          : kWhite,
+                                      shape: CustomMarker(),
+                                      shadows: [
+                                        BoxShadow(
+                                            color: Colors.white24,
+                                            spreadRadius: -1,
+                                            blurRadius: 6,
+                                            offset: Offset(2, 3)),
+                                      ],
+                                    ),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: kLargeSpace),
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.directions_bus,
+                                          color:
+                                              element["client_id"].toString() ==
+                                                      model.clientId.toString()
+                                                  ? kWhite
+                                                  : kPrimaryColor,
+                                        ),
+                                        Spacer(),
+                                        Text(
+                                          element["data"]["bus"]["busNumber"],
+                                          style: TextStyle(
+                                              fontSize: kLargeSpace,
+                                              color: element["client_id"]
+                                                          .toString() ==
+                                                      model.clientId.toString()
+                                                  ? kWhite
+                                                  : kPrimaryColor,
+                                              fontWeight: FontWeight.bold),
+                                        )
+                                      ],
+                                    ),
+                                  );
+                                },
+                              ));
+                            });
+                          }
+                          return FlutterMap(
+                            options: MapOptions(
+                                minZoom: 7,
+                                maxZoom: 18,
+                                zoom: 16,
+                                center: LatLng(
+                                    model.pos.latitude, model.pos.longitude)),
+                            nonRotatedLayers: [
+                              TileLayerOptions(
+                                urlTemplate:
+                                    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                                subdomains: ['a', 'b', 'c'],
                               ),
-                            )
-                          : Container(),
+                              MarkerLayerOptions(markers: markers)
+                            ],
+                          );
+                        },
+                      ),
+                      /* Container(
+                        child: Center(
+                          child: StreamBuilder(
+                            stream: model.stream,
+                            builder: (context, snapshot) {
+                              return Container(
+                                child: Text(snapshot.toString()),
+                              );
+                            },
+                          ),
+                        ),
+                      ), */
+                      if (model.isDriverOnBus)
+                        Card(
+                          child: SwitchListTile(
+                            value: model.isDriverOnBus,
+                            onChanged: (value) => model.changeIsDriverOnBus(),
+                            title: Text(
+                              "On Duty",
+                              style: TextStyle(color: kBlack),
+                            ),
+                          ),
+                        ),
                     ],
                   ),
                 ),
@@ -102,7 +197,7 @@ class DriverHomeScreen extends StatelessWidget {
               leading: Icon(Icons.logout),
               title: Text("Logout"),
               onTap: () => model.handleLogout(),
-            )
+            ),
           ],
         ),
       ),

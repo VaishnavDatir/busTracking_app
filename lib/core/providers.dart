@@ -11,6 +11,7 @@ import 'services/dialog_service.dart';
 import 'services/location_service.dart';
 import 'services/sharedprefs_service.dart';
 import 'services/user_service.dart';
+import 'stream_socket.dart';
 
 class ProviderInjector {
   static List<SingleChildWidget> providers = [
@@ -21,6 +22,9 @@ class ProviderInjector {
     Provider.value(value: locator<AuthService>()),
     Provider.value(value: locator<UserService>()),
     Provider.value(value: locator<BusService>()),
-    Provider.value(value: locator<LocationService>())
+    Provider.value(value: locator<LocationService>()),
+
+    //TRY
+    Provider.value(value: locator<StreamSocket>())
   ];
 }

@@ -78,6 +78,7 @@ class SignUpViewModel extends BaseViewModel with ServiceImport {
               Constants.sharedPrefsUserType, _isDriver);
 
           await sharedPrefsService.write(Constants.sharedPrefsIsSignedIn, true);
+          streamSocket.socketConnect();
 
           await authService.getUserToken();
           await userService.getUserData();

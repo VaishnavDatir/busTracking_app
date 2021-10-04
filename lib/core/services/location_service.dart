@@ -1,88 +1,92 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:location/location.dart';
+import 'package:geolocator/geolocator.dart';
 
 import '../service_import.dart';
 
 void backgroundMain() {
   WidgetsFlutterBinding.ensureInitialized();
-  // LocationService.instance().getLocation();
-  LocationService().getLocation();
+  LocationService().getLiveLocation();
 }
 
 class LocationService extends ServiceImport {
-  // factory LocationService.instance() => _instance;
+  Map<String, dynamic> busData;
 
-  // LocationService._internal();
+  setBusData(Map<String, dynamic> data) {
+    busData = data;
+  }
 
-  // static final _instance = LocationService._internal();
+  StreamSubscription<Position> positionStream;
+  final GeolocatorPlatform _geolocatorPlatform = GeolocatorPlatform.instance;
 
-  Location myLocation = Location();
-  StreamSubscription<LocationData> locationSubscription;
-  bool _serviceEnabled;
-  PermissionStatus _permissionGranted;
+  getLiveLocation() async {
+    final hasPermission = await handlePermission();
+    if (hasPermission) {
+      print("has permission");
+      positionStream =
+          Geolocator.getPositionStream().listen((Position position) {
+        print(position == null
+            ? 'Unknown'
+            : "My Location:" +
+                position.latitude.toString() +
+                ', ' +
+                position.longitude.toString());
+        Map<String, dynamic> data = {
+          "bus": busData,
+          "latitude": position.latitude.toString(),
+          "longitude": position.longitude.toString(),
+        };
+        streamSocket.sendLocation(data);
+      });
+    }
+  }
 
-  getLocation() async {
-    _permissionGranted = await myLocation.hasPermission();
-    if (_permissionGranted == PermissionStatus.denied) {
-      _permissionGranted = await myLocation.requestPermission();
-      if (_permissionGranted != PermissionStatus.granted) {
-        /*  Fluttertoast.showToast(
-          msg: "Please grant the permission for location",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red[800],
-          textColor: Colors.white,
-          fontSize: 14,
-        ); */
-        await dialogService.showDialog(
-            description: "Please grant the permission for location");
+  Future<bool> handlePermission() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await _geolocatorPlatform.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      print("@@ location: service is not enabled");
+
+      await dialogService.showDialog(
+          description: "Please enable location",
+          buttonNegativeTitle: "Cancel",
+          showNegativeButton: true);
+
+      return false;
+    }
+
+    permission = await _geolocatorPlatform.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await _geolocatorPlatform.requestPermission();
+      if (permission == LocationPermission.denied) {
+        print('@@ Location services are disabled.');
+
         return false;
       }
     }
-    _serviceEnabled = await myLocation.serviceEnabled();
-    if (!_serviceEnabled) {
-      _serviceEnabled = await myLocation.requestService();
-      if (!_serviceEnabled) {
-        /*  Fluttertoast.showToast(
-          msg: "Please turn on location",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red[800],
-          textColor: Colors.white,
-          fontSize: 14,
-        ); */
-        await dialogService.showDialog(description: "Please turn on location");
-        return false;
-      }
+
+    if (permission == LocationPermission.deniedForever) {
+      print(
+          '@@ Location permissions are permanently denied, we cannot request permissions.');
+      return false;
     }
-    //WORKING BEST
-    locationSubscription =
-        myLocation.onLocationChanged.listen((LocationData currentLoction) {
-      print("MY LOCATION");
-      print("Accuracy: " +
-          currentLoction.accuracy.toStringAsFixed(0) +
-          " latitude: " +
-          currentLoction.latitude.toString() +
-          " longitude:" +
-          currentLoction.longitude.toString());
-      /*   UserManagement().updateLocation(
-        currentLoction.latitude,
-        currentLoction.longitude,
-        currentLoction.accuracy,
-      ); */
-    });
     return true;
   }
 
   void stop() {
     print("DRAINing");
-    if (locationSubscription != null) {
-      locationSubscription.cancel();
+
+    if (positionStream != null) {
+      positionStream.cancel();
     }
     print("DRAINED");
+  }
+
+  Future<Position> getStaticLocation() async {
+    final position = await _geolocatorPlatform.getCurrentPosition();
+    return position;
   }
 }

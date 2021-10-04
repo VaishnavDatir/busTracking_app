@@ -15,7 +15,9 @@ class UserService extends ServiceImport {
     print("called UserService:getUserData");
 
     try {
-      Uri url = Uri.https(Endpoints.herokuServer, Endpoints.getUserData);
+      Uri url = Endpoints.isDev
+          ? Uri.http(Endpoints.localhost, Endpoints.getUserData)
+          : Uri.https(Endpoints.herokuServer, Endpoints.getUserData);
 
       var response = await http.get(
         url,
@@ -40,7 +42,9 @@ class UserService extends ServiceImport {
   Future updateUserIsActive(bool isActive) async {
     print("called UserService:updateUserIsActive");
     try {
-      Uri url = Uri.https(Endpoints.herokuServer, Endpoints.updateUserIsActive);
+      Uri url = Endpoints.isDev
+          ? Uri.http(Endpoints.localhost, Endpoints.updateUserIsActive)
+          : Uri.https(Endpoints.herokuServer, Endpoints.updateUserIsActive);
 
       var bodayData = json.encode({"isActive": isActive});
 
@@ -72,7 +76,9 @@ class UserService extends ServiceImport {
     print("called UserService:setDriverOnBus");
 
     try {
-      Uri url = Uri.https(Endpoints.herokuServer, Endpoints.setDriverOnBus);
+      Uri url = Endpoints.isDev
+          ? Uri.http(Endpoints.localhost, Endpoints.setDriverOnBus)
+          : Uri.https(Endpoints.herokuServer, Endpoints.setDriverOnBus);
 
       var bodayData = json.encode({
         "busId": busId,
@@ -107,7 +113,9 @@ class UserService extends ServiceImport {
   Future removeDriverOnBus() async {
     print("called UserService:removeDriverOnBus");
     try {
-      Uri url = Uri.https(Endpoints.herokuServer, Endpoints.removeDriverOnBus);
+      Uri url = Endpoints.isDev
+          ? Uri.http(Endpoints.localhost, Endpoints.removeDriverOnBus)
+          : Uri.https(Endpoints.herokuServer, Endpoints.removeDriverOnBus);
 
       http.Response response = await http.get(
         url,
@@ -138,7 +146,9 @@ class UserService extends ServiceImport {
     print("called UserService:updateUserLocation");
 
     try {
-      Uri url = Uri.https(Endpoints.herokuServer, Endpoints.updateUserLocation);
+      Uri url = Endpoints.isDev
+          ? Uri.http(Endpoints.localhost, Endpoints.updateUserLocation)
+          : Uri.https(Endpoints.herokuServer, Endpoints.updateUserLocation);
 
       var bodayData = json.encode({
         "latitude": latitude,

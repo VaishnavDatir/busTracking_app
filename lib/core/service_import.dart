@@ -1,3 +1,5 @@
+import 'stream_socket.dart';
+
 import 'locator.dart';
 import 'services/auth_service.dart';
 import 'services/bus_service.dart';
@@ -15,4 +17,7 @@ class ServiceImport {
   UserService get userService => locator<UserService>();
   BusService get busService => locator<BusService>();
   LocationService get locationService => locator<LocationService>();
+
+//try
+  StreamSocket get streamSocket => locator<StreamSocket>();
 }

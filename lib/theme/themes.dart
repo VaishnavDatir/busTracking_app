@@ -121,7 +121,7 @@ setSystemTheme() {
     // statusBarBrightness: Brightness.light,
     statusBarIconBrightness: Brightness.dark,
     statusBarColor: Colors.transparent,
-    systemNavigationBarColor: Colors.white,
-    systemNavigationBarIconBrightness: Brightness.dark,
+    /*  systemNavigationBarColor: Colors.white,
+    systemNavigationBarIconBrightness: Brightness.dark, */
   ));
 }

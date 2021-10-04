@@ -20,7 +20,9 @@ class AuthService extends ServiceImport {
   Future signInUser(String emailId, String password) async {
     print("called AuthService:signInUser");
     try {
-      Uri url = Uri.https(Endpoints.herokuServer, Endpoints.signInPost);
+      Uri url = Endpoints.isDev
+          ? Uri.http(Endpoints.localhost, Endpoints.signInPost)
+          : Uri.https(Endpoints.herokuServer, Endpoints.signInPost);
 
       var res = await http.post(url, body: {
         "email": "$emailId",
@@ -52,7 +54,9 @@ class AuthService extends ServiceImport {
   ) async {
     print("called AuthService:signUpUser");
     try {
-      Uri url = Uri.https(Endpoints.herokuServer, Endpoints.signUpPost);
+      Uri url = Endpoints.isDev
+          ? Uri.http(Endpoints.localhost, Endpoints.signUpPost)
+          : Uri.https(Endpoints.herokuServer, Endpoints.signUpPost);
 
       var res = await http.post(url, body: {
         "name": "$name",

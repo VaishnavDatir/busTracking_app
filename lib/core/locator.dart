@@ -8,6 +8,7 @@ import 'services/dialog_service.dart';
 import 'services/location_service.dart';
 import 'services/sharedprefs_service.dart';
 import 'services/user_service.dart';
+import 'stream_socket.dart';
 
 GetIt locator = GetIt.instance;
 
@@ -22,5 +23,8 @@ class LocatorInjector {
     locator.registerLazySingleton(() => UserService());
     locator.registerLazySingleton(() => BusService());
     locator.registerLazySingleton(() => LocationService());
+
+    //TRY
+    locator.registerLazySingleton(() => StreamSocket());
   }
 }

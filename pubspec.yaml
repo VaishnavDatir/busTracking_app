@@ -26,7 +26,9 @@ dependencies:
   share: ^0.6.5+2
   shared_preferences: ^0.5.12+4
   shimmer: ^1.1.2
+  socket_io_client: ^0.9.12
   stacked: ^1.9.5
+  geolocator: ^6.2.1
 
 dev_dependencies:
   flutter_test:
