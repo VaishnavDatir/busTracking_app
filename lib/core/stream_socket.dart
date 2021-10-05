@@ -9,10 +9,12 @@ import 'services/api/endpoints.dart';
 
 class StreamSocket extends ServiceImport {
   // final _socketResponse = StreamController();
-  IO.Socket socket = IO.io(Endpoints.localhostHttp, <String, dynamic>{
-    'transports': ['websocket'],
-    'autoConnect': false,
-  });
+  IO.Socket socket = IO.io(
+      Endpoints.isDev ? Endpoints.localhostHttp : Endpoints.herokuServerHttps,
+      <String, dynamic>{
+        'transports': ['websocket'],
+        'autoConnect': false,
+      });
 
   StreamController _socketResponse = StreamController.broadcast();
 
@@ -58,6 +60,10 @@ class StreamSocket extends ServiceImport {
     });
 
     socket.emit("location", locationData);
+  }
+
+  removeDriver() {
+    socket.emit("userOfDuty", socket.id);
   }
 
   socketDisconnect() {

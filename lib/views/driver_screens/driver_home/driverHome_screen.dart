@@ -8,136 +8,167 @@ import '../../../theme/dimensions.dart';
 import '../../../theme/themes.dart';
 import '../../components/customMarkar.dart';
 import 'driverHome_viewmodel.dart';
+import '../../../core/constants.dart';
 
-class DriverHomeScreen extends StatelessWidget {
+class DriverHomeScreen extends StatefulWidget {
+  @override
+  _DriverHomeScreenState createState() => _DriverHomeScreenState();
+}
+
+class _DriverHomeScreenState extends State<DriverHomeScreen>
+    with TickerProviderStateMixin {
+  MapController mapController;
+  @override
+  void initState() {
+    super.initState();
+    mapController = MapController();
+  }
+
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<DriverHomeViewModel>.reactive(
       viewModelBuilder: () => DriverHomeViewModel(),
-      onModelReady: (model) => model.initializeScreen(),
+      onModelReady: (model) => model.initializeScreen(mapController),
       builder: (context, model, child) {
-        return model.isBusy
-            ? Material(
-                child: Center(
-                  child: CircularProgressIndicator(),
-                ),
-              )
-            : WillPopScope(
-                onWillPop: () => model.handleExit(),
-                child: Scaffold(
-                  extendBodyBehindAppBar: true,
-                  appBar: AppBar(),
-                  drawer: buildDrawer(model),
-                  body: Stack(
-                    children: [
-                      StreamBuilder(
-                        stream: model.stream,
-                        builder: (context, snapshot) {
-                          List<Marker> markers = List<Marker>();
-                          List streamData =
-                              snapshot.data == null ? [] : snapshot.data;
-                          // model.buildMarkers(streamData);
-                          if (streamData.isNotEmpty) {
-                            // print(streamData.toString());
-                            streamData.forEach((element) {
-                              markers.add(Marker(
-                                height: 65,
-                                width: 95,
-                                point: LatLng(
-                                    double.parse(element["data"]["latitude"]),
-                                    double.parse(element["data"]["longitude"])),
-                                builder: (context) {
-                                  return Container(
-                                    decoration: ShapeDecoration(
-                                      color: element["client_id"].toString() ==
-                                              model.clientId.toString()
-                                          ? kPrimaryColor
-                                          : kWhite,
-                                      shape: CustomMarker(),
-                                      shadows: [
-                                        BoxShadow(
-                                            color: Colors.white24,
-                                            spreadRadius: -1,
-                                            blurRadius: 6,
-                                            offset: Offset(2, 3)),
-                                      ],
-                                    ),
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: kLargeSpace),
-                                    child: Row(
-                                      children: [
-                                        Icon(
-                                          Icons.directions_bus,
-                                          color:
-                                              element["client_id"].toString() ==
-                                                      model.clientId.toString()
-                                                  ? kWhite
-                                                  : kPrimaryColor,
-                                        ),
-                                        Spacer(),
-                                        Text(
-                                          element["data"]["bus"]["busNumber"],
-                                          style: TextStyle(
-                                              fontSize: kLargeSpace,
-                                              color: element["client_id"]
-                                                          .toString() ==
-                                                      model.clientId.toString()
-                                                  ? kWhite
-                                                  : kPrimaryColor,
-                                              fontWeight: FontWeight.bold),
-                                        )
-                                      ],
-                                    ),
-                                  );
-                                },
-                              ));
-                            });
-                          }
-                          return FlutterMap(
-                            options: MapOptions(
-                                minZoom: 7,
-                                maxZoom: 18,
-                                zoom: 16,
-                                center: LatLng(
-                                    model.pos.latitude, model.pos.longitude)),
-                            nonRotatedLayers: [
-                              TileLayerOptions(
-                                urlTemplate:
-                                    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                                subdomains: ['a', 'b', 'c'],
-                              ),
-                              MarkerLayerOptions(markers: markers)
-                            ],
-                          );
-                        },
-                      ),
-                      /* Container(
-                        child: Center(
-                          child: StreamBuilder(
-                            stream: model.stream,
-                            builder: (context, snapshot) {
-                              return Container(
-                                child: Text(snapshot.toString()),
-                              );
-                            },
-                          ),
-                        ),
-                      ), */
-                      if (model.isDriverOnBus)
-                        Card(
-                          child: SwitchListTile(
-                            value: model.isDriverOnBus,
-                            onChanged: (value) => model.changeIsDriverOnBus(),
-                            title: Text(
-                              "On Duty",
-                              style: TextStyle(color: kBlack),
+        return AnimatedSwitcher(
+          duration: Duration(seconds: Constants.animatedSwitcherDuration),
+          child: model.isBusy
+              ? Material(
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                )
+              : WillPopScope(
+                  onWillPop: () => model.handleExit(),
+                  child: Scaffold(
+                      extendBodyBehindAppBar: true,
+                      appBar: AppBar(),
+                      drawer: buildDrawer(model),
+                      body: Stack(
+                        children: [
+                          buildMap(model),
+                          /* Container(
+                          child: Center(
+                            child: StreamBuilder(
+                              stream: model.stream,
+                              builder: (context, snapshot) {
+                                return Container(
+                                  child: Text(snapshot.toString()),
+                                );
+                              },
                             ),
                           ),
+                        ), */
+                          if (model.isDriverOnBus)
+                            buildOnDutyCard(context, model),
+                        ],
+                      ),
+                      floatingActionButton: FloatingActionButton(
+                        child: Icon(
+                          Icons.location_pin,
+                          color: kWhite,
+                          size: kIconSize,
                         ),
+                        onPressed: () => model.fabClick(this),
+                      )),
+                ),
+        );
+      },
+    );
+  }
+
+  Widget buildOnDutyCard(BuildContext context, DriverHomeViewModel model) {
+    return Positioned(
+      top: 70,
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        child: Card(
+          child: SwitchListTile(
+            value: model.isDriverOnBus,
+            onChanged: (value) => model.changeIsDriverOnBus(),
+            title: Text(
+              "On Duty",
+              style: TextStyle(color: kBlack),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget buildMap(DriverHomeViewModel model) {
+    return StreamBuilder(
+      stream: model.stream,
+      builder: (context, snapshot) {
+        List<Marker> markers = List<Marker>();
+        List streamData = snapshot.data == null ? [] : snapshot.data;
+        if (streamData.isNotEmpty) {
+          // print(streamData.toString());
+          streamData.forEach((element) {
+            markers.add(Marker(
+              height: 65,
+              width: 95,
+              point: LatLng(double.parse(element["data"]["latitude"]),
+                  double.parse(element["data"]["longitude"])),
+              builder: (context) {
+                return Container(
+                  decoration: ShapeDecoration(
+                    color: element["client_id"].toString() ==
+                            model.clientId.toString()
+                        ? kPrimaryColor
+                        : kWhite,
+                    shape: CustomMarker(),
+                    shadows: [
+                      BoxShadow(
+                          color: Colors.white24,
+                          spreadRadius: -1,
+                          blurRadius: 6,
+                          offset: Offset(2, 3)),
                     ],
                   ),
-                ),
-              );
+                  padding: EdgeInsets.symmetric(horizontal: kLargeSpace),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.directions_bus,
+                        color: element["client_id"].toString() ==
+                                model.clientId.toString()
+                            ? kWhite
+                            : kPrimaryColor,
+                      ),
+                      Spacer(),
+                      Text(
+                        element["data"]["bus"]["busNumber"],
+                        style: TextStyle(
+                            fontSize: kLargeSpace,
+                            color: element["client_id"].toString() ==
+                                    model.clientId.toString()
+                                ? kWhite
+                                : kPrimaryColor,
+                            fontWeight: FontWeight.bold),
+                      )
+                    ],
+                  ),
+                );
+              },
+            ));
+          });
+        }
+        return FlutterMap(
+          mapController: model.mapController,
+          options: MapOptions(
+            minZoom: 7,
+            maxZoom: 18,
+            zoom: 16,
+          ),
+          nonRotatedLayers: [
+            TileLayerOptions(
+              urlTemplate: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+              subdomains: ['a', 'b', 'c'],
+            ),
+            MarkerLayerOptions(markers: markers)
+          ],
+        );
       },
     );
   }

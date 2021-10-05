@@ -1,4 +1,8 @@
+import 'package:BusTracking_App/views/components/customMarkar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:latlong/latlong.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../core/constants.dart';
@@ -8,12 +12,27 @@ import '../../../theme/themes.dart';
 import '../../components/customTextInputField.dart';
 import 'passengerHome_viewmodel.dart';
 
-class PassengerHomeScreen extends StatelessWidget {
+class PassengerHomeScreen extends StatefulWidget {
+  @override
+  _PassengerHomeScreenState createState() => _PassengerHomeScreenState();
+}
+
+class _PassengerHomeScreenState extends State<PassengerHomeScreen>
+    with TickerProviderStateMixin {
+  MapController mapController;
+  @override
+  void initState() {
+    super.initState();
+    mapController = MapController();
+  }
+
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<PassengerViewModel>.reactive(
       viewModelBuilder: () => PassengerViewModel(),
-      onModelReady: (model) => model.initializeScreen(),
+      onModelReady: (model) => model.initializeScreen(
+        mapController,
+      ),
       builder: (context, model, child) {
         return AnimatedSwitcher(
           duration: Duration(seconds: Constants.animatedSwitcherDuration),
@@ -31,7 +50,15 @@ class PassengerHomeScreen extends StatelessWidget {
                     body: SafeArea(
                       child: Stack(
                         children: [
-                          buildMap(), // YET TO IMPLEMENT
+                          // buildMap(model),
+
+                          StreamBuilder(
+                            stream: model.myStream,
+                            builder: (context, snapshot) {
+                              print(snapshot.data);
+                              return buildMap(model, snapshot);
+                            },
+                          ),
                           buildTopSearchBar(model),
                           buildBottomBusSheet(model),
                         ],
@@ -43,7 +70,7 @@ class PassengerHomeScreen extends StatelessWidget {
                         color: kWhite,
                         size: kIconSize,
                       ),
-                      onPressed: () => model.fabClick(),
+                      onPressed: () => model.fabClick(this),
                     ),
                   ),
                 ),
@@ -52,9 +79,89 @@ class PassengerHomeScreen extends StatelessWidget {
     );
   }
 
-  Container buildMap() {
-    return Container(
-      color: kBlack.withOpacity(0.5),
+  Widget buildMap(
+      PassengerViewModel model, AsyncSnapshot<dynamic> mainSnapShot) {
+    return StreamBuilder(
+      stream: model.stream,
+      builder: (context, snapshot) {
+        List<Marker> markers = List<Marker>();
+        List streamData = snapshot.data == null ? [] : snapshot.data;
+        // model.buildMarkers(streamData);
+        if (mainSnapShot.hasData) {
+          markers.add(Marker(
+            height: 30,
+            width: 30,
+            point: LatLng(
+                mainSnapShot.data["latitude"], mainSnapShot.data["longitude"]),
+            builder: (context) {
+              return Container(
+                decoration: BoxDecoration(
+                  color: kPrimaryColor,
+                  shape: BoxShape.circle,
+                ),
+              );
+            },
+          ));
+        }
+        if (streamData.isNotEmpty) {
+          print(streamData.toString());
+          streamData.forEach((element) {
+            markers.add(Marker(
+              height: 65,
+              width: 95,
+              point: LatLng(double.parse(element["data"]["latitude"]),
+                  double.parse(element["data"]["longitude"])),
+              builder: (context) {
+                return Container(
+                  decoration: ShapeDecoration(
+                    color: kWhite,
+                    shape: CustomMarker(),
+                    shadows: [
+                      BoxShadow(
+                          color: Colors.white24,
+                          spreadRadius: -1,
+                          blurRadius: 6,
+                          offset: Offset(2, 3)),
+                    ],
+                  ),
+                  padding: EdgeInsets.symmetric(horizontal: kLargeSpace),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.directions_bus,
+                        color: kPrimaryColor,
+                      ),
+                      Spacer(),
+                      Text(
+                        element["data"]["bus"]["busNumber"],
+                        style: TextStyle(
+                            fontSize: kLargeSpace,
+                            color: kPrimaryColor,
+                            fontWeight: FontWeight.bold),
+                      )
+                    ],
+                  ),
+                );
+              },
+            ));
+          });
+        }
+        return FlutterMap(
+          mapController: model.mapController,
+          options: MapOptions(
+            minZoom: 7,
+            maxZoom: 18,
+            zoom: 16,
+          ),
+          nonRotatedLayers: [
+            TileLayerOptions(
+              urlTemplate: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+              subdomains: ['a', 'b', 'c'],
+            ),
+            MarkerLayerOptions(markers: markers)
+          ],
+        );
+      },
     );
   }
 
@@ -90,7 +197,7 @@ class PassengerHomeScreen extends StatelessWidget {
                                       horizontal: kMediumSpace),
                                   child: Text(
                                     "Available Buses",
-                                    style: appTheme.textTheme.headline4,
+                                    style: appTheme.textTheme.headline5,
                                   ),
                                 ),
                                 Container(

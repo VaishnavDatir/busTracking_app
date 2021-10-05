@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:BusTracking_App/core/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:location/location.dart';
 
 import '../service_import.dart';
 
@@ -18,7 +20,6 @@ class LocationService extends ServiceImport {
   }
 
   StreamSubscription<Position> positionStream;
-  final GeolocatorPlatform _geolocatorPlatform = GeolocatorPlatform.instance;
 
   getLiveLocation() async {
     final hasPermission = await handlePermission();
@@ -33,6 +34,7 @@ class LocationService extends ServiceImport {
                 ', ' +
                 position.longitude.toString());
         Map<String, dynamic> data = {
+          "type": userService.userDetails.data.type.toString(),
           "bus": busData,
           "latitude": position.latitude.toString(),
           "longitude": position.longitude.toString(),
@@ -42,11 +44,35 @@ class LocationService extends ServiceImport {
     }
   }
 
+  StreamController controller = StreamController();
+
+  StreamSubscription<Position> mYositionStream;
+  void streamClose() {
+    controller.close();
+    mYositionStream.cancel();
+  }
+
+  getMyLiveLocation() async {
+    final hasPermission = await handlePermission();
+    if (hasPermission) {
+      mYositionStream =
+          Geolocator.getPositionStream().listen((Position position) {
+        print(position == null
+            ? 'Unknown'
+            : "My Live-Location:" +
+                position.latitude.toString() +
+                ', ' +
+                position.longitude.toString());
+        controller.sink.add(position.toJson());
+      });
+    }
+  }
+
   Future<bool> handlePermission() async {
     bool serviceEnabled;
     LocationPermission permission;
 
-    serviceEnabled = await _geolocatorPlatform.isLocationServiceEnabled();
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       print("@@ location: service is not enabled");
 
@@ -58,9 +84,9 @@ class LocationService extends ServiceImport {
       return false;
     }
 
-    permission = await _geolocatorPlatform.checkPermission();
+    permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
-      permission = await _geolocatorPlatform.requestPermission();
+      permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
         print('@@ Location services are disabled.');
 
@@ -78,7 +104,7 @@ class LocationService extends ServiceImport {
 
   void stop() {
     print("DRAINing");
-
+    streamSocket.removeDriver();
     if (positionStream != null) {
       positionStream.cancel();
     }
@@ -86,7 +112,10 @@ class LocationService extends ServiceImport {
   }
 
   Future<Position> getStaticLocation() async {
-    final position = await _geolocatorPlatform.getCurrentPosition();
+    await Location.instance.getLocation().then((value) =>
+        print(value.latitude.toString() + "," + value.longitude.toString()));
+    final position = await Geolocator.getCurrentPosition();
+    print("Current Loc: " + position.toJson().toString());
     return position;
   }
 }

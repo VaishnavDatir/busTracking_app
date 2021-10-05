@@ -1,6 +1,10 @@
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:stacked/stacked.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:latlong/latlong.dart';
 
 import '../../../core/models/dialog_model.dart';
 import '../../../core/models/userDetails_model.dart';
@@ -26,7 +30,11 @@ class DriverHomeViewModel extends StreamViewModel with ServiceImport {
   // loc.Location _location = loc.Location();
   /*  loc.LocationData _locationData;
   loc.LocationData get locationData => this._locationData; */
+  MapController _mapController;
+  MapController get mapController => this._mapController;
+
   Position pos;
+
   getLoc() async {
     print("Getting loc");
     // _locationData = await locationService.getCurrentLocation();
@@ -34,22 +42,34 @@ class DriverHomeViewModel extends StreamViewModel with ServiceImport {
         " " +
         _locationData.longitude.toString()); */
     pos = await locationService.getStaticLocation();
+    mapController.move(LatLng(pos.latitude, pos.longitude), 16);
 
     print("got loc");
 
     notifyListeners();
   }
 
-  initializeScreen() async {
+  initializeScreen(MapController mapController) async {
+    _mapController = mapController;
     setBusy(true);
-    _userDetails = userService.userDetails;
 
+    _userDetails = userService.userDetails;
+    if (_userDetails.success == false) {
+      await dialogService.showDialog(
+          description: _userDetails.message.toString() ??
+              "There was an error while getting data.");
+      handleLogout();
+      return;
+    }
     _isDriverOnBus = _userDetails.data.isActive;
+
     clientId = streamSocket.myClientId;
     print(clientId ?? "no id");
-    await getLoc();
+
     setBusy(false);
+
     notifyListeners();
+    await getLoc();
   }
 
   changeIsDriverOnBus() async {
@@ -68,7 +88,7 @@ class DriverHomeViewModel extends StreamViewModel with ServiceImport {
         title: response["success"].toString(),
         description: response["message"]);
 
-    initializeScreen();
+    initializeScreen(mapController);
 
     notifyListeners();
 
@@ -114,15 +134,44 @@ class DriverHomeViewModel extends StreamViewModel with ServiceImport {
     }
   }
 
-  bool isCon = false;
+  fabClick(TickerProvider tc) async {
+    dialogService.showLoadingDialog();
+    pos = await locationService.getStaticLocation();
+    dialogService.dialogDismiss();
+    // mapController.move(LatLng(pos.latitude, pos.longitude), 16);
+    animatedMapMove(LatLng(pos.latitude, pos.longitude), tc);
+  }
 
-  changeSocket(value) {
-    isCon = value;
-    if (isCon) {
-      streamSocket.socketConnect();
-    } else {
-      streamSocket.socketDisconnect();
-    }
-    notifyListeners();
+  void animatedMapMove(LatLng destLocation, TickerProvider tcc) {
+    // Create some tweens. These serve to split up the transition from one location to another.
+    // In our case, we want to split the transition be<tween> our current map center and the destination.
+    final _latTween = Tween<double>(
+        begin: mapController.center.latitude, end: destLocation.latitude);
+    final _lngTween = Tween<double>(
+        begin: mapController.center.longitude, end: destLocation.longitude);
+    final _zoomTween = Tween<double>(begin: 15, end: 16);
+
+    // Create a animation controller that has a duration and a TickerProvider.
+    var controller = AnimationController(
+        duration: const Duration(milliseconds: 1000), vsync: tcc);
+    // The animation determines what path the animation will take. You can try different Curves values, although I found
+    // fastOutSlowIn to be my favorite.
+    Animation<double> animation =
+        CurvedAnimation(parent: controller, curve: Curves.fastOutSlowIn);
+
+    controller.addListener(() {
+      mapController.move(
+          LatLng(_latTween.evaluate(animation), _lngTween.evaluate(animation)),
+          _zoomTween.evaluate(animation));
+    });
+    animation.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        controller.dispose();
+      } else if (status == AnimationStatus.dismissed) {
+        controller.dispose();
+      }
+    });
+
+    controller.forward();
   }
 }
