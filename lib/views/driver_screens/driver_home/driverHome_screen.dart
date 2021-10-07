@@ -65,7 +65,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen>
                       ),
                       floatingActionButton: FloatingActionButton(
                         child: Icon(
-                          Icons.location_pin,
+                          Icons.my_location_rounded,
                           color: kWhite,
                           size: kIconSize,
                         ),

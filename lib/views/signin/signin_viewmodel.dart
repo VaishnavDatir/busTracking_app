@@ -23,8 +23,29 @@ class SignInViewModel extends BaseViewModel with ServiceImport {
   bool _isObscureText = true;
   bool get isObscureText => this._isObscureText;
 
+  String _screenText = Constants.appName;
+  String get screenText => this._screenText;
+
   changeObsecureValue() {
     _isObscureText = !_isObscureText;
+    notifyListeners();
+  }
+
+  initializeScreen() async {
+    _emailFN.addListener(() {
+      if (_emailFN.hasFocus || _passwordFN.hasFocus) {
+        _screenText = "Sign in";
+      } else {
+        _screenText = Constants.appName;
+      }
+    });
+    _passwordFN.addListener(() {
+      if (_emailFN.hasFocus || _passwordFN.hasFocus) {
+        _screenText = "Sign in";
+      } else {
+        _screenText = Constants.appName;
+      }
+    });
     notifyListeners();
   }
 

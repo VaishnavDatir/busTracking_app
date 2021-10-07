@@ -20,6 +20,7 @@ class _SigninScreenState extends State<SigninScreen> {
 
     return ViewModelBuilder<SignInViewModel>.nonReactive(
       viewModelBuilder: () => SignInViewModel(),
+      onModelReady: (model) => model.initializeScreen(),
       builder: (context, model, child) {
         return Scaffold(
           key: model.scaffoldKey,
@@ -32,7 +33,7 @@ class _SigninScreenState extends State<SigninScreen> {
                   child: Container(
                     color: kPrimaryColor,
                     child: Center(
-                      child: Text("Sign in",
+                      child: Text(model.screenText,
                           textAlign: TextAlign.center,
                           style: appTheme.primaryTextTheme.headline4.copyWith(
                               fontSize: kLargeSpace * 2, color: kWhite)),
@@ -53,8 +54,9 @@ class _SigninScreenState extends State<SigninScreen> {
                           ),
                           Text(
                             "Welcome back!",
-                            style: appTheme.primaryTextTheme.headline5.copyWith(
+                            style: appTheme.primaryTextTheme.headline4.copyWith(
                               color: kBlack,
+                              fontSize: kXLSpace,
                             ),
                           ),
                           SizedBox(

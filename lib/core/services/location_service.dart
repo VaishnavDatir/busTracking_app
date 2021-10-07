@@ -44,12 +44,17 @@ class LocationService extends ServiceImport {
     }
   }
 
-  StreamController controller = StreamController();
+  StreamController controller = StreamController.broadcast();
 
   StreamSubscription<Position> mYositionStream;
   void streamClose() {
-    controller.close();
-    mYositionStream.cancel();
+    if (!controller.isClosed) controller.stream.drain();
+    if (mYositionStream != null) mYositionStream.pause();
+  }
+
+  void streamStart() {
+    if (controller.isClosed) controller.stream;
+    if (mYositionStream == null) mYositionStream.resume();
   }
 
   getMyLiveLocation() async {

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:BusTracking_App/theme/colors.dart';
 import 'package:BusTracking_App/theme/dimensions.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -71,10 +72,19 @@ class PassengerViewModel extends StreamViewModel with ServiceImport {
   Position pos;
 
   TickerProvider _tickerProvider;
-  BuildContext _context;
 
   String _selectedBusClientId = "";
   String get selectedBusClientId => this._selectedBusClientId;
+
+  @override
+  void dispose() {
+    super.dispose();
+    print("disposing...");
+    stream.drain();
+    myStream.drain();
+    _getLiveData().drain();
+    _myGetLiveData().drain();
+  }
 
   getLoc() async {
     print("Getting loc");
@@ -111,7 +121,6 @@ class PassengerViewModel extends StreamViewModel with ServiceImport {
     _isShowingBottomSheet = false;
 
     clientId = streamSocket.myClientId;
-    _context = context;
     _userDetails = userService.userDetails;
 
     if (_userDetails.success == false) {
@@ -238,8 +247,8 @@ class PassengerViewModel extends StreamViewModel with ServiceImport {
     pos = await locationService.getStaticLocation();
     dialogService.dialogDismiss();
     // mapController.move(LatLng(pos.latitude, pos.longitude), 16);
-    _selectedBusClientId = "";
     if (_isShowingBottomSheet) {
+      _selectedBusClientId = "";
       navigationService.pop();
       _isShowingBottomSheet = false;
     }
@@ -284,50 +293,221 @@ class PassengerViewModel extends StreamViewModel with ServiceImport {
   }
 
   bool _isShowingBottomSheet = false;
+  CarouselController _carouselController = CarouselController();
+  handleMapTap() {
+    if (_isShowingBottomSheet) {
+      _selectedBusClientId = "";
+      navigationService.pop();
+      _isShowingBottomSheet = false;
+    }
+    notifyListeners();
+  }
 
-  handleMarkerTap(dynamic element, BuildContext ctx) async {
+  handleMarkerTap(dynamic element, BuildContext ctx, List streamData) async {
     if (_selectedBusClientId != element["client_id"]) {
       print(jsonEncode(element));
+      print(jsonEncode(streamData));
       _selectedBusClientId = element["client_id"];
       animatedMapMove(LatLng(double.parse(element["data"]["latitude"]),
           double.parse(element["data"]["longitude"])));
       scaffoldKey.currentState.showBottomSheet((context) => Container(
             width: double.infinity,
             color: kTransparent,
-            margin: EdgeInsets.only(top: 20),
-            padding: EdgeInsets.all(kXXLSpace),
-            child: Container(
+            margin: const EdgeInsets.only(top: 20),
+            padding: const EdgeInsets.all(kXXLSpace),
+            child: CarouselSlider(
+                carouselController: _carouselController,
+                items: List<Widget>.generate(
+                    streamData.length,
+                    (index) => Container(
+                          color: kPrimaryColor,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              ListTile(
+                                onTap: () {
+                                  print(index);
+                                  // handleOnBusTap(element["data"]["bus"]["_id"]);
+                                },
+                                leading: Container(
+                                    height: double.infinity,
+                                    padding: const EdgeInsets.all(kMediumSpace),
+                                    decoration: BoxDecoration(
+                                        color: kWhite.withOpacity(0.5),
+                                        shape: BoxShape.circle),
+                                    child: const Icon(
+                                      Icons.directions_bus,
+                                      size: kIconSize,
+                                      color: kWhite,
+                                    )),
+                                title: Text(
+                                  streamData[index]["data"]["bus"]["busNumber"],
+                                  style: const TextStyle(color: kWhite),
+                                ),
+                                subtitle: Text(
+                                  streamData[index]["data"]["bus"]["busType"],
+                                  style: const TextStyle(color: kWhite),
+                                ),
+                                trailing: Chip(
+                                  label: Text(
+                                      streamData[index]["data"]["bus"]
+                                          ["busProvider"],
+                                      style: TextStyle(color: kWhite)),
+                                  backgroundColor: kBlack.withOpacity(0.5),
+                                ),
+                              ),
+                              Container(
+                                padding: EdgeInsets.fromLTRB(kLargeSpace,
+                                    kMediumSpace, kLargeSpace, kLargeSpace),
+                                child: Text(
+                                  Geolocator.distanceBetween(
+                                              double.parse(streamData[index]
+                                                  ["data"]["latitude"]),
+                                              double.parse(streamData[index]
+                                                  ["data"]["longitude"]),
+                                              pos.latitude,
+                                              pos.longitude)
+                                          .round()
+                                          .toString() +
+                                      "m away from you",
+                                  style: TextStyle(
+                                      color: kWhite, fontSize: kLargeSpace),
+                                ),
+                              )
+                            ],
+                          ),
+                        )),
+                options: CarouselOptions(
+                  initialPage: streamData.indexOf(element),
+                  viewportFraction: 1,
+                  height: 120,
+                  onPageChanged: (index, reason) {
+                    _selectedBusClientId = streamData[index]["client_id"];
+                    animatedMapMove(LatLng(
+                        double.parse(streamData[index]["data"]["latitude"]),
+                        double.parse(streamData[index]["data"]["longitude"])));
+                  },
+                )),
+            /* child: Container(
               color: kPrimaryColor,
-              child: ListTile(
-                  onTap: () => handleOnBusTap(element["data"]["bus"]["_id"]),
-                  leading: Container(
-                      height: double.infinity,
-                      padding: EdgeInsets.all(kMediumSpace),
-                      decoration: BoxDecoration(
-                          color: kWhite.withOpacity(0.5),
-                          shape: BoxShape.circle),
-                      child: Icon(
-                        Icons.directions_bus,
-                        size: kIconSize,
-                        color: kWhite,
-                      )),
-                  title: Text(
-                    element["data"]["bus"]["busNumber"],
-                    style: TextStyle(color: kWhite),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ListTile(
+                    onTap: () => handleOnBusTap(element["data"]["bus"]["_id"]),
+                    leading: Container(
+                        height: double.infinity,
+                        padding: const EdgeInsets.all(kMediumSpace),
+                        decoration: BoxDecoration(
+                            color: kWhite.withOpacity(0.5),
+                            shape: BoxShape.circle),
+                        child: const Icon(
+                          Icons.directions_bus,
+                          size: kIconSize,
+                          color: kWhite,
+                        )),
+                    title: Text(
+                      element["data"]["bus"]["busNumber"],
+                      style: const TextStyle(color: kWhite),
+                    ),
+                    subtitle: Text(
+                      element["data"]["bus"]["busType"],
+                      style: const TextStyle(color: kWhite),
+                    ),
+                    trailing: Chip(
+                      label: Text(element["data"]["bus"]["busProvider"],
+                          style: TextStyle(color: kWhite)),
+                      backgroundColor: kBlack.withOpacity(0.5),
+                    ),
                   ),
-                  subtitle: Text(
-                    element["data"]["bus"]["busType"],
-                    style: TextStyle(color: kWhite),
-                  ),
-                  trailing: Chip(
-                    label: Text(element["data"]["bus"]["busProvider"],
-                        style: TextStyle(color: kWhite)),
-                    backgroundColor: kBlack.withOpacity(0.5),
-                  )),
-            ),
+                  Container(
+                    padding: EdgeInsets.fromLTRB(
+                        kLargeSpace, kMediumSpace, kLargeSpace, kLargeSpace),
+                    child: Text(
+                      Geolocator.distanceBetween(
+                                  double.parse(element["data"]["latitude"]),
+                                  double.parse(element["data"]["longitude"]),
+                                  pos.latitude,
+                                  pos.longitude)
+                              .round()
+                              .toString() +
+                          "m away from you",
+                      style: TextStyle(color: kWhite, fontSize: kLargeSpace),
+                    ),
+                  )
+                ],
+              ),
+            ), */
           ));
       _isShowingBottomSheet = true;
     }
     notifyListeners();
   }
+
+  //WORKING BEST
+  /* handleMarkerTap(dynamic element, BuildContext ctx) async {
+    if (_selectedBusClientId != element["client_id"]) {
+      _selectedBusClientId = element["client_id"];
+      animatedMapMove(LatLng(double.parse(element["data"]["latitude"]),
+          double.parse(element["data"]["longitude"])));
+      scaffoldKey.currentState.showBottomSheet((context) => Container(
+            width: double.infinity,
+            color: kTransparent,
+            margin: const EdgeInsets.only(top: 20),
+            padding: const EdgeInsets.all(kXXLSpace),
+            child: Container(
+              color: kPrimaryColor,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ListTile(
+                    onTap: () => handleOnBusTap(element["data"]["bus"]["_id"]),
+                    leading: Container(
+                        height: double.infinity,
+                        padding: const EdgeInsets.all(kMediumSpace),
+                        decoration: BoxDecoration(
+                            color: kWhite.withOpacity(0.5),
+                            shape: BoxShape.circle),
+                        child: const Icon(
+                          Icons.directions_bus,
+                          size: kIconSize,
+                          color: kWhite,
+                        )),
+                    title: Text(
+                      element["data"]["bus"]["busNumber"],
+                      style: const TextStyle(color: kWhite),
+                    ),
+                    subtitle: Text(
+                      element["data"]["bus"]["busType"],
+                      style: const TextStyle(color: kWhite),
+                    ),
+                    trailing: Chip(
+                      label: Text(element["data"]["bus"]["busProvider"],
+                          style: TextStyle(color: kWhite)),
+                      backgroundColor: kBlack.withOpacity(0.5),
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.fromLTRB(
+                        kLargeSpace, kMediumSpace, kLargeSpace, kLargeSpace),
+                    child: Text(
+                      Geolocator.distanceBetween(
+                                  double.parse(element["data"]["latitude"]),
+                                  double.parse(element["data"]["longitude"]),
+                                  pos.latitude,
+                                  pos.longitude)
+                              .round()
+                              .toString() +
+                          "m away from you",
+                      style: TextStyle(color: kWhite, fontSize: kLargeSpace),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ));
+      _isShowingBottomSheet = true;
+    }
+    notifyListeners();
+  } */
 }

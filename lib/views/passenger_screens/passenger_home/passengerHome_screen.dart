@@ -31,6 +31,7 @@ class _PassengerHomeScreenState extends State<PassengerHomeScreen>
   Widget build(BuildContext context) {
     return ViewModelBuilder<PassengerViewModel>.reactive(
       viewModelBuilder: () => PassengerViewModel(),
+      disposeViewModel: true,
       onModelReady: (model) => model.initializeScreen(
           mapController: mapController,
           tickerProvicer: this,
@@ -68,7 +69,7 @@ class _PassengerHomeScreenState extends State<PassengerHomeScreen>
                     ),
                     floatingActionButton: FloatingActionButton(
                       child: Icon(
-                        Icons.location_pin,
+                        Icons.my_location_rounded,
                         color: kWhite,
                         size: kIconSize,
                       ),
@@ -119,7 +120,8 @@ class _PassengerHomeScreenState extends State<PassengerHomeScreen>
                   double.parse(element["data"]["longitude"])),
               builder: (context) {
                 return InkWell(
-                  onTap: () => model.handleMarkerTap(element, context),
+                  onTap: () =>
+                      model.handleMarkerTap(element, context, streamData),
                   child: AnimatedContainer(
                     duration: Duration(milliseconds: 250),
                     decoration: ShapeDecoration(
@@ -173,6 +175,9 @@ class _PassengerHomeScreenState extends State<PassengerHomeScreen>
             minZoom: 7,
             maxZoom: 18,
             zoom: 16,
+            onTap: (point) {
+              model.handleMapTap();
+            },
           ),
           nonRotatedLayers: [
             TileLayerOptions(
