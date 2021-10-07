@@ -112,8 +112,8 @@ class LocationService extends ServiceImport {
   }
 
   Future<Position> getStaticLocation() async {
-    await Location.instance.getLocation().then((value) =>
-        print(value.latitude.toString() + "," + value.longitude.toString()));
+    /* await Location.instance.getLocation().then((value) =>
+        print(value.latitude.toString() + "," + value.longitude.toString())); */
     final position = await Geolocator.getCurrentPosition();
     print("Current Loc: " + position.toJson().toString());
     return position;

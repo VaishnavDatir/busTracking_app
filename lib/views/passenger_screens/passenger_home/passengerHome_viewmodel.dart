@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:BusTracking_App/theme/colors.dart';
+import 'package:BusTracking_App/theme/dimensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -22,7 +26,6 @@ class PassengerViewModel extends StreamViewModel with ServiceImport {
   Stream get myStream => this._myGetLiveData();
 
   Stream _myGetLiveData() {
-    print('this shit');
     return locationService.controller.stream;
   }
 
@@ -32,7 +35,7 @@ class PassengerViewModel extends StreamViewModel with ServiceImport {
 
   /* <----------------------- PAGE -------------------------> */
 
-  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  GlobalKey<ScaffoldState> scaffoldKey;
 
   TextEditingController sourceTextController = TextEditingController();
   TextEditingController destinationTextController = TextEditingController();
@@ -67,6 +70,12 @@ class PassengerViewModel extends StreamViewModel with ServiceImport {
   /* <------------------------------------------------------> */
   Position pos;
 
+  TickerProvider _tickerProvider;
+  BuildContext _context;
+
+  String _selectedBusClientId = "";
+  String get selectedBusClientId => this._selectedBusClientId;
+
   getLoc() async {
     print("Getting loc");
     // _locationData = await locationService.getCurrentLocation();
@@ -74,7 +83,7 @@ class PassengerViewModel extends StreamViewModel with ServiceImport {
         " " +
         _locationData.longitude.toString()); */
     pos = await locationService.getStaticLocation();
-    mapController.move(LatLng(pos.latitude, pos.longitude), 16);
+    _mapController.move(LatLng(pos.latitude, pos.longitude), 16);
 
     print("got loc");
 
@@ -90,12 +99,20 @@ class PassengerViewModel extends StreamViewModel with ServiceImport {
   } */
 
   void initializeScreen(
-    MapController mapController,
-  ) async {
+      {MapController mapController,
+      TickerProvider tickerProvicer,
+      BuildContext context,
+      GlobalKey<ScaffoldState> inscaffoldKey}) async {
     setBusy(true);
+    scaffoldKey = inscaffoldKey;
     _mapController = mapController;
-    _userDetails = userService.userDetails;
+    _tickerProvider = tickerProvicer;
+    _selectedBusClientId = "";
+    _isShowingBottomSheet = false;
+
     clientId = streamSocket.myClientId;
+    _context = context;
+    _userDetails = userService.userDetails;
 
     if (_userDetails.success == false) {
       await dialogService.showDialog(
@@ -216,33 +233,41 @@ class PassengerViewModel extends StreamViewModel with ServiceImport {
     }
   }
 
-  fabClick(TickerProvider tc) async {
+  fabClick() async {
     dialogService.showLoadingDialog();
     pos = await locationService.getStaticLocation();
     dialogService.dialogDismiss();
     // mapController.move(LatLng(pos.latitude, pos.longitude), 16);
-    animatedMapMove(LatLng(pos.latitude, pos.longitude), tc);
+    _selectedBusClientId = "";
+    if (_isShowingBottomSheet) {
+      navigationService.pop();
+      _isShowingBottomSheet = false;
+    }
+    animatedMapMove(
+      LatLng(pos.latitude, pos.longitude),
+    );
+    notifyListeners();
   }
 
-  void animatedMapMove(LatLng destLocation, TickerProvider tcc) {
+  void animatedMapMove(LatLng destLocation) {
     // Create some tweens. These serve to split up the transition from one location to another.
     // In our case, we want to split the transition be<tween> our current map center and the destination.
     final _latTween = Tween<double>(
-        begin: mapController.center.latitude, end: destLocation.latitude);
+        begin: _mapController.center.latitude, end: destLocation.latitude);
     final _lngTween = Tween<double>(
-        begin: mapController.center.longitude, end: destLocation.longitude);
-    final _zoomTween = Tween<double>(begin: 15, end: 16);
+        begin: _mapController.center.longitude, end: destLocation.longitude);
+    final _zoomTween = Tween<double>(begin: 16, end: 16);
 
     // Create a animation controller that has a duration and a TickerProvider.
     var controller = AnimationController(
-        duration: const Duration(milliseconds: 1000), vsync: tcc);
+        duration: const Duration(milliseconds: 1000), vsync: _tickerProvider);
     // The animation determines what path the animation will take. You can try different Curves values, although I found
     // fastOutSlowIn to be my favorite.
     Animation<double> animation =
         CurvedAnimation(parent: controller, curve: Curves.fastOutSlowIn);
 
     controller.addListener(() {
-      mapController.move(
+      _mapController.move(
           LatLng(_latTween.evaluate(animation), _lngTween.evaluate(animation)),
           _zoomTween.evaluate(animation));
     });
@@ -256,5 +281,53 @@ class PassengerViewModel extends StreamViewModel with ServiceImport {
     });
 
     controller.forward();
+  }
+
+  bool _isShowingBottomSheet = false;
+
+  handleMarkerTap(dynamic element, BuildContext ctx) async {
+    if (_selectedBusClientId != element["client_id"]) {
+      print(jsonEncode(element));
+      _selectedBusClientId = element["client_id"];
+      animatedMapMove(LatLng(double.parse(element["data"]["latitude"]),
+          double.parse(element["data"]["longitude"])));
+      scaffoldKey.currentState.showBottomSheet((context) => Container(
+            width: double.infinity,
+            color: kTransparent,
+            margin: EdgeInsets.only(top: 20),
+            padding: EdgeInsets.all(kXXLSpace),
+            child: Container(
+              color: kPrimaryColor,
+              child: ListTile(
+                  onTap: () => handleOnBusTap(element["data"]["bus"]["_id"]),
+                  leading: Container(
+                      height: double.infinity,
+                      padding: EdgeInsets.all(kMediumSpace),
+                      decoration: BoxDecoration(
+                          color: kWhite.withOpacity(0.5),
+                          shape: BoxShape.circle),
+                      child: Icon(
+                        Icons.directions_bus,
+                        size: kIconSize,
+                        color: kWhite,
+                      )),
+                  title: Text(
+                    element["data"]["bus"]["busNumber"],
+                    style: TextStyle(color: kWhite),
+                  ),
+                  subtitle: Text(
+                    element["data"]["bus"]["busType"],
+                    style: TextStyle(color: kWhite),
+                  ),
+                  trailing: Chip(
+                    label: Text(element["data"]["bus"]["busProvider"],
+                        style: TextStyle(color: kWhite)),
+                    backgroundColor: kBlack.withOpacity(0.5),
+                  )),
+            ),
+          ));
+      _isShowingBottomSheet = true;
+    }
+    notifyListeners();
   }
 }

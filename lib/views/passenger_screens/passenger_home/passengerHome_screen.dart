@@ -1,7 +1,6 @@
 import 'package:BusTracking_App/views/components/customMarkar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:latlong/latlong.dart';
 import 'package:stacked/stacked.dart';
 
@@ -20,6 +19,8 @@ class PassengerHomeScreen extends StatefulWidget {
 class _PassengerHomeScreenState extends State<PassengerHomeScreen>
     with TickerProviderStateMixin {
   MapController mapController;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   void initState() {
     super.initState();
@@ -31,8 +32,10 @@ class _PassengerHomeScreenState extends State<PassengerHomeScreen>
     return ViewModelBuilder<PassengerViewModel>.reactive(
       viewModelBuilder: () => PassengerViewModel(),
       onModelReady: (model) => model.initializeScreen(
-        mapController,
-      ),
+          mapController: mapController,
+          tickerProvicer: this,
+          context: context,
+          inscaffoldKey: _scaffoldKey),
       builder: (context, model, child) {
         return AnimatedSwitcher(
           duration: Duration(seconds: Constants.animatedSwitcherDuration),
@@ -55,7 +58,6 @@ class _PassengerHomeScreenState extends State<PassengerHomeScreen>
                           StreamBuilder(
                             stream: model.myStream,
                             builder: (context, snapshot) {
-                              print(snapshot.data);
                               return buildMap(model, snapshot);
                             },
                           ),
@@ -70,7 +72,7 @@ class _PassengerHomeScreenState extends State<PassengerHomeScreen>
                         color: kWhite,
                         size: kIconSize,
                       ),
-                      onPressed: () => model.fabClick(this),
+                      onPressed: () => model.fabClick(),
                     ),
                   ),
                 ),
@@ -89,57 +91,76 @@ class _PassengerHomeScreenState extends State<PassengerHomeScreen>
         // model.buildMarkers(streamData);
         if (mainSnapShot.hasData) {
           markers.add(Marker(
-            height: 30,
-            width: 30,
+            height: 25,
+            width: 25,
             point: LatLng(
                 mainSnapShot.data["latitude"], mainSnapShot.data["longitude"]),
             builder: (context) {
               return Container(
+                height: 25,
+                width: 25,
                 decoration: BoxDecoration(
-                  color: kPrimaryColor,
-                  shape: BoxShape.circle,
-                ),
+                    color: kPrimaryColor,
+                    shape: BoxShape.circle,
+                    border:
+                        Border.all(color: kWhite.withOpacity(0.5), width: 3)),
               );
             },
           ));
         }
         if (streamData.isNotEmpty) {
-          print(streamData.toString());
           streamData.forEach((element) {
             markers.add(Marker(
-              height: 65,
-              width: 95,
+              height:
+                  model.selectedBusClientId == element["client_id"] ? 75 : 65,
+              width:
+                  model.selectedBusClientId == element["client_id"] ? 105 : 95,
               point: LatLng(double.parse(element["data"]["latitude"]),
                   double.parse(element["data"]["longitude"])),
               builder: (context) {
-                return Container(
-                  decoration: ShapeDecoration(
-                    color: kWhite,
-                    shape: CustomMarker(),
-                    shadows: [
-                      BoxShadow(
-                          color: Colors.white24,
-                          spreadRadius: -1,
-                          blurRadius: 6,
-                          offset: Offset(2, 3)),
-                    ],
-                  ),
-                  padding: EdgeInsets.symmetric(horizontal: kLargeSpace),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.directions_bus,
-                        color: kPrimaryColor,
-                      ),
-                      Spacer(),
-                      Text(
-                        element["data"]["bus"]["busNumber"],
-                        style: TextStyle(
-                            fontSize: kLargeSpace,
-                            color: kPrimaryColor,
-                            fontWeight: FontWeight.bold),
-                      )
-                    ],
+                return InkWell(
+                  onTap: () => model.handleMarkerTap(element, context),
+                  child: AnimatedContainer(
+                    duration: Duration(milliseconds: 250),
+                    decoration: ShapeDecoration(
+                      color: model.selectedBusClientId == element["client_id"]
+                          ? kPrimaryColor
+                          : kWhite,
+                      shape: CustomMarker(),
+                      shadows: [
+                        BoxShadow(
+                            color: model.selectedBusClientId ==
+                                    element["client_id"]
+                                ? kPrimaryColor
+                                : Colors.white24,
+                            spreadRadius: -1,
+                            blurRadius: 6,
+                            offset: Offset(2, 3)),
+                      ],
+                    ),
+                    padding: EdgeInsets.symmetric(horizontal: kLargeSpace),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.directions_bus,
+                          color:
+                              model.selectedBusClientId == element["client_id"]
+                                  ? kWhite
+                                  : kPrimaryColor,
+                        ),
+                        Spacer(),
+                        Text(
+                          element["data"]["bus"]["busNumber"],
+                          style: TextStyle(
+                              fontSize: kLargeSpace,
+                              color: model.selectedBusClientId ==
+                                      element["client_id"]
+                                  ? kWhite
+                                  : kPrimaryColor,
+                              fontWeight: FontWeight.bold),
+                        )
+                      ],
+                    ),
                   ),
                 );
               },

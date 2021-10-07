@@ -6,8 +6,8 @@ class Endpoints {
 
   static const bool isDev = true;
 
-  static const String localhost = "192.168.0.4:8080";
-  static const String localhostHttp = "http://192.168.0.4:8080";
+  static const String localhost = "192.168.163.176:8080";
+  static const String localhostHttp = "http://192.168.163.176:8080";
 
   static const String herokuServer = "bus-tracking-app.herokuapp.com";
   static const String herokuServerHttps =

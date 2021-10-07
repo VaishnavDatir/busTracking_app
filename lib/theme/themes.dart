@@ -19,6 +19,7 @@ ThemeData buildAppTheme() {
     errorColor: kErrorRed,
     primaryTextTheme: buildAppTextTheme(GoogleFonts.poppinsTextTheme()),
     textTheme: buildAppTextTheme(GoogleFonts.latoTextTheme()),
+    bottomSheetTheme: BottomSheetThemeData(backgroundColor: kTransparent),
     appBarTheme: ThemeData.light().appBarTheme.copyWith(
           elevation: 0,
           // titleTextStyle: GoogleFonts.comfortaa(),
