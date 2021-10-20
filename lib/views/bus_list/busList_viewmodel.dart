@@ -9,7 +9,7 @@ import '../../core/service_import.dart';
 class BusListViewModel extends BaseViewModel with ServiceImport {
   BusModel _busModel;
   BusModel get busModel => this._busModel;
-  bool isDriver =false;
+  bool isDriver = false;
 
   List<BusModelData> _busModelData;
   List<BusModelData> get busModelData => this._busModelData;

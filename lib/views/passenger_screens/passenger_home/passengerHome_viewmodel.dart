@@ -380,6 +380,7 @@ class PassengerViewModel extends StreamViewModel with ServiceImport {
                 options: CarouselOptions(
                   initialPage: streamData.indexOf(element),
                   viewportFraction: 1,
+                  enableInfiniteScroll: false,
                   height: 120,
                   onPageChanged: (index, reason) {
                     _selectedBusClientId = streamData[index]["client_id"];

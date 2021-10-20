@@ -4,10 +4,10 @@ class Endpoints {
   // static const String herokuServerUrl = "10.0.2.2:<port on which server is running>";
   //For real device user=:<ipAddress>:<port on which server is running>
 
-  static const bool isDev = true;
+  static const bool isDev = false;
 
-  static const String localhost = "192.168.0.9:8080";
-  static const String localhostHttp = "http://192.168.0.9:8080";
+  static const String localhost = "192.168.72.176:8080";
+  static const String localhostHttp = "http://192.168.72.176:8080";
 
   static const String herokuServer = "bus-tracking-app.herokuapp.com";
   static const String herokuServerHttps =

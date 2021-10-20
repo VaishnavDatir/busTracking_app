@@ -149,7 +149,7 @@ class DriverHomeViewModel extends StreamViewModel with ServiceImport {
         begin: mapController.center.latitude, end: destLocation.latitude);
     final _lngTween = Tween<double>(
         begin: mapController.center.longitude, end: destLocation.longitude);
-    final _zoomTween = Tween<double>(begin: 15, end: 16);
+    final _zoomTween = Tween<double>(begin: 16, end: 16);
 
     // Create a animation controller that has a duration and a TickerProvider.
     var controller = AnimationController(
