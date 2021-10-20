@@ -1,3 +1,4 @@
+import 'package:BusTracking_App/core/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
@@ -8,6 +9,7 @@ import '../../core/service_import.dart';
 class StopListViewModel extends BaseViewModel with ServiceImport {
   Stops _stops;
   Stops get stops => this._stops;
+  bool isDriver = false;
 
   List<StopsData> _stopsDataList;
   List<StopsData> get stopsDataList => this._stopsDataList;
@@ -15,19 +17,33 @@ class StopListViewModel extends BaseViewModel with ServiceImport {
   List<StopsData> _stopsDataListMain;
   TextEditingController searchTextController = TextEditingController();
 
-  initializeScreen() {
-    _stops = busService.stops;
+ 
 
-    if (stops.success) {
+  initializeScreen() async {
+    setBusy(true);
+    _stops = busService.stops;
+    
+   
+if (stops.success) {
       _stopsDataList = stops.data;
       _stopsDataListMain = _stops.data;
-    }
+      }
+    // setScreenData() async {
+    //   // 
+    // }
+        isDriver = await sharedPrefsService.read(Constants.sharedPrefsUserType);
     notifyListeners();
+    
+  
+  setBusy(false);
+    
   }
+
+  
 
   refreshStopList() async {
     await busService.getAllStops();
-    initializeScreen();
+    
     notifyListeners();
   }
 
@@ -60,6 +76,6 @@ class StopListViewModel extends BaseViewModel with ServiceImport {
 
   addstop() async {
     await navigationService.navigateTo(kAddStopScreen);
-    initializeScreen();
+    
   }
 }

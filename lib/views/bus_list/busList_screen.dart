@@ -119,7 +119,7 @@ class BusListScreen extends StatelessWidget {
                           ],
                         ),
                       ),
-                floatingActionButton: model.driverGoingOnDuty
+                floatingActionButton:  model.isDriver ? model.driverGoingOnDuty
                     ? null
                     : FloatingActionButton.extended(
                         onPressed: () => model.addBuss(),
@@ -130,7 +130,7 @@ class BusListScreen extends StatelessWidget {
                         label: Text("Create Bus",
                             style: appTheme.textTheme.button
                                 .copyWith(color: kWhite)),
-                      ),
+                      ):null,
               );
       },
     );
