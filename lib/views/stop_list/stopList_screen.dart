@@ -8,6 +8,7 @@ import '../components/customTextInputField.dart';
 import 'stopList_viewmodel.dart';
 
 class StopsListScreen extends StatelessWidget {
+  
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<StopListViewModel>.reactive(
@@ -95,7 +96,7 @@ class StopsListScreen extends StatelessWidget {
               ],
             ),
           ),
-          floatingActionButton: FloatingActionButton.extended(
+          floatingActionButton: model.isDriver?  FloatingActionButton.extended(
             onPressed: () => model.addstop(),
             label: Row(
               children: [
@@ -107,7 +108,7 @@ class StopsListScreen extends StatelessWidget {
                     style: appTheme.textTheme.button.copyWith(color: kWhite)),
               ],
             ),
-          ),
+          ): null
         );
       },
     );

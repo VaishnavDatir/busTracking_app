@@ -1,3 +1,4 @@
+import 'package:BusTracking_App/core/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
@@ -8,6 +9,7 @@ import '../../core/service_import.dart';
 class BusListViewModel extends BaseViewModel with ServiceImport {
   BusModel _busModel;
   BusModel get busModel => this._busModel;
+  bool isDriver =false;
 
   List<BusModelData> _busModelData;
   List<BusModelData> get busModelData => this._busModelData;
@@ -20,6 +22,7 @@ class BusListViewModel extends BaseViewModel with ServiceImport {
 
   initializeScreen(Map<String, dynamic> screenData) async {
     setBusy(true);
+    isDriver = await sharedPrefsService.read(Constants.sharedPrefsUserType);
 
     driverGoingOnDuty =
         screenData == null ? false : screenData["driverGoingOnDuty"] ?? false;
