@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:BusTracking_App/core/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:location/location.dart';
+// import 'package:location/location.dart';
 
 import '../service_import.dart';
 
