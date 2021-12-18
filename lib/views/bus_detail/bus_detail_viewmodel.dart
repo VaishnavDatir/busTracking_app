@@ -50,9 +50,10 @@ class BusDetailViewModel extends BaseViewModel with ServiceImport {
     if (response["success"]) {
       Map<String, dynamic> response1 = await userService.setDriverOnBus(busId);
 
-      locationService.setBusData(response1["data"]);
+      locationService.setBusData(
+          response1["data"], userService.userDetails.data.type.toString());
       await locationService.getLiveLocation();
-
+      // await locationService.startServiceInPlatform();
       await userService.getUserData();
 
       await dialogService.showDialog(

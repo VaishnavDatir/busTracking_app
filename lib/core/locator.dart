@@ -23,8 +23,6 @@ class LocatorInjector {
     locator.registerLazySingleton(() => UserService());
     locator.registerLazySingleton(() => BusService());
     locator.registerLazySingleton(() => LocationService());
-
-    //TRY
     locator.registerLazySingleton(() => StreamSocket());
   }
 }

@@ -1,22 +1,29 @@
 import 'dart:async';
+import 'dart:ui';
 
-import 'package:BusTracking_App/core/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
+
 // import 'package:location/location.dart';
 
+import '../locator.dart';
 import '../service_import.dart';
 
-void backgroundMain() {
+void backgroundMain() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await LocatorInjector.setupLocator();
   LocationService().getLiveLocation();
 }
 
 class LocationService extends ServiceImport {
   Map<String, dynamic> busData;
 
-  setBusData(Map<String, dynamic> data) {
+  String userType;
+
+  setBusData(Map<String, dynamic> data, String type) {
     busData = data;
+    userType = type;
   }
 
   StreamSubscription<Position> positionStream;
@@ -34,7 +41,7 @@ class LocationService extends ServiceImport {
                 ', ' +
                 position.longitude.toString());
         Map<String, dynamic> data = {
-          "type": userService.userDetails.data.type.toString(),
+          "type": userType,
           "bus": busData,
           "latitude": position.latitude.toString(),
           "longitude": position.longitude.toString(),
@@ -107,20 +114,47 @@ class LocationService extends ServiceImport {
     return true;
   }
 
-  void stop() {
-    print("DRAINing");
-    streamSocket.removeDriver();
-    if (positionStream != null) {
-      positionStream.cancel();
-    }
-    print("DRAINED");
-  }
-
   Future<Position> getStaticLocation() async {
     /* await Location.instance.getLocation().then((value) =>
         print(value.latitude.toString() + "," + value.longitude.toString())); */
     final position = await Geolocator.getCurrentPosition();
     print("Current Loc: " + position.toJson().toString());
     return position;
+  }
+
+  startServiceInPlatform() async {
+    //TODO: FIX THIS
+    /* bool res = await LocationService.instance().getLocation();
+    if (!res) {
+      return false;
+    } */
+    // getLiveLocation();
+    try {
+      var methodChannel = MethodChannel("com.example.BusTracking_App/Start");
+      var calbackHandle = PluginUtilities.getCallbackHandle(backgroundMain);
+      methodChannel.invokeMethod("startService", calbackHandle.toRawHandle());
+    } catch (e) {
+      print("ERROR WHILE STATING BG SERVICE: " + e.toString());
+    }
+    return true;
+  }
+
+  stopServiceInPlatform() {
+    print("Stoping android service");
+    var methodChannel = MethodChannel("com.example.BusTracking_App/Stop");
+    // methodChannel.invokeMethod("stopService", -1.0.toDouble());
+    methodChannel.invokeMethod("stopService");
+    // LocationService.instance().stop(); //TODO: FIx THIS
+    // stop();
+  }
+
+  void stop() {
+    print("DRAINing");
+    streamSocket.removeDriver();
+    stopServiceInPlatform();
+    if (positionStream != null) {
+      positionStream.cancel();
+    }
+    print("DRAINED");
   }
 }

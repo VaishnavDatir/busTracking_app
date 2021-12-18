@@ -1,7 +1,7 @@
-import 'package:BusTracking_App/core/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
+import '../../core/constants.dart';
 import '../../core/models/bus_model.dart';
 import '../../core/routes/router_path.dart';
 import '../../core/service_import.dart';

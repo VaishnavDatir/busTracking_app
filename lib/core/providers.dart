@@ -23,8 +23,6 @@ class ProviderInjector {
     Provider.value(value: locator<UserService>()),
     Provider.value(value: locator<BusService>()),
     Provider.value(value: locator<LocationService>()),
-
-    //TRY
     Provider.value(value: locator<StreamSocket>())
   ];
 }

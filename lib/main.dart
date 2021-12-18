@@ -10,6 +10,7 @@ import 'core/services/dialog_service.dart';
 import 'core/services/navigator_service.dart';
 import 'theme/themes.dart' as theme;
 import 'views/components/dialog.dart';
+import 'widgets/app_retain_widget.dart';
 
 void main() async {
   try {
@@ -31,21 +32,23 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: ProviderInjector.providers,
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: "SafeWay",
-        theme: theme.appTheme,
-        builder: (context, widget) => Navigator(
-          key: locator<DialogService>().dialogNavigationKey,
-          onGenerateRoute: (settings) => MaterialPageRoute(
-            builder: (context) => DialogManager(
-              child: widget,
+      child: AppRetainWidget(
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: "SafeWay",
+          theme: theme.appTheme,
+          builder: (context, widget) => Navigator(
+            key: locator<DialogService>().dialogNavigationKey,
+            onGenerateRoute: (settings) => MaterialPageRoute(
+              builder: (context) => DialogManager(
+                child: widget,
+              ),
             ),
           ),
+          navigatorKey: locator<NavigationService>().navigationKey,
+          onGenerateRoute: router.generateRoute,
+          initialRoute: kHomeScreen,
         ),
-        navigatorKey: locator<NavigationService>().navigationKey,
-        onGenerateRoute: router.generateRoute,
-        initialRoute: kHomeScreen,
       ),
     );
   }

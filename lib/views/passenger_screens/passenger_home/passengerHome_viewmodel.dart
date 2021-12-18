@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:BusTracking_App/theme/colors.dart';
-import 'package:BusTracking_App/theme/dimensions.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -16,6 +14,8 @@ import '../../../core/models/stops_model.dart';
 import '../../../core/models/userDetails_model.dart';
 import '../../../core/routes/router_path.dart';
 import '../../../core/service_import.dart';
+import '../../../theme/colors.dart';
+import '../../../theme/dimensions.dart';
 
 class PassengerViewModel extends StreamViewModel with ServiceImport {
   Stream get stream => this._getLiveData();

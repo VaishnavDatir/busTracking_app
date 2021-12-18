@@ -1,10 +1,9 @@
-import 'package:flutter/services.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:stacked/stacked.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong/latlong.dart';
+import 'package:stacked/stacked.dart';
 
 import '../../../core/models/dialog_model.dart';
 import '../../../core/models/userDetails_model.dart';

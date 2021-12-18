@@ -3,12 +3,12 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
 import 'package:stacked/stacked.dart';
 
+import '../../../core/constants.dart';
 import '../../../theme/colors.dart';
 import '../../../theme/dimensions.dart';
 import '../../../theme/themes.dart';
 import '../../components/customMarkar.dart';
 import 'driverHome_viewmodel.dart';
-import '../../../core/constants.dart';
 
 class DriverHomeScreen extends StatefulWidget {
   @override
@@ -103,7 +103,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen>
         List<Marker> markers = List<Marker>();
         List streamData = snapshot.data == null ? [] : snapshot.data;
         if (streamData.isNotEmpty) {
-          // print(streamData.toString());
+          print(streamData.toString());
           streamData.forEach((element) {
             markers.add(Marker(
               height: 65,
