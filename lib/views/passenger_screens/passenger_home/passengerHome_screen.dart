@@ -1,7 +1,7 @@
 import '../../components/customMarkar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong/latlong.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../core/constants.dart';
@@ -18,7 +18,7 @@ class PassengerHomeScreen extends StatefulWidget {
 
 class _PassengerHomeScreenState extends State<PassengerHomeScreen>
     with TickerProviderStateMixin {
-  MapController mapController;
+  MapController? mapController;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -175,9 +175,12 @@ class _PassengerHomeScreenState extends State<PassengerHomeScreen>
             minZoom: 7,
             maxZoom: 18,
             zoom: 16,
-            onTap: (point) {
+            onTap: (tapPosition, point) {
               model.handleMapTap();
             },
+            /* onTap: (point) {
+              model.handleMapTap();
+            }, */
           ),
           nonRotatedLayers: [
             TileLayerOptions(
@@ -229,9 +232,9 @@ class _PassengerHomeScreenState extends State<PassengerHomeScreen>
                                 Container(
                                   padding: EdgeInsets.symmetric(
                                       horizontal: kMediumSpace),
-                                  child: Text(model.sourceStop.stopName +
+                                  child: Text(model.sourceStop!.stopName! +
                                       " --- " +
-                                      model.destinationStop.stopName),
+                                      model.destinationStop!.stopName!),
                                 ),
                               ],
                             ),
@@ -246,7 +249,7 @@ class _PassengerHomeScreenState extends State<PassengerHomeScreen>
                           color: kBGCard,
                         ),
                         Expanded(
-                          child: model.busModelData.length == 0
+                          child: model.busModelData!.length == 0
                               ? SingleChildScrollView(
                                   controller: scrollController,
                                   child: Container(
@@ -272,12 +275,12 @@ class _PassengerHomeScreenState extends State<PassengerHomeScreen>
                               : ListView.separated(
                                   shrinkWrap: true,
                                   controller: scrollController,
-                                  itemCount: model.busModelData.length,
+                                  itemCount: model.busModelData!.length,
                                   itemBuilder:
                                       (BuildContext context, int index) {
                                     return ListTile(
                                       onTap: () => model.handleOnBusTap(
-                                          model.busModelData[index].id),
+                                          model.busModelData![index].id),
                                       leading: Container(
                                           height: double.infinity,
                                           padding: EdgeInsets.all(kMediumSpace),
@@ -291,12 +294,12 @@ class _PassengerHomeScreenState extends State<PassengerHomeScreen>
                                             color: kPrimaryColor,
                                           )),
                                       title: Text(
-                                          model.busModelData[index].busNumber),
+                                          model.busModelData![index].busNumber!),
                                       subtitle: Text(
-                                          model.busModelData[index].busType),
+                                          model.busModelData![index].busType!),
                                       trailing: Chip(
-                                          label: Text(model.busModelData[index]
-                                              .busProvider)),
+                                          label: Text(model.busModelData![index]
+                                              .busProvider!)),
                                     );
                                   },
                                   separatorBuilder: (context, index) {
@@ -337,18 +340,18 @@ class _PassengerHomeScreenState extends State<PassengerHomeScreen>
                   ),
                   child: Center(
                     child: Text(
-                      "${model.userDetails.data.name.toString().substring(0, 1)}",
-                      style: appTheme.textTheme.headline5
+                      "${model.userDetails!.data!.name.toString().substring(0, 1)}",
+                      style: appTheme.textTheme.headline5!
                           .copyWith(color: kDarkPrimaryColor),
                     ),
                   ),
                 ),
                 title: Text(
-                  "${model.userDetails.data.name.toString()}",
+                  "${model.userDetails!.data!.name.toString()}",
                   style: TextStyle(color: kWhite, fontWeight: FontWeight.bold),
                 ),
                 subtitle: Text(
-                  "${model.userDetails.data.type}",
+                  "${model.userDetails!.data!.type}",
                   style: TextStyle(color: kTextOffWhite),
                 ),
               ),

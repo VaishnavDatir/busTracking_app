@@ -35,14 +35,14 @@ class _SigninScreenState extends State<SigninScreen> {
                     child: Center(
                       child: Text(model.screenText,
                           textAlign: TextAlign.center,
-                          style: appTheme.primaryTextTheme.headline4.copyWith(
+                          style: appTheme.primaryTextTheme.headline4!.copyWith(
                               fontSize: kLargeSpace * 2, color: kWhite)),
                     ),
                   ),
                 ),
                 GestureDetector(
                   onTap: () {
-                    FocusScope.of(model.scaffoldKey.currentContext).unfocus();
+                    FocusScope.of(model.scaffoldKey.currentContext!).unfocus();
                   },
                   child: Container(
                     padding: EdgeInsets.symmetric(horizontal: kLargeSpace),
@@ -54,7 +54,7 @@ class _SigninScreenState extends State<SigninScreen> {
                           ),
                           Text(
                             "Welcome back!",
-                            style: appTheme.primaryTextTheme.headline4.copyWith(
+                            style: appTheme.primaryTextTheme.headline4!.copyWith(
                               color: kBlack,
                               fontSize: kXLSpace,
                             ),
@@ -69,7 +69,7 @@ class _SigninScreenState extends State<SigninScreen> {
                             prefixIcon: Icon(Icons.email_sharp),
                             hintText: 'Email',
                             onSubmit: (value) {
-                              FocusScope.of(model.scaffoldKey.currentContext)
+                              FocusScope.of(model.scaffoldKey.currentContext!)
                                   .requestFocus(model.passwordFN);
                             },
                             textInputAction: TextInputAction.go,
@@ -97,7 +97,7 @@ class _SigninScreenState extends State<SigninScreen> {
                               onPressed: () => model.handleSignInTap(context),
                               child: Text(
                                 "Sign in",
-                                style: appTheme.textTheme.button
+                                style: appTheme.textTheme.button!
                                     .copyWith(color: kWhite),
                               ),
                             ),
@@ -111,7 +111,7 @@ class _SigninScreenState extends State<SigninScreen> {
                                   text: "Don't have an account ? ",
                                 ),
                                 TextSpan(
-                                    style: appTheme.textTheme.bodyText2
+                                    style: appTheme.textTheme.bodyText2!
                                         .copyWith(
                                             color: kPrimaryColor,
                                             fontWeight: FontWeight.bold),

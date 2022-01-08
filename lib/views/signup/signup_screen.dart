@@ -23,7 +23,7 @@ class SignUpScreen extends StatelessWidget {
               children: [
                 Text(
                   "Let's get started!",
-                  style: appTheme.primaryTextTheme.headline6
+                  style: appTheme.primaryTextTheme.headline6!
                       .copyWith(fontWeight: FontWeight.bold),
                 ),
                 SizedBox(
@@ -33,7 +33,7 @@ class SignUpScreen extends StatelessWidget {
                   model.isDriver
                       ? "Create an account to share live bus locations"
                       : "Create an account to get live bus locations",
-                  style: appTheme.textTheme.caption.copyWith(color: kTextGrey),
+                  style: appTheme.textTheme.caption!.copyWith(color: kTextGrey),
                 ),
                 SizedBox(height: kLargeSpace),
                 CustomTextInputField(
@@ -82,7 +82,7 @@ class SignUpScreen extends StatelessWidget {
                     onPressed: () => model.handleSignUpTap(context),
                     child: Text(
                       "Sign up",
-                      style: appTheme.textTheme.button.copyWith(color: kWhite),
+                      style: appTheme.textTheme.button!.copyWith(color: kWhite),
                     ),
                   ),
                 ),
@@ -98,7 +98,7 @@ class SignUpScreen extends StatelessWidget {
                                 : "Are you a driver?\n",
                           ),
                           TextSpan(
-                              style: appTheme.textTheme.bodyText1.copyWith(
+                              style: appTheme.textTheme.bodyText1!.copyWith(
                                   color: kPrimaryColor,
                                   fontWeight: FontWeight.bold),
                               text: model.isDriver

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong/latlong.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../core/constants.dart';
@@ -17,7 +17,7 @@ class DriverHomeScreen extends StatefulWidget {
 
 class _DriverHomeScreenState extends State<DriverHomeScreen>
     with TickerProviderStateMixin {
-  MapController mapController;
+  MapController? mapController;
   @override
   void initState() {
     super.initState();
@@ -59,7 +59,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen>
                             ),
                           ),
                         ), */
-                          if (model.isDriverOnBus)
+                          if (model.isDriverOnBus!)
                             buildOnDutyCard(context, model),
                         ],
                       ),
@@ -84,7 +84,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen>
         width: MediaQuery.of(context).size.width,
         child: Card(
           child: SwitchListTile(
-            value: model.isDriverOnBus,
+            value: model.isDriverOnBus!,
             onChanged: (value) => model.changeIsDriverOnBus(),
             title: Text(
               "On Duty",
@@ -100,7 +100,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen>
     return StreamBuilder(
       stream: model.stream,
       builder: (context, snapshot) {
-        List<Marker> markers = List<Marker>();
+        List<Marker> markers = [];
         List streamData = snapshot.data == null ? [] : snapshot.data;
         if (streamData.isNotEmpty) {
           print(streamData.toString());
@@ -193,18 +193,18 @@ class _DriverHomeScreenState extends State<DriverHomeScreen>
                   ),
                   child: Center(
                     child: Text(
-                      "${model.userDetails.data.name.toString().substring(0, 1)}",
-                      style: appTheme.textTheme.headline5
+                      "${model.userDetails!.data!.name.toString().substring(0, 1)}",
+                      style: appTheme.textTheme.headline5!
                           .copyWith(color: kDarkPrimaryColor),
                     ),
                   ),
                 ),
                 title: Text(
-                  "${model.userDetails.data.name.toString()}",
+                  "${model.userDetails!.data!.name.toString()}",
                   style: TextStyle(color: kWhite, fontWeight: FontWeight.bold),
                 ),
                 subtitle: Text(
-                  "${model.userDetails.data.type}",
+                  "${model.userDetails!.data!.type}",
                   style: TextStyle(color: kTextOffWhite),
                 ),
               ),

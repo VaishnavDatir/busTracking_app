@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class AppRetainWidget extends StatelessWidget {
-  const AppRetainWidget({Key key, this.child}) : super(key: key);
+  const AppRetainWidget({Key? key, this.child}) : super(key: key);
 
-  final Widget child;
+  final Widget? child;
 
   final _channel =
       const MethodChannel('com.example.BusTracking_App/app_retain');
@@ -26,7 +26,7 @@ class AppRetainWidget extends StatelessWidget {
           return true;
         }
       },
-      child: child,
+      child: child!,
     );
   }
 }

@@ -5,31 +5,31 @@ import '../../theme/dimensions.dart';
 import '../../theme/themes.dart';
 
 class CustomTextInputField extends StatelessWidget {
-  final String hint;
+  final String? hint;
   final String hintText;
   final TextEditingController controller;
-  final IconButton iconButton;
+  final IconButton? iconButton;
   final bool obscureText;
-  final Widget prefixIcon;
-  final Widget suffixIcon;
+  final Widget? prefixIcon;
+  final Widget? suffixIcon;
   final TextCapitalization textCapitalization;
-  final Function onSubmit;
-  final Function onChanged;
-  final Function onTap;
-  final int maxLength;
-  final int maxLines;
+  final Function? onSubmit;
+  final Function? onChanged;
+  final Function? onTap;
+  final int? maxLength;
+  final int? maxLines;
   final bool disabled;
   final TextInputType keyboardType;
   final TextInputAction textInputAction;
-  final FocusNode focusNode;
+  final FocusNode? focusNode;
   final bool addContentPadding;
   final String labelText;
 
   const CustomTextInputField({
-    Key key,
+    Key? key,
     this.hint,
-    @required this.controller,
-    @required this.hintText,
+    required this.controller,
+    required this.hintText,
     this.obscureText = false,
     this.iconButton,
     this.prefixIcon,
@@ -53,8 +53,8 @@ class CustomTextInputField extends StatelessWidget {
     return TextField(
       controller: controller,
       focusNode: focusNode,
-      onSubmitted: onSubmit,
-      onChanged: onChanged,
+      onSubmitted: onSubmit as void Function(String)?,
+      onChanged: onChanged as void Function(String)?,
       maxLines: obscureText ? 1 : maxLines,
       maxLength: maxLength,
       readOnly: disabled,
@@ -64,7 +64,7 @@ class CustomTextInputField extends StatelessWidget {
       keyboardType: keyboardType,
       textInputAction: textInputAction,
       textCapitalization: textCapitalization,
-      onTap: onTap,
+      onTap: onTap as void Function()?,
       decoration: InputDecoration(
         contentPadding: addContentPadding
             ? EdgeInsets.symmetric(

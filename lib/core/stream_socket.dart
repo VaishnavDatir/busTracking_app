@@ -18,12 +18,12 @@ class StreamSocket extends ServiceImport {
 
   StreamController _socketResponse = StreamController.broadcast();
 
-  void Function(List<dynamic>) get addResponse => _socketResponse.sink.add;
+  void Function(List<dynamic>?) get addResponse => _socketResponse.sink.add;
   Stream get getResponse => _socketResponse.stream;
 
   void get streamClose async => await _socketResponse.close();
 
-  String myClientId;
+  String? myClientId;
 
   socketConnect() async {
     try {

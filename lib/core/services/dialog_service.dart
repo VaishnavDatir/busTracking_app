@@ -6,10 +6,10 @@ import '../models/dialog_model.dart';
 
 class DialogService {
   GlobalKey<NavigatorState> _dialogNavigationKey = GlobalKey<NavigatorState>();
-  Function(AlertRequest) _showDialogListener;
-  Completer<AlertResponse> _dialogCompleter;
-  Function _showLoadingDialogListner;
-  Function _dialogDismissListener;
+  late Function(AlertRequest) _showDialogListener;
+  Completer<AlertResponse>? _dialogCompleter;
+  late Function _showLoadingDialogListner;
+  late Function _dialogDismissListener;
   GlobalKey<NavigatorState> get dialogNavigationKey => _dialogNavigationKey;
 
   void registerDialogListenerFun(Function(AlertRequest) showDialogListener) {
@@ -34,7 +34,7 @@ class DialogService {
 
   Future<AlertResponse> showDialog(
       {String title = "",
-      String description = "",
+      String? description = "",
       String buttonTitle = 'OK',
       bool showNegativeButton = false,
       String buttonNegativeTitle = 'Cancel'}) {
@@ -48,11 +48,11 @@ class DialogService {
         buttonNegativeTitle: buttonNegativeTitle,
       ),
     );
-    return _dialogCompleter.future;
+    return _dialogCompleter!.future;
   }
 
   void dialogComplete(AlertResponse response) {
-    _dialogCompleter.complete(response);
+    _dialogCompleter!.complete(response);
     _dialogCompleter = null;
   }
 }

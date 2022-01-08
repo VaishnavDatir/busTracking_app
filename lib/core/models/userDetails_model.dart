@@ -16,9 +16,9 @@ class UserDetails {
     this.data,
   });
 
-  bool success;
-  String message;
-  Data data;
+  bool? success;
+  String? message;
+  Data? data;
 
   factory UserDetails.fromJson(Map<String, dynamic> json) => UserDetails(
         success: json["success"],
@@ -29,7 +29,7 @@ class UserDetails {
   Map<String, dynamic> toJson() => {
         "success": success,
         "message": message,
-        "data": data.toJson(),
+        "data": data!.toJson(),
       };
 }
 
@@ -46,15 +46,15 @@ class Data {
     this.onBus,
   });
 
-  Location location;
-  String id;
-  String name;
-  String email;
-  String password;
-  String type;
-  bool isActive;
-  int v;
-  String onBus;
+  Location? location;
+  String? id;
+  String? name;
+  String? email;
+  String? password;
+  String? type;
+  bool? isActive;
+  int? v;
+  String? onBus;
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
         location: Location.fromJson(json["location"]),
@@ -69,7 +69,7 @@ class Data {
       );
 
   Map<String, dynamic> toJson() => {
-        "location": location.toJson(),
+        "location": location!.toJson(),
         "_id": id,
         "name": name,
         "email": email,
@@ -86,7 +86,7 @@ class Location {
     this.coordinates,
   });
 
-  List<double> coordinates;
+  List<double>? coordinates;
 
   factory Location.fromJson(Map<String, dynamic> json) => Location(
         coordinates:
@@ -94,6 +94,6 @@ class Location {
       );
 
   Map<String, dynamic> toJson() => {
-        "coordinates": List<dynamic>.from(coordinates.map((x) => x)),
+        "coordinates": List<dynamic>.from(coordinates!.map((x) => x)),
       };
 }

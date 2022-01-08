@@ -8,8 +8,8 @@ import '../service_import.dart';
 import 'api/endpoints.dart';
 
 class UserService extends ServiceImport {
-  UserDetails _userDetails;
-  UserDetails get userDetails => this._userDetails;
+  UserDetails? _userDetails;
+  UserDetails? get userDetails => this._userDetails;
 
   Future getUserData() async {
     print("called UserService:getUserData");
@@ -22,7 +22,7 @@ class UserService extends ServiceImport {
       var response = await http.get(
         url,
         headers: {
-          'Authorization': 'Bearer ${authService.userToken}',
+          'Authorization': 'Bearer ${authService!.userToken}',
           'Content-Type': 'application/json'
         },
       );
@@ -52,7 +52,7 @@ class UserService extends ServiceImport {
         url,
         body: bodayData,
         headers: {
-          'Authorization': 'Bearer ${authService.userToken}',
+          'Authorization': 'Bearer ${authService!.userToken}',
           'Content-Type': 'application/json'
         },
       );
@@ -72,7 +72,7 @@ class UserService extends ServiceImport {
     }
   }
 
-  Future setDriverOnBus(String busId) async {
+  Future setDriverOnBus(String? busId) async {
     print("called UserService:setDriverOnBus");
 
     try {
@@ -88,7 +88,7 @@ class UserService extends ServiceImport {
         url,
         body: bodayData,
         headers: {
-          'Authorization': 'Bearer ${authService.userToken}',
+          'Authorization': 'Bearer ${authService!.userToken}',
           'Content-Type': 'application/json'
         },
       );
@@ -96,7 +96,7 @@ class UserService extends ServiceImport {
       print("Response in UserService:setDriverOnBus: " +
           response.body.toString());
 
-      Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+      Map<String, dynamic>? jsonResponse = jsonDecode(response.body);
       return jsonResponse;
     } catch (e) {
       print("Error in UserService:setDriverOnBus: " + e.toString());
@@ -120,7 +120,7 @@ class UserService extends ServiceImport {
       http.Response response = await http.get(
         url,
         headers: {
-          'Authorization': 'Bearer ${authService.userToken}',
+          'Authorization': 'Bearer ${authService!.userToken}',
           'Content-Type': 'application/json'
         },
       );
@@ -128,7 +128,7 @@ class UserService extends ServiceImport {
       print("Response in UserService:removeDriverOnBus: " +
           response.body.toString());
 
-      Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+      Map<String, dynamic>? jsonResponse = jsonDecode(response.body);
       return jsonResponse;
     } catch (e) {
       print("Error in UserService:removeDriverOnBus: " + e.toString());
@@ -159,7 +159,7 @@ class UserService extends ServiceImport {
         url,
         body: bodayData,
         headers: {
-          'Authorization': 'Bearer ${authService.userToken}',
+          'Authorization': 'Bearer ${authService!.userToken}',
           'Content-Type': 'application/json'
         },
       );

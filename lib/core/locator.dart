@@ -14,8 +14,8 @@ GetIt locator = GetIt.instance;
 
 class LocatorInjector {
   static Future<void> setupLocator() async {
-    var sharedPrefsInstance = await SharedPrefsService.getInstance();
-    locator.registerSingleton<SharedPrefsService>(sharedPrefsInstance);
+    var sharedPrefsInstance = await (SharedPrefsService.getInstance());
+    locator.registerSingleton<SharedPrefsService>(sharedPrefsInstance!);
     locator.registerLazySingleton(() => NavigationService());
     locator.registerLazySingleton(() => DialogService());
     locator.registerLazySingleton(() => ServiceImport());

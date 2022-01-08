@@ -72,13 +72,13 @@ Route<dynamic> generateRoute(RouteSettings settings) {
 /* <---------------- Bus Screen --------------> */
     case kBusDetailScreen:
       return MaterialPageRoute(
-        builder: (context) => BusDetailScreen(settings.arguments),
+        builder: (context) => BusDetailScreen(settings.arguments as Map<String, dynamic>?),
       );
       break;
 
     case kBusListScreen:
       return MaterialPageRoute(
-        builder: (context) => BusListScreen(settings.arguments),
+        builder: (context) => BusListScreen(settings.arguments as Map<String, dynamic>?),
       );
       break;
 

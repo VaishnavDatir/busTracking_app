@@ -16,10 +16,10 @@ class Stops {
     this.code,
   });
 
-  bool success;
-  int totalStops;
-  List<StopsData> data;
-  int code;
+  bool? success;
+  int? totalStops;
+  List<StopsData>? data;
+  int? code;
 
   factory Stops.fromJson(Map<String, dynamic> json) => Stops(
         success: json["success"],
@@ -32,7 +32,7 @@ class Stops {
   Map<String, dynamic> toJson() => {
         "success": success,
         "totalStops": totalStops,
-        "data": List<dynamic>.from(data.map((x) => x.toJson())),
+        "data": List<dynamic>.from(data!.map((x) => x.toJson())),
         "code": code,
       };
 }
@@ -46,11 +46,11 @@ class StopsData {
     this.v,
   });
 
-  StopLocation stopLocation;
-  String id;
-  String stopName;
-  String stopCity;
-  int v;
+  StopLocation? stopLocation;
+  String? id;
+  String? stopName;
+  String? stopCity;
+  int? v;
 
   factory StopsData.fromJson(Map<String, dynamic> json) => StopsData(
         stopLocation: StopLocation.fromJson(json["stopLocation"]),
@@ -61,7 +61,7 @@ class StopsData {
       );
 
   Map<String, dynamic> toJson() => {
-        "stopLocation": stopLocation.toJson(),
+        "stopLocation": stopLocation!.toJson(),
         "_id": id,
         "stopName": stopName,
         "stopCity": stopCity,
@@ -74,7 +74,7 @@ class StopLocation {
     this.coordinates,
   });
 
-  List<double> coordinates;
+  List<double>? coordinates;
 
   factory StopLocation.fromJson(Map<String, dynamic> json) => StopLocation(
         coordinates: json["coordinates"] == null
@@ -84,6 +84,6 @@ class StopLocation {
       );
 
   Map<String, dynamic> toJson() => {
-        "coordinates": List<dynamic>.from(coordinates.map((x) => x)),
+        "coordinates": List<dynamic>.from(coordinates!.map((x) => x)),
       };
 }

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:latlong/latlong.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../core/models/bus_model.dart';
@@ -21,40 +21,40 @@ class PassengerViewModel extends StreamViewModel with ServiceImport {
   Stream get stream => this._getLiveData();
 
   Stream _getLiveData() {
-    return streamSocket.getResponse;
+    return streamSocket!.getResponse;
   }
 
   Stream get myStream => this._myGetLiveData();
 
   Stream _myGetLiveData() {
-    return locationService.controller.stream;
+    return locationService!.controller.stream;
   }
 
-  String clientId;
-  MapController _mapController;
-  MapController get mapController => this._mapController;
+  String? clientId;
+  MapController? _mapController;
+  MapController? get mapController => this._mapController;
 
   /* <----------------------- PAGE -------------------------> */
 
-  GlobalKey<ScaffoldState> scaffoldKey;
+  GlobalKey<ScaffoldState>? scaffoldKey;
 
   TextEditingController sourceTextController = TextEditingController();
   TextEditingController destinationTextController = TextEditingController();
 
   /* <------------------------------------------------------> */
 
-  UserDetails _userDetails;
-  UserDetails get userDetails => _userDetails;
+  UserDetails? _userDetails;
+  UserDetails? get userDetails => _userDetails;
 
   /* <----------------------- STOP -------------------------> */
 
-  StopsData _sourceStop = StopsData(id: null, stopName: null, stopCity: null);
-  StopsData get sourceStop => this._sourceStop;
+  StopsData? _sourceStop = StopsData(id: null, stopName: null, stopCity: null);
+  StopsData? get sourceStop => this._sourceStop;
 
-  StopsData _destinationStop;
-  StopsData get destinationStop => this._destinationStop;
+  StopsData? _destinationStop;
+  StopsData? get destinationStop => this._destinationStop;
 
-  StopsData _selectedStop;
+  StopsData? _selectedStop;
 
   /* <------------------------------------------------------> */
 
@@ -63,18 +63,18 @@ class PassengerViewModel extends StreamViewModel with ServiceImport {
   bool _showBottomBusSheet = false;
   bool get showBottomBusSheet => this._showBottomBusSheet;
 
-  BusModel _busModel;
-  BusModel get busModel => this._busModel;
+  BusModel? _busModel;
+  BusModel? get busModel => this._busModel;
 
-  List<BusModelData> _busModelData;
-  List<BusModelData> get busModelData => this._busModelData;
+  List<BusModelData>? _busModelData;
+  List<BusModelData>? get busModelData => this._busModelData;
   /* <------------------------------------------------------> */
-  Position pos;
+  late Position pos;
 
-  TickerProvider _tickerProvider;
+  TickerProvider? _tickerProvider;
 
-  String _selectedBusClientId = "";
-  String get selectedBusClientId => this._selectedBusClientId;
+  String? _selectedBusClientId = "";
+  String? get selectedBusClientId => this._selectedBusClientId;
 
   @override
   void dispose() {
@@ -92,8 +92,8 @@ class PassengerViewModel extends StreamViewModel with ServiceImport {
     /*   print(_locationData.latitude.toString() +
         " " +
         _locationData.longitude.toString()); */
-    pos = await locationService.getStaticLocation();
-    _mapController.move(LatLng(pos.latitude, pos.longitude), 16);
+    pos = await locationService!.getStaticLocation();
+    _mapController!.move(LatLng(pos.latitude, pos.longitude), 16);
 
     print("got loc");
 
@@ -109,10 +109,10 @@ class PassengerViewModel extends StreamViewModel with ServiceImport {
   } */
 
   void initializeScreen(
-      {MapController mapController,
-      TickerProvider tickerProvicer,
-      BuildContext context,
-      GlobalKey<ScaffoldState> inscaffoldKey}) async {
+      {MapController? mapController,
+      TickerProvider? tickerProvicer,
+      BuildContext? context,
+      GlobalKey<ScaffoldState>? inscaffoldKey}) async {
     setBusy(true);
     scaffoldKey = inscaffoldKey;
     _mapController = mapController;
@@ -120,17 +120,17 @@ class PassengerViewModel extends StreamViewModel with ServiceImport {
     _selectedBusClientId = "";
     _isShowingBottomSheet = false;
 
-    clientId = streamSocket.myClientId;
-    _userDetails = userService.userDetails;
+    clientId = streamSocket!.myClientId;
+    _userDetails = userService!.userDetails;
 
-    if (_userDetails.success == false) {
-      await dialogService.showDialog(
-          description: _userDetails.message.toString() ??
+    if (_userDetails!.success == false) {
+      await dialogService!.showDialog(
+          description: _userDetails!.message.toString() ??
               "There was an error while getting data.");
       handleLogout();
       return;
     }
-    locationService.getMyLiveLocation();
+    locationService!.getMyLiveLocation();
     setBusy(false);
     await getLoc();
     // wow(tccc);
@@ -138,69 +138,69 @@ class PassengerViewModel extends StreamViewModel with ServiceImport {
   }
 
   showBusList() {
-    navigationService.navigateTo(
+    navigationService!.navigateTo(
       kBusListScreen,
     );
   }
 
   showStopList() {
-    navigationService.navigateTo(kStopListScreen);
+    navigationService!.navigateTo(kStopListScreen);
   }
 
   void handleLogout() {
-    locationService.streamClose();
-    authService.logout();
+    locationService!.streamClose();
+    authService!.logout();
   }
 
-  void handleSourceStopFieldTap({bool isDestination}) async {
+  void handleSourceStopFieldTap({bool? isDestination}) async {
     hideBottomBusSheet();
     await getStop();
 
     if (_selectedStop == null) {
       _sourceStop = _sourceStop;
     } else {
-      if (isDestination) {
+      if (isDestination!) {
         _destinationStop = _selectedStop;
-        destinationTextController.text = _destinationStop.stopName;
+        destinationTextController.text = _destinationStop!.stopName!;
       } else {
         _sourceStop = _selectedStop;
-        sourceTextController.text = _sourceStop.stopName;
+        sourceTextController.text = _sourceStop!.stopName!;
       }
     }
     notifyListeners();
   }
 
   void serachBus() async {
-    dialogService.showLoadingDialog();
+    dialogService!.showLoadingDialog();
     if (_sourceStop == _destinationStop) {
-      await dialogService.showDialog(
+      await dialogService!.showDialog(
           description: "Source and Destination stop cannot be same");
     } else if (_sourceStop != null && _destinationStop != null) {
-      _busModel = await busService.searchBusBySourceAndDestination(
-        sourceId: _sourceStop.id,
-        destinationId: _destinationStop.id,
+      _busModel = await busService!.searchBusBySourceAndDestination(
+        sourceId: _sourceStop!.id,
+        destinationId: _destinationStop!.id,
       );
 
-      if (_busModel.success) {
-        _busModelData = _busModel.data;
+      if (_busModel!.success!) {
+        _busModelData = _busModel!.data;
         _showBottomBusSheet = true;
       }
     } else {
-      await dialogService.showDialog(
+      await dialogService!.showDialog(
           description: "Please specify required stops");
     }
     notifyListeners();
-    dialogService.dialogDismiss();
+    dialogService!.dialogDismiss();
   }
 
   Future<StopsData> getStop() async {
-    _selectedStop = await navigationService.navigateTo(kStopSearchScreen);
+    _selectedStop = await (navigationService!.navigateTo(kStopSearchScreen) as FutureOr<StopsData?>);
     return _selectedStop ?? StopsData();
   }
 
   void handleSwap() {
     if (_sourceStop != null || _destinationStop != null) {
-      StopsData _tempStops;
+      StopsData? _tempStops;
       _tempStops = _sourceStop;
       _sourceStop = _destinationStop;
       _destinationStop = _tempStops;
@@ -213,7 +213,7 @@ class PassengerViewModel extends StreamViewModel with ServiceImport {
   }
 
   void openDrawer() {
-    scaffoldKey.currentState.openDrawer();
+    scaffoldKey!.currentState!.openDrawer();
   }
 
   void hideBottomBusSheet() {
@@ -221,35 +221,35 @@ class PassengerViewModel extends StreamViewModel with ServiceImport {
     notifyListeners();
   }
 
-  handleOnBusTap(String busId) {
-    navigationService.navigateTo(kBusDetailScreen, arguments: {
+  handleOnBusTap(String? busId) {
+    navigationService!.navigateTo(kBusDetailScreen, arguments: {
       "busId": busId,
-      "sourceStop": _sourceStop.id,
-      "destinationStop": _destinationStop.id,
+      "sourceStop": _sourceStop!.id,
+      "destinationStop": _destinationStop!.id,
     });
   }
 
   handleExit() async {
-    AlertResponse exit = await dialogService.showDialog(
+    AlertResponse exit = await dialogService!.showDialog(
       title: "Exit",
       description: "Are you sure you want to exit?",
       showNegativeButton: true,
       buttonNegativeTitle: "Cancel",
       buttonTitle: "Yes",
     );
-    if (exit.confirmed) {
+    if (exit.confirmed!) {
       SystemNavigator.pop();
     }
   }
 
   fabClick() async {
-    dialogService.showLoadingDialog();
-    pos = await locationService.getStaticLocation();
-    dialogService.dialogDismiss();
+    dialogService!.showLoadingDialog();
+    pos = await locationService!.getStaticLocation();
+    dialogService!.dialogDismiss();
     // mapController.move(LatLng(pos.latitude, pos.longitude), 16);
     if (_isShowingBottomSheet) {
       _selectedBusClientId = "";
-      navigationService.pop();
+      navigationService!.pop();
       _isShowingBottomSheet = false;
     }
     animatedMapMove(
@@ -262,21 +262,21 @@ class PassengerViewModel extends StreamViewModel with ServiceImport {
     // Create some tweens. These serve to split up the transition from one location to another.
     // In our case, we want to split the transition be<tween> our current map center and the destination.
     final _latTween = Tween<double>(
-        begin: _mapController.center.latitude, end: destLocation.latitude);
+        begin: _mapController!.center.latitude, end: destLocation.latitude);
     final _lngTween = Tween<double>(
-        begin: _mapController.center.longitude, end: destLocation.longitude);
+        begin: _mapController!.center.longitude, end: destLocation.longitude);
     final _zoomTween = Tween<double>(begin: 16, end: 16);
 
     // Create a animation controller that has a duration and a TickerProvider.
     var controller = AnimationController(
-        duration: const Duration(milliseconds: 1000), vsync: _tickerProvider);
+        duration: const Duration(milliseconds: 1000), vsync: _tickerProvider!);
     // The animation determines what path the animation will take. You can try different Curves values, although I found
     // fastOutSlowIn to be my favorite.
     Animation<double> animation =
         CurvedAnimation(parent: controller, curve: Curves.fastOutSlowIn);
 
     controller.addListener(() {
-      _mapController.move(
+      _mapController!.move(
           LatLng(_latTween.evaluate(animation), _lngTween.evaluate(animation)),
           _zoomTween.evaluate(animation));
     });
@@ -297,7 +297,7 @@ class PassengerViewModel extends StreamViewModel with ServiceImport {
   handleMapTap() {
     if (_isShowingBottomSheet) {
       _selectedBusClientId = "";
-      navigationService.pop();
+      navigationService!.pop();
       _isShowingBottomSheet = false;
     }
     notifyListeners();
@@ -310,7 +310,7 @@ class PassengerViewModel extends StreamViewModel with ServiceImport {
       _selectedBusClientId = element["client_id"];
       animatedMapMove(LatLng(double.parse(element["data"]["latitude"]),
           double.parse(element["data"]["longitude"])));
-      scaffoldKey.currentState.showBottomSheet((context) => Container(
+      scaffoldKey!.currentState!.showBottomSheet((context) => Container(
             width: double.infinity,
             color: kTransparent,
             margin: const EdgeInsets.only(top: 20),

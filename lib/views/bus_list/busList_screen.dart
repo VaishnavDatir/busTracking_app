@@ -8,7 +8,7 @@ import '../components/customTextInputField.dart';
 import 'busList_viewmodel.dart';
 
 class BusListScreen extends StatelessWidget {
-  final Map<String, dynamic> screenData;
+  final Map<String, dynamic>? screenData;
   BusListScreen(this.screenData);
 
   @override
@@ -26,12 +26,12 @@ class BusListScreen extends StatelessWidget {
             : Scaffold(
                 appBar: AppBar(
                   title: Text(
-                    model.driverGoingOnDuty ? "Select bus" : "Bus list",
+                    model.driverGoingOnDuty! ? "Select bus" : "Bus list",
                     style: TextStyle(
                         fontSize: kTextTitleSize, fontWeight: FontWeight.bold),
                   ),
                 ),
-                body: model.busModel.success
+                body: model.busModel!.success!
                     ? RefreshIndicator(
                         onRefresh: () => model.doRefresh(),
                         child: Container(
@@ -49,7 +49,7 @@ class BusListScreen extends StatelessWidget {
                                         .filterSearchResults(value.toString()),
                                   )),
                               Expanded(
-                                child: model.busModelData.length == 0
+                                child: model.busModelData!.length == 0
                                     ? Container(
                                         child: Column(
                                           mainAxisAlignment:
@@ -68,11 +68,11 @@ class BusListScreen extends StatelessWidget {
                                       )
                                     : ListView.separated(
                                         shrinkWrap: true,
-                                        itemCount: model.busModelData.length,
+                                        itemCount: model.busModelData!.length,
                                         itemBuilder: (context, index) {
                                           return ListTile(
                                             onTap: () => model.handleOnBusTap(
-                                                model.busModelData[index].id),
+                                                model.busModelData![index].id),
                                             leading: Container(
                                                 height: double.infinity,
                                                 padding: EdgeInsets.all(
@@ -87,13 +87,13 @@ class BusListScreen extends StatelessWidget {
                                                   color: kPrimaryColor,
                                                 )),
                                             title: Text(model
-                                                .busModelData[index].busNumber),
+                                                .busModelData![index].busNumber!),
                                             subtitle: Text(model
-                                                .busModelData[index].busType),
+                                                .busModelData![index].busType!),
                                             trailing: Chip(
                                                 label: Text(model
-                                                    .busModelData[index]
-                                                    .busProvider)),
+                                                    .busModelData![index]
+                                                    .busProvider!)),
                                           );
                                         },
                                         separatorBuilder: (context, index) =>
@@ -119,7 +119,7 @@ class BusListScreen extends StatelessWidget {
                           ],
                         ),
                       ),
-                floatingActionButton:  model.isDriver ? model.driverGoingOnDuty
+                floatingActionButton:  model.isDriver! ? model.driverGoingOnDuty!
                     ? null
                     : FloatingActionButton.extended(
                         onPressed: () => model.addBuss(),
@@ -128,7 +128,7 @@ class BusListScreen extends StatelessWidget {
                           color: kWhite,
                         ),
                         label: Text("Create Bus",
-                            style: appTheme.textTheme.button
+                            style: appTheme.textTheme.button!
                                 .copyWith(color: kWhite)),
                       ):null,
               );

@@ -9,15 +9,15 @@ import '../service_import.dart';
 import 'api/endpoints.dart';
 
 class AuthService extends ServiceImport {
-  String _userToken;
-  String get userToken => this._userToken;
+  String? _userToken;
+  String? get userToken => this._userToken;
 
   Future getUserToken() async {
     print("called AuthService:getUserToken");
-    _userToken = await sharedPrefsService.read(Constants.sharedPrefsToken);
+    _userToken = await sharedPrefsService!.read(Constants.sharedPrefsToken);
   }
 
-  Future signInUser(String emailId, String password) async {
+  Future signInUser(String? emailId, String? password) async {
     print("called AuthService:signInUser");
     try {
       Uri url = Endpoints.isDev
@@ -47,9 +47,9 @@ class AuthService extends ServiceImport {
   }
 
   Future signUpUser(
-    String name,
-    String email,
-    String password,
+    String? name,
+    String? email,
+    String? password,
     String type,
   ) async {
     print("called AuthService:signUpUser");
@@ -85,20 +85,20 @@ class AuthService extends ServiceImport {
   void logout() async {
     print("called AuthService:logout");
 
-    dialogService.showLoadingDialog();
+    dialogService!.showLoadingDialog();
 
-    AlertResponse _dialogRes = await dialogService.showDialog(
+    AlertResponse _dialogRes = await dialogService!.showDialog(
         title: "Logout.",
         description: "Are you sure you want to logout?",
         showNegativeButton: true,
         buttonNegativeTitle: "No",
         buttonTitle: "Yes");
 
-    if (_dialogRes.confirmed) {
-      sharedPrefsService.clear();
-      navigationService.popEverythingAndNavigateTo(kHomeScreen);
+    if (_dialogRes.confirmed!) {
+      sharedPrefsService!.clear();
+      navigationService!.popEverythingAndNavigateTo(kHomeScreen);
     }
 
-    dialogService.dialogDismiss();
+    dialogService!.dialogDismiss();
   }
 }

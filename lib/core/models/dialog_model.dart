@@ -1,9 +1,9 @@
 class AlertRequest {
-  final String title;
-  final String description;
-  final String buttonTitle;
-  final bool showNegativeButton;
-  final String buttonNegativeTitle;
+  final String? title;
+  final String? description;
+  final String? buttonTitle;
+  final bool? showNegativeButton;
+  final String? buttonNegativeTitle;
 
   AlertRequest({
     this.title,
@@ -15,7 +15,7 @@ class AlertRequest {
 }
 
 class AlertResponse {
-  final bool confirmed;
+  final bool? confirmed;
 
   AlertResponse({
     this.confirmed,

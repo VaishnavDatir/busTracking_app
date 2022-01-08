@@ -62,7 +62,7 @@ class CreateBusScreen extends StatelessWidget {
             ),
             onPressed: () => model.createBus(),
             label: Text("Submit",
-                style: appTheme.textTheme.button.copyWith(color: kWhite)),
+                style: appTheme.textTheme.button!.copyWith(color: kWhite)),
           ),
         );
       },
@@ -75,7 +75,7 @@ class CreateBusScreen extends StatelessWidget {
       children: [
         Text(
           "Bus Route",
-          style: appTheme.textTheme.headline6
+          style: appTheme.textTheme.headline6!
               .copyWith(fontWeight: FontWeight.bold),
         ),
         ListView.builder(
@@ -118,8 +118,8 @@ class CreateBusScreen extends StatelessWidget {
                     decoration: BoxDecoration(
                         shape: BoxShape.circle, color: kPrimaryColor),
                   ),
-                  title: Text(model.busRouteList[index].stopName),
-                  subtitle: Text(model.busRouteList[index].stopCity),
+                  title: Text(model.busRouteList[index].stopName!),
+                  subtitle: Text(model.busRouteList[index].stopCity!),
                 ),
               ),
             );
@@ -139,7 +139,7 @@ class CreateBusScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(kRadius),
                   side: BorderSide(color: kPrimaryColor)),
               label: Text("Add Stop",
-                  style: appTheme.textTheme.button
+                  style: appTheme.textTheme.button!
                       .copyWith(color: kPrimaryColor))),
         ),
       ],
@@ -152,7 +152,7 @@ class CreateBusScreen extends StatelessWidget {
       children: [
         Text(
           "Bus Timings",
-          style: appTheme.textTheme.headline6
+          style: appTheme.textTheme.headline6!
               .copyWith(fontWeight: FontWeight.bold),
         ),
         Wrap(
@@ -177,7 +177,7 @@ class CreateBusScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(kRadius),
                     side: BorderSide(color: kPrimaryColor)),
                 label: Text("Add Time",
-                    style: appTheme.textTheme.button
+                    style: appTheme.textTheme.button!
                         .copyWith(color: kPrimaryColor))),
           ],
         ),
@@ -210,7 +210,7 @@ class CreateBusScreen extends StatelessWidget {
         ),
         Text(
           "Example: NMMT, BEST, KDMT, etc",
-          style: appTheme.textTheme.overline.copyWith(
+          style: appTheme.textTheme.overline!.copyWith(
             color: kTextGrey,
             fontStyle: FontStyle.italic,
           ),
@@ -227,7 +227,7 @@ class CreateBusScreen extends StatelessWidget {
         ),
         Text(
           "Example: AC, Non-AC, Electric, etc",
-          style: appTheme.textTheme.overline.copyWith(
+          style: appTheme.textTheme.overline!.copyWith(
             color: kTextGrey,
             fontStyle: FontStyle.italic,
           ),

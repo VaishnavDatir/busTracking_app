@@ -9,11 +9,11 @@ import '../service_import.dart';
 import 'api/endpoints.dart';
 
 class BusService extends ServiceImport {
-  Stops _stops;
-  Stops get stops => this._stops;
+  Stops? _stops;
+  Stops? get stops => this._stops;
 
-  BusModel _busModel;
-  BusModel get busModel => this._busModel;
+  BusModel? _busModel;
+  BusModel? get busModel => this._busModel;
 
   Future getAllStops() async {
     print("called BusService:getAllStops");
@@ -36,8 +36,8 @@ class BusService extends ServiceImport {
   }
 
   Future<BusModel> searchBusBySourceAndDestination({
-    String sourceId,
-    String destinationId,
+    String? sourceId,
+    String? destinationId,
   }) async {
     print("called BusService:searchBusBySourceAndDestination");
 
@@ -84,7 +84,7 @@ class BusService extends ServiceImport {
     }
   }
 
-  Future<BusDetailModel> getBusDetail(String busId) async {
+  Future<BusDetailModel> getBusDetail(String? busId) async {
     print("called BusService:getBusDetail");
     try {
       Uri url = Endpoints.isDev
@@ -93,7 +93,7 @@ class BusService extends ServiceImport {
               Endpoints.herokuServer, Endpoints.getBusDetail + "/$busId");
 
       var response = await http.get(url, headers: {
-        "Authorization": "Bearer ${authService.userToken}",
+        "Authorization": "Bearer ${authService!.userToken}",
         'Content-Type': 'application/json'
       });
 
@@ -118,13 +118,13 @@ class BusService extends ServiceImport {
 
       var bodyData = json.encode({"stopName": stopName, "stopCity": stopCity});
       var response = await http.post(url, body: bodyData, headers: {
-        "Authorization": "Bearer ${authService.userToken}",
+        "Authorization": "Bearer ${authService!.userToken}",
         'Content-Type': 'application/json'
       });
 
       print("Response in BusService:createStop: " + response.body.toString());
 
-      Map<String, dynamic> resp = jsonDecode(response.body);
+      Map<String, dynamic>? resp = jsonDecode(response.body);
 
       return resp;
     } catch (e) {
@@ -159,14 +159,14 @@ class BusService extends ServiceImport {
         url,
         body: bodyData,
         headers: {
-          "Authorization": "Bearer ${authService.userToken}",
+          "Authorization": "Bearer ${authService!.userToken}",
           'Content-Type': 'application/json'
         },
       );
 
       print("Response in BusService:createBus: " + response.body.toString());
 
-      Map<String, dynamic> resp = jsonDecode(response.body);
+      Map<String, dynamic>? resp = jsonDecode(response.body);
 
       return resp;
     } catch (e) {

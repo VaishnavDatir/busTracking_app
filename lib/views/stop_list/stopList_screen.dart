@@ -39,7 +39,7 @@ class StopsListScreen extends StatelessWidget {
                             model.filterSearchResults(value.toString()),
                       )),
                   Expanded(
-                    child: model.stopsDataList.length == 0
+                    child: model.stopsDataList!.length == 0
                         ? Container(
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -59,7 +59,7 @@ class StopsListScreen extends StatelessWidget {
                             onRefresh: () => model.refreshStopList(),
                             child: ListView.separated(
                               shrinkWrap: true,
-                              itemCount: model.stopsDataList.length,
+                              itemCount: model.stopsDataList!.length,
                               itemBuilder: (context, index) {
                                 return Container(
                                   child: ListTile(
@@ -76,10 +76,10 @@ class StopsListScreen extends StatelessWidget {
                                           color: kPrimaryColor,
                                         )),
                                     title: Text(model
-                                        .stopsDataList[index].stopName
+                                        .stopsDataList![index].stopName
                                         .toString()),
                                     subtitle: Text(model
-                                        .stopsDataList[index].stopCity
+                                        .stopsDataList![index].stopCity
                                         .toString()),
                                   ),
                                 );
@@ -96,7 +96,7 @@ class StopsListScreen extends StatelessWidget {
                 ],
               ),
             ),
-            floatingActionButton: model.isDriver
+            floatingActionButton: model.isDriver!
                 ? FloatingActionButton.extended(
                     onPressed: () => model.addstop(),
                     label: Row(
@@ -106,7 +106,7 @@ class StopsListScreen extends StatelessWidget {
                           color: kWhite,
                         ),
                         Text("Create Stop",
-                            style: appTheme.textTheme.button
+                            style: appTheme.textTheme.button!
                                 .copyWith(color: kWhite)),
                       ],
                     ),

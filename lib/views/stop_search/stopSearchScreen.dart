@@ -38,7 +38,7 @@ class _StopSearchScreenState extends State<StopSearchScreen> {
                             model.filterSearchResults(value.toString()),
                       )),
                   Expanded(
-                    child: model.stopsDataList.length == 0
+                    child: model.stopsDataList!.length == 0
                         ? Container(
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -58,12 +58,12 @@ class _StopSearchScreenState extends State<StopSearchScreen> {
                             onRefresh: () => model.refreshStopList(),
                             child: ListView.separated(
                               shrinkWrap: true,
-                              itemCount: model.stopsDataList.length,
+                              itemCount: model.stopsDataList!.length,
                               itemBuilder: (context, index) {
                                 return Container(
                                   child: ListTile(
                                     onTap: () => model.handleStopTap(
-                                        model.stopsDataList[index]),
+                                        model.stopsDataList![index]),
                                     leading: Container(
                                         height: double.infinity,
                                         padding: EdgeInsets.all(kMediumSpace),
@@ -77,10 +77,10 @@ class _StopSearchScreenState extends State<StopSearchScreen> {
                                           color: kPrimaryColor,
                                         )),
                                     title: Text(model
-                                        .stopsDataList[index].stopName
+                                        .stopsDataList![index].stopName
                                         .toString()),
                                     subtitle: Text(model
-                                        .stopsDataList[index].stopCity
+                                        .stopsDataList![index].stopCity
                                         .toString()),
                                   ),
                                 );

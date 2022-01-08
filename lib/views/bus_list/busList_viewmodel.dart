@@ -7,22 +7,22 @@ import '../../core/routes/router_path.dart';
 import '../../core/service_import.dart';
 
 class BusListViewModel extends BaseViewModel with ServiceImport {
-  BusModel _busModel;
-  BusModel get busModel => this._busModel;
-  bool isDriver = false;
+  BusModel? _busModel;
+  BusModel? get busModel => this._busModel;
+  bool? isDriver = false;
 
-  List<BusModelData> _busModelData;
-  List<BusModelData> get busModelData => this._busModelData;
+  List<BusModelData>? _busModelData;
+  List<BusModelData>? get busModelData => this._busModelData;
 
-  List<BusModelData> _busDataListMain;
+  List<BusModelData>? _busDataListMain;
 
   TextEditingController searchTextController = TextEditingController();
 
-  bool driverGoingOnDuty;
+  bool? driverGoingOnDuty;
 
-  initializeScreen(Map<String, dynamic> screenData) async {
+  initializeScreen(Map<String, dynamic>? screenData) async {
     setBusy(true);
-    isDriver = await sharedPrefsService.read(Constants.sharedPrefsUserType);
+    isDriver = await sharedPrefsService!.read(Constants.sharedPrefsUserType);
 
     driverGoingOnDuty =
         screenData == null ? false : screenData["driverGoingOnDuty"] ?? false;
@@ -33,32 +33,32 @@ class BusListViewModel extends BaseViewModel with ServiceImport {
   }
 
   setScreenData() async {
-    _busModel = busService.busModel;
-    if (_busModel.success) {
-      _busDataListMain = busModel.data;
+    _busModel = busService!.busModel;
+    if (_busModel!.success!) {
+      _busDataListMain = busModel!.data;
 
-      _busModelData = _busModel.data;
+      _busModelData = _busModel!.data;
     }
     notifyListeners();
   }
 
-  handleOnBusTap(String busId) {
-    navigationService.navigateTo(kBusDetailScreen, arguments: {
+  handleOnBusTap(String? busId) {
+    navigationService!.navigateTo(kBusDetailScreen, arguments: {
       "busId": busId,
       "driverGoingOnDuty": driverGoingOnDuty,
     });
   }
 
   void filterSearchResults(String query) async {
-    List<BusModelData> searchList = [];
+    List<BusModelData>? searchList = [];
 
     searchList = _busDataListMain;
 
     if (query.trim().isNotEmpty) {
       List<BusModelData> localListData = [];
-      searchList.forEach((BusModelData element) {
-        if ((element.busNumber.toLowerCase().contains(query.toLowerCase())) ||
-            (element.busType.toLowerCase().contains(query.toLowerCase()))) {
+      searchList!.forEach((BusModelData element) {
+        if ((element.busNumber!.toLowerCase().contains(query.toLowerCase())) ||
+            (element.busType!.toLowerCase().contains(query.toLowerCase()))) {
           localListData.add(element);
         }
       });
@@ -77,12 +77,12 @@ class BusListViewModel extends BaseViewModel with ServiceImport {
   }
 
   void addBuss() async {
-    await navigationService.navigateTo(kAddBusScreen);
+    await navigationService!.navigateTo(kAddBusScreen);
     setScreenData();
   }
 
   doRefresh() async {
-    await busService.getAllBusList();
+    await busService!.getAllBusList();
     setScreenData();
   }
 }

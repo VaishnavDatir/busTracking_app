@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:latlong/latlong.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../core/models/dialog_model.dart';
@@ -15,24 +15,24 @@ class DriverHomeViewModel extends StreamViewModel with ServiceImport {
   Stream get stream => this._getLiveData();
 
   Stream _getLiveData() {
-    return streamSocket.getResponse;
+    return streamSocket!.getResponse;
   }
 
-  UserDetails _userDetails;
-  UserDetails get userDetails => _userDetails;
+  UserDetails? _userDetails;
+  UserDetails? get userDetails => _userDetails;
 
-  bool _isDriverOnBus;
-  bool get isDriverOnBus => _isDriverOnBus;
+  bool? _isDriverOnBus;
+  bool? get isDriverOnBus => _isDriverOnBus;
 
-  String clientId;
+  String? clientId;
 
   // loc.Location _location = loc.Location();
   /*  loc.LocationData _locationData;
   loc.LocationData get locationData => this._locationData; */
-  MapController _mapController;
-  MapController get mapController => this._mapController;
+  MapController? _mapController;
+  MapController? get mapController => this._mapController;
 
-  Position pos;
+  late Position pos;
 
   getLoc() async {
     print("Getting loc");
@@ -40,29 +40,29 @@ class DriverHomeViewModel extends StreamViewModel with ServiceImport {
     /*   print(_locationData.latitude.toString() +
         " " +
         _locationData.longitude.toString()); */
-    pos = await locationService.getStaticLocation();
-    mapController.move(LatLng(pos.latitude, pos.longitude), 16);
+    pos = await locationService!.getStaticLocation();
+    mapController!.move(LatLng(pos.latitude, pos.longitude), 16);
 
     print("got loc");
 
     notifyListeners();
   }
 
-  initializeScreen(MapController mapController) async {
+  initializeScreen(MapController? mapController) async {
     _mapController = mapController;
     setBusy(true);
 
-    _userDetails = userService.userDetails;
-    if (_userDetails.success == false) {
-      await dialogService.showDialog(
-          description: _userDetails.message.toString() ??
+    _userDetails = userService!.userDetails;
+    if (_userDetails!.success == false) {
+      await dialogService!.showDialog(
+          description: _userDetails!.message.toString() ??
               "There was an error while getting data.");
       handleLogout();
       return;
     }
-    _isDriverOnBus = _userDetails.data.isActive;
+    _isDriverOnBus = _userDetails!.data!.isActive;
 
-    clientId = streamSocket.myClientId;
+    clientId = streamSocket!.myClientId;
     print(clientId ?? "no id");
 
     setBusy(false);
@@ -72,19 +72,19 @@ class DriverHomeViewModel extends StreamViewModel with ServiceImport {
   }
 
   changeIsDriverOnBus() async {
-    dialogService.showLoadingDialog();
+    dialogService!.showLoadingDialog();
 
-    Map<String, dynamic> response = await userService.removeDriverOnBus();
+    Map<String, dynamic> response = await (userService!.removeDriverOnBus() as FutureOr<Map<String, dynamic>>);
 
     // locationService.stop();
-    locationService.stopServiceInPlatform();
+    locationService!.stopServiceInPlatform();
 
     // streamSocket.socketDisconnect();
 
-    await userService.getUserData();
-    _isDriverOnBus = _userDetails.data.isActive;
+    await userService!.getUserData();
+    _isDriverOnBus = _userDetails!.data!.isActive;
 
-    await dialogService.showDialog(
+    await dialogService!.showDialog(
         title: response["success"].toString(),
         description: response["message"]);
 
@@ -92,52 +92,52 @@ class DriverHomeViewModel extends StreamViewModel with ServiceImport {
 
     notifyListeners();
 
-    dialogService.dialogDismiss();
+    dialogService!.dialogDismiss();
   }
 
   showBusList() {
-    navigationService.navigateTo(
+    navigationService!.navigateTo(
       kBusListScreen,
     );
   }
 
   showStopList() {
-    navigationService.navigateTo(kStopListScreen);
+    navigationService!.navigateTo(kStopListScreen);
   }
 
   handleGoOnDuty() async {
-    if (_isDriverOnBus) {
-      await dialogService.showDialog(
+    if (_isDriverOnBus!) {
+      await dialogService!.showDialog(
           description:
               "Your already on duty.\nTo select new bus go off-duty and then select.");
     } else {
-      await navigationService.navigateTo(kBusListScreen, arguments: {
+      await navigationService!.navigateTo(kBusListScreen, arguments: {
         "driverGoingOnDuty": true,
       });
     }
   }
 
   handleLogout() {
-    authService.logout();
+    authService!.logout();
   }
 
   handleExit() async {
-    AlertResponse exit = await dialogService.showDialog(
+    AlertResponse exit = await dialogService!.showDialog(
       title: "Exit",
       description: "Are you sure you want to exit?",
       showNegativeButton: true,
       buttonNegativeTitle: "Cancel",
       buttonTitle: "Yes",
     );
-    if (exit.confirmed) {
+    if (exit.confirmed!) {
       SystemNavigator.pop();
     }
   }
 
   fabClick(TickerProvider tc) async {
-    dialogService.showLoadingDialog();
-    pos = await locationService.getStaticLocation();
-    dialogService.dialogDismiss();
+    dialogService!.showLoadingDialog();
+    pos = await locationService!.getStaticLocation();
+    dialogService!.dialogDismiss();
     // mapController.move(LatLng(pos.latitude, pos.longitude), 16);
     animatedMapMove(LatLng(pos.latitude, pos.longitude), tc);
   }
@@ -146,9 +146,9 @@ class DriverHomeViewModel extends StreamViewModel with ServiceImport {
     // Create some tweens. These serve to split up the transition from one location to another.
     // In our case, we want to split the transition be<tween> our current map center and the destination.
     final _latTween = Tween<double>(
-        begin: mapController.center.latitude, end: destLocation.latitude);
+        begin: mapController!.center.latitude, end: destLocation.latitude);
     final _lngTween = Tween<double>(
-        begin: mapController.center.longitude, end: destLocation.longitude);
+        begin: mapController!.center.longitude, end: destLocation.longitude);
     final _zoomTween = Tween<double>(begin: 16, end: 16);
 
     // Create a animation controller that has a duration and a TickerProvider.
@@ -160,7 +160,7 @@ class DriverHomeViewModel extends StreamViewModel with ServiceImport {
         CurvedAnimation(parent: controller, curve: Curves.fastOutSlowIn);
 
     controller.addListener(() {
-      mapController.move(
+      mapController!.move(
           LatLng(_latTween.evaluate(animation), _lngTween.evaluate(animation)),
           _zoomTween.evaluate(animation));
     });

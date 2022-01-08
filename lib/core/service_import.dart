@@ -9,12 +9,12 @@ import 'services/user_service.dart';
 import 'stream_socket.dart';
 
 class ServiceImport {
-  NavigationService get navigationService => locator<NavigationService>();
-  DialogService get dialogService => locator<DialogService>();
-  SharedPrefsService get sharedPrefsService => locator<SharedPrefsService>();
-  AuthService get authService => locator<AuthService>();
-  UserService get userService => locator<UserService>();
-  BusService get busService => locator<BusService>();
-  LocationService get locationService => locator<LocationService>();
-  StreamSocket get streamSocket => locator<StreamSocket>();
+  NavigationService? get navigationService => locator<NavigationService>();
+  DialogService? get dialogService => locator<DialogService>();
+  SharedPrefsService? get sharedPrefsService => locator<SharedPrefsService>();
+  AuthService? get authService => locator<AuthService>();
+  UserService? get userService => locator<UserService>();
+  BusService? get busService => locator<BusService>();
+  LocationService? get locationService => locator<LocationService>();
+  StreamSocket? get streamSocket => locator<StreamSocket>();
 }

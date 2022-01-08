@@ -1,10 +1,10 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPrefsService {
-  static SharedPrefsService _instance;
-  static SharedPreferences _preferences;
+  static SharedPrefsService? _instance;
+  static SharedPreferences? _preferences;
 
-  static Future<SharedPrefsService> getInstance() async {
+  static Future<SharedPrefsService?> getInstance() async {
     if (_instance == null) {
       _instance = SharedPrefsService();
     }
@@ -15,7 +15,7 @@ class SharedPrefsService {
   }
 
   dynamic read(String key) {
-    var value = _preferences.get(key);
+    var value = _preferences!.get(key);
     print('(TRACE) SharePrefsService READ: key: $key value: $value');
     return value;
   }
@@ -24,23 +24,23 @@ class SharedPrefsService {
     print('(TRACE) SharePrefsService WRITE: key: $key value: $content');
 
     if (content is String) {
-      await _preferences.setString(key, content);
+      await _preferences!.setString(key, content);
     }
     if (content is bool) {
-      await _preferences.setBool(key, content);
+      await _preferences!.setBool(key, content);
     }
     if (content is int) {
-      await _preferences.setInt(key, content);
+      await _preferences!.setInt(key, content);
     }
     if (content is double) {
-      await _preferences.setDouble(key, content);
+      await _preferences!.setDouble(key, content);
     }
     if (content is List<String>) {
-      await _preferences.setStringList(key, content);
+      await _preferences!.setStringList(key, content);
     }
   }
 
   void clear() {
-    _preferences.clear();
+    _preferences!.clear();
   }
 }

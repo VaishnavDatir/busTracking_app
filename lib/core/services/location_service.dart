@@ -17,16 +17,16 @@ void backgroundMain() async {
 }
 
 class LocationService extends ServiceImport {
-  Map<String, dynamic> busData;
+  Map<String, dynamic>? busData;
 
-  String userType;
+  String? userType;
 
-  setBusData(Map<String, dynamic> data, String type) {
+  setBusData(Map<String, dynamic>? data, String type) {
     busData = data;
     userType = type;
   }
 
-  StreamSubscription<Position> positionStream;
+  StreamSubscription<Position>? positionStream;
 
   getLiveLocation() async {
     final hasPermission = await handlePermission();
@@ -46,22 +46,22 @@ class LocationService extends ServiceImport {
           "latitude": position.latitude.toString(),
           "longitude": position.longitude.toString(),
         };
-        streamSocket.sendLocation(data);
+        streamSocket!.sendLocation(data);
       });
     }
   }
 
   StreamController controller = StreamController.broadcast();
 
-  StreamSubscription<Position> mYositionStream;
+  StreamSubscription<Position>? mYositionStream;
   void streamClose() {
     if (!controller.isClosed) controller.stream.drain();
-    if (mYositionStream != null) mYositionStream.pause();
+    if (mYositionStream != null) mYositionStream!.pause();
   }
 
   void streamStart() {
     if (controller.isClosed) controller.stream;
-    if (mYositionStream == null) mYositionStream.resume();
+    if (mYositionStream == null) mYositionStream!.resume();
   }
 
   getMyLiveLocation() async {
@@ -88,7 +88,7 @@ class LocationService extends ServiceImport {
     if (!serviceEnabled) {
       print("@@ location: service is not enabled");
 
-      await dialogService.showDialog(
+      await dialogService!.showDialog(
           description: "Please enable location",
           buttonNegativeTitle: "Cancel",
           showNegativeButton: true);
@@ -125,7 +125,7 @@ class LocationService extends ServiceImport {
   startServiceInPlatform() async {
     try {
       var methodChannel = MethodChannel("com.example.BusTracking_App/Start");
-      var calbackHandle = PluginUtilities.getCallbackHandle(backgroundMain);
+      var calbackHandle = PluginUtilities.getCallbackHandle(backgroundMain)!;
       methodChannel.invokeMethod("startService", calbackHandle.toRawHandle());
     } catch (e) {
       print("ERROR WHILE STATING BG SERVICE: " + e.toString());
@@ -144,10 +144,10 @@ class LocationService extends ServiceImport {
 
   void stop() {
     print("DRAINing");
-    streamSocket.removeDriver();
+    streamSocket!.removeDriver();
     // stopServiceInPlatform();
     if (positionStream != null) {
-      positionStream.cancel();
+      positionStream!.cancel();
     }
     print("DRAINED");
   }

@@ -5,18 +5,18 @@ import '../../core/routes/router_path.dart';
 import '../../core/service_import.dart';
 
 class BusDetailViewModel extends BaseViewModel with ServiceImport {
-  BusDetailModel _busDetailModel;
-  BusDetailModel get busDetailModel => this._busDetailModel;
+  BusDetailModel? _busDetailModel;
+  BusDetailModel? get busDetailModel => this._busDetailModel;
 
-  BusDetailData _busDetailData;
-  BusDetailData get busDetailData => this._busDetailData;
+  BusDetailData? _busDetailData;
+  BusDetailData? get busDetailData => this._busDetailData;
 
-  String sourceStopId;
-  String destinationStopId;
+  String? sourceStopId;
+  String? destinationStopId;
 
-  bool driverGoingOnDuty;
+  late bool driverGoingOnDuty;
 
-  String busId;
+  String? busId;
 
   initializeScreen(Map<String, dynamic> screenDetails) async {
     setBusy(true);
@@ -24,10 +24,10 @@ class BusDetailViewModel extends BaseViewModel with ServiceImport {
     busId = screenDetails["busId"];
     driverGoingOnDuty = screenDetails["driverGoingOnDuty"] ?? false;
 
-    _busDetailModel = await busService.getBusDetail(busId);
+    _busDetailModel = await busService!.getBusDetail(busId);
 
-    if (_busDetailModel.success) {
-      _busDetailData = _busDetailModel.busDetailData;
+    if (_busDetailModel!.success!) {
+      _busDetailData = _busDetailModel!.busDetailData;
     }
 
     sourceStopId = screenDetails["sourceStop"] ?? null;
@@ -38,35 +38,37 @@ class BusDetailViewModel extends BaseViewModel with ServiceImport {
   }
 
   fabReverseRoute() {
-    _busDetailData.busStops = _busDetailData.busStops.reversed.toList();
+    _busDetailData!.busStops = _busDetailData!.busStops!.reversed.toList();
     notifyListeners();
   }
 
   setDriverForBus() async {
-    dialogService.showLoadingDialog();
+    dialogService!.showLoadingDialog();
 
-    Map<String, dynamic> response = await userService.updateUserIsActive(true);
+    Map<String, dynamic> response =
+        await (userService!.updateUserIsActive(true));
 
     if (response["success"]) {
-      Map<String, dynamic> response1 = await userService.setDriverOnBus(busId);
+      Map<String, dynamic> response1 =
+          await (userService!.setDriverOnBus(busId));
 
-      locationService.setBusData(
-          response1["data"], userService.userDetails.data.type.toString());
+      locationService!.setBusData(
+          response1["data"], userService!.userDetails!.data!.type.toString());
       // await locationService.getLiveLocation();
-      await locationService.startServiceInPlatform();
-      await userService.getUserData();
+      await locationService!.startServiceInPlatform();
+      await userService!.getUserData();
 
-      await dialogService.showDialog(
+      await dialogService!.showDialog(
           title: response1["success"].toString(),
           description: response1["message"]);
 
-      navigationService.popEverythingAndNavigateTo(kDriverHomeScreen);
+      navigationService!.popEverythingAndNavigateTo(kDriverHomeScreen);
     } else {
-      await dialogService.showDialog(
+      await dialogService!.showDialog(
           description:
               "There was an error while assiging bus for you. Try again later");
     }
 
-    dialogService.dialogDismiss();
+    dialogService!.dialogDismiss();
   }
 }

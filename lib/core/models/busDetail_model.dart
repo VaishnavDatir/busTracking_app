@@ -17,8 +17,8 @@ class BusDetailModel {
     this.busDetailData,
   });
 
-  bool success;
-  BusDetailData busDetailData;
+  bool? success;
+  BusDetailData? busDetailData;
 
   factory BusDetailModel.fromJson(Map<String, dynamic> json) => BusDetailModel(
         success: json["success"] == null ? null : json["success"],
@@ -29,7 +29,7 @@ class BusDetailModel {
 
   Map<String, dynamic> toJson() => {
         "success": success == null ? null : success,
-        "busDetailData": busDetailData == null ? null : busDetailData.toJson(),
+        "busDetailData": busDetailData == null ? null : busDetailData!.toJson(),
       };
 }
 
@@ -44,13 +44,13 @@ class BusDetailData {
     this.v,
   });
 
-  String id;
-  String busType;
-  List<StopsData> busStops;
-  List<String> busTimings;
-  String busProvider;
-  String busNumber;
-  int v;
+  String? id;
+  String? busType;
+  List<StopsData>? busStops;
+  List<String>? busTimings;
+  String? busProvider;
+  String? busNumber;
+  int? v;
 
   factory BusDetailData.fromJson(Map<String, dynamic> json) => BusDetailData(
         id: json["_id"] == null ? null : json["_id"],
@@ -72,10 +72,10 @@ class BusDetailData {
         "busType": busType == null ? null : busType,
         "busStops": busStops == null
             ? null
-            : List<dynamic>.from(busStops.map((x) => x.toJson())),
+            : List<dynamic>.from(busStops!.map((x) => x.toJson())),
         "busTimings": busTimings == null
             ? null
-            : List<dynamic>.from(busTimings.map((x) => x)),
+            : List<dynamic>.from(busTimings!.map((x) => x)),
         "busProvider": busProvider == null ? null : busProvider,
         "busNumber": busNumber == null ? null : busNumber,
         "__v": v == null ? null : v,

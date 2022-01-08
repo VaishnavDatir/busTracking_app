@@ -8,26 +8,26 @@ import '../../theme/dimensions.dart';
 import '../../theme/themes.dart';
 
 class DialogManager extends StatefulWidget {
-  final Widget child;
-  DialogManager({Key key, this.child}) : super(key: key);
+  final Widget? child;
+  DialogManager({Key? key, this.child}) : super(key: key);
 
   _DialogManagerState createState() => _DialogManagerState();
 }
 
 class _DialogManagerState extends State<DialogManager> {
-  DialogService _dialogService = locator<DialogService>();
+  DialogService? _dialogService = locator<DialogService>();
 
   @override
   void initState() {
     super.initState();
-    _dialogService.registerDialogListenerFun(_showDialog);
-    _dialogService.registerLoadingDialogFun(_showLoadingDialog);
-    _dialogService.dialogDismissListenerFun(_dismissDialog);
+    _dialogService!.registerDialogListenerFun(_showDialog);
+    _dialogService!.registerLoadingDialogFun(_showLoadingDialog);
+    _dialogService!.dialogDismissListenerFun(_dismissDialog);
   }
 
   @override
   Widget build(BuildContext context) {
-    return widget.child;
+    return widget.child!;
   }
 
   void _dismissDialog() {
@@ -82,29 +82,29 @@ class _DialogManagerState extends State<DialogManager> {
               Radius.circular(kRadius / 4),
             ),
           ),
-          title: request.title.isEmpty
+          title: request.title!.isEmpty
               ? null
               : Text(
-                  request.title,
+                  request.title!,
                   style: appTheme.primaryTextTheme.headline4,
                 ),
           content: Text(
-            request.description != null ? request.description : "",
-            style: appTheme.textTheme.bodyText2.copyWith(
+            request.description != null ? request.description! : "",
+            style: appTheme.textTheme.bodyText2!.copyWith(
               color: kTextLightGrey,
             ),
             textAlign: TextAlign.left,
           ),
           actions: <Widget>[
-            request.showNegativeButton
+            request.showNegativeButton!
                 ? TextButton(
                     child: Text(
-                      request.buttonNegativeTitle,
-                      style: appTheme.textTheme.bodyText1
+                      request.buttonNegativeTitle!,
+                      style: appTheme.textTheme.bodyText1!
                           .copyWith(color: kTextLightGrey),
                     ),
                     onPressed: () {
-                      _dialogService
+                      _dialogService!
                           .dialogComplete(AlertResponse(confirmed: false));
                       Navigator.of(context).pop();
                     },
@@ -112,12 +112,12 @@ class _DialogManagerState extends State<DialogManager> {
                 : Container(),
             TextButton(
               child: Text(
-                request.buttonTitle,
+                request.buttonTitle!,
                 style:
-                    appTheme.textTheme.subtitle2.copyWith(color: kPrimaryColor),
+                    appTheme.textTheme.subtitle2!.copyWith(color: kPrimaryColor),
               ),
               onPressed: () {
-                _dialogService.dialogComplete(AlertResponse(confirmed: true));
+                _dialogService!.dialogComplete(AlertResponse(confirmed: true));
                 Navigator.of(context).pop();
               },
             )

@@ -21,7 +21,7 @@ class SignUpViewModel extends BaseViewModel with ServiceImport {
   FocusNode _passwordFN = FocusNode();
   FocusNode get passwordFN => this._passwordFN;
 
-  String _name, _emailId, _password;
+  String? _name, _emailId, _password;
 
   bool _isObscureText = true;
   bool get isObscureText => this._isObscureText;
@@ -36,66 +36,66 @@ class SignUpViewModel extends BaseViewModel with ServiceImport {
 
   handleSignUpTap(BuildContext context) async {
     if (_nameTextController.text.trim().length < 4) {
-      await dialogService.showDialog(description: "Please enter correct name");
+      await dialogService!.showDialog(description: "Please enter correct name");
 
       FocusScope.of(context).requestFocus(_nameTextFN);
     } else if (_emailTC.text.trim().length < 4 ||
         !_emailTC.text.contains("@")) {
-      await dialogService.showDialog(
+      await dialogService!.showDialog(
           description: "Please enter correct email address");
 
       FocusScope.of(context).requestFocus(_emailFN);
     } else if (_passwordTC.text.length < 4) {
-      await dialogService.showDialog(
+      await dialogService!.showDialog(
           description: "Password cannot be less than 4 characters");
       FocusScope.of(context).requestFocus(_passwordFN);
     } else {
-      dialogService.showLoadingDialog();
+      dialogService!.showLoadingDialog();
       _name = _nameTextController.text.toString().trim();
       _emailId = _emailTC.text.toString().trim();
       _password = _passwordTC.text.toString().trim();
       String _type = _isDriver ? "Driver" : "Passenger";
 
       Map<String, dynamic> signUpResponse =
-          await authService.signUpUser(_name, _emailId, _password, _type);
+          await (authService!.signUpUser(_name, _emailId, _password, _type) as FutureOr<Map<String, dynamic>>);
 
       if (signUpResponse["success"]) {
         Map<String, dynamic> signInResponse =
-            await authService.signInUser(_emailId, _password);
+            await (authService!.signInUser(_emailId, _password) as FutureOr<Map<String, dynamic>>);
 
         if (signInResponse["success"]) {
-          await sharedPrefsService.write(
+          await sharedPrefsService!.write(
               Constants.sharedPrefsToken, signInResponse["token"]);
 
-          await sharedPrefsService.write(
+          await sharedPrefsService!.write(
               Constants.sharedPrefsUserId, signInResponse["userId"]);
 
           bool _isDriver = signInResponse["type"]
               .toString()
               .toLowerCase()
               .contains("driver");
-          await sharedPrefsService.write(
+          await sharedPrefsService!.write(
               Constants.sharedPrefsUserType, _isDriver);
 
-          await sharedPrefsService.write(Constants.sharedPrefsIsSignedIn, true);
-          streamSocket.socketConnect();
+          await sharedPrefsService!.write(Constants.sharedPrefsIsSignedIn, true);
+          streamSocket!.socketConnect();
 
-          await authService.getUserToken();
-          await userService.getUserData();
-          await busService.getAllStops();
-          await busService.getAllBusList();
+          await authService!.getUserToken();
+          await userService!.getUserData();
+          await busService!.getAllStops();
+          await busService!.getAllBusList();
 
           if (_isDriver) {
-            navigationService.popEverythingAndNavigateTo(kDriverHomeScreen);
+            navigationService!.popEverythingAndNavigateTo(kDriverHomeScreen);
           } else {
-            navigationService.popEverythingAndNavigateTo(kPassengerHomeScreen);
+            navigationService!.popEverythingAndNavigateTo(kPassengerHomeScreen);
           }
         } else {
-          await dialogService.showDialog(
+          await dialogService!.showDialog(
               title: "Oops!", description: signInResponse["message"]);
         }
       } else {
-        await dialogService.showDialog(
+        await dialogService!.showDialog(
             title: "Oops!",
             description: signUpResponse["message"] +
                 "\n" +
@@ -103,7 +103,7 @@ class SignUpViewModel extends BaseViewModel with ServiceImport {
                     ? ""
                     : signUpResponse["data"] ?? ""));
       }
-      dialogService.dialogDismiss();
+      dialogService!.dialogDismiss();
     }
   }
 

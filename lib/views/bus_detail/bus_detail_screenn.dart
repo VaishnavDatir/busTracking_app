@@ -8,13 +8,13 @@ import '../../theme/themes.dart';
 import 'bus_detail_viewmodel.dart';
 
 class BusDetailScreen extends StatelessWidget {
-  final Map<String, dynamic> screenData;
+  final Map<String, dynamic>? screenData;
   BusDetailScreen(this.screenData);
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<BusDetailViewModel>.reactive(
       viewModelBuilder: () => BusDetailViewModel(),
-      onModelReady: (model) => model.initializeScreen(screenData),
+      onModelReady: (model) => model.initializeScreen(screenData!),
       builder: (context, model, child) {
         return AnimatedSwitcher(
           duration: Duration(seconds: Constants.animatedSwitcherDuration),
@@ -26,7 +26,7 @@ class BusDetailScreen extends StatelessWidget {
                 )
               : Scaffold(
                   appBar: AppBar(),
-                  body: model.busDetailModel.success
+                  body: model.busDetailModel!.success!
                       ? Container(
                           child: Column(
                             children: [
@@ -77,7 +77,7 @@ class BusDetailScreen extends StatelessWidget {
                             color: kWhite,
                           ),
                           label: Text("Select this bus",
-                              style: appTheme.textTheme.button
+                              style: appTheme.textTheme.button!
                                   .copyWith(color: kWhite)))
                       : FloatingActionButton(
                           tooltip: "Reverse route",
@@ -105,35 +105,38 @@ class BusDetailScreen extends StatelessWidget {
         children: [
           Text(
             "Bus Route",
-            style: appTheme.textTheme.headline6
+            style: appTheme.textTheme.headline6!
                 .copyWith(fontWeight: FontWeight.bold),
           ),
           Stepper(
             physics: NeverScrollableScrollPhysics(),
-            controlsBuilder: (context, {onStepCancel, onStepContinue}) {
+            controlsBuilder: (context, details) {
               return Container();
             },
+            /* controlsBuilder: (context, {onStepCancel, onStepContinue}) {
+              return Container();
+            }, */
             onStepTapped: (value) {},
             steps: List.generate(
-                model.busDetailData.busStops.length,
+                model.busDetailData!.busStops!.length,
                 (index) => Step(
                       isActive: true,
                       title: Text(
-                        model.busDetailData.busStops[index].stopName,
+                        model.busDetailData!.busStops![index].stopName!,
                         style: TextStyle(
-                            color: (model.busDetailData.busStops[index].id ==
+                            color: (model.busDetailData!.busStops![index].id ==
                                         model.sourceStopId) ||
-                                    (model.busDetailData.busStops[index].id ==
+                                    (model.busDetailData!.busStops![index].id ==
                                         model.destinationStopId)
                                 ? kPrimaryColor
                                 : kBlack),
                       ),
                       subtitle: Text(
-                        model.busDetailData.busStops[index].stopCity,
+                        model.busDetailData!.busStops![index].stopCity!,
                         style: TextStyle(
-                            color: (model.busDetailData.busStops[index].id ==
+                            color: (model.busDetailData!.busStops![index].id ==
                                         model.sourceStopId) ||
-                                    (model.busDetailData.busStops[index].id ==
+                                    (model.busDetailData!.busStops![index].id ==
                                         model.destinationStopId)
                                 ? kPrimaryColor
                                 : kBlack),
@@ -157,17 +160,17 @@ class BusDetailScreen extends StatelessWidget {
         children: [
           Text(
             "Bus Timings",
-            style: appTheme.textTheme.headline6
+            style: appTheme.textTheme.headline6!
                 .copyWith(fontWeight: FontWeight.bold),
           ),
           Wrap(
             spacing: kSmallSpace,
             runSpacing: kMediumSpace,
             children: List<Widget>.generate(
-                model.busDetailData.busTimings.length,
+                model.busDetailData!.busTimings!.length,
                 (index) => Chip(
                     label: Text(
-                        model.busDetailData.busTimings[index].toString()))),
+                        model.busDetailData!.busTimings![index].toString()))),
           )
         ],
       ),
@@ -187,11 +190,11 @@ class BusDetailScreen extends StatelessWidget {
             color: kPrimaryColor,
           )),
       title: Text(
-        model.busDetailData.busNumber,
+        model.busDetailData!.busNumber!,
         style: TextStyle(fontWeight: FontWeight.bold),
       ),
-      subtitle: Text(model.busDetailData.busType),
-      trailing: Chip(label: Text(model.busDetailData.busProvider)),
+      subtitle: Text(model.busDetailData!.busType!),
+      trailing: Chip(label: Text(model.busDetailData!.busProvider!)),
     );
   }
 }
