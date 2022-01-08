@@ -123,12 +123,6 @@ class LocationService extends ServiceImport {
   }
 
   startServiceInPlatform() async {
-    //TODO: FIX THIS
-    /* bool res = await LocationService.instance().getLocation();
-    if (!res) {
-      return false;
-    } */
-    // getLiveLocation();
     try {
       var methodChannel = MethodChannel("com.example.BusTracking_App/Start");
       var calbackHandle = PluginUtilities.getCallbackHandle(backgroundMain);
@@ -144,14 +138,14 @@ class LocationService extends ServiceImport {
     var methodChannel = MethodChannel("com.example.BusTracking_App/Stop");
     // methodChannel.invokeMethod("stopService", -1.0.toDouble());
     methodChannel.invokeMethod("stopService");
-    // LocationService.instance().stop(); //TODO: FIx THIS
+    stop();
     // stop();
   }
 
   void stop() {
     print("DRAINing");
     streamSocket.removeDriver();
-    stopServiceInPlatform();
+    // stopServiceInPlatform();
     if (positionStream != null) {
       positionStream.cancel();
     }

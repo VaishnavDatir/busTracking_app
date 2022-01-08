@@ -76,7 +76,8 @@ class DriverHomeViewModel extends StreamViewModel with ServiceImport {
 
     Map<String, dynamic> response = await userService.removeDriverOnBus();
 
-    locationService.stop();
+    // locationService.stop();
+    locationService.stopServiceInPlatform();
 
     // streamSocket.socketDisconnect();
 

@@ -58,7 +58,6 @@ class StreamSocket extends ServiceImport {
       "latitude": data["latitude"],
       "longitude": data["longitude"],
     });
-
     socket.emit("location", locationData);
   }
 
