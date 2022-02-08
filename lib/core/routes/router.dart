@@ -20,19 +20,16 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(
         builder: (context) => HomeScreen(),
       );
-      break;
 
     case kSigninScreen:
       return MaterialPageRoute(
         builder: (context) => SigninScreen(),
       );
-      break;
 
     case kSignupScreen:
       return MaterialPageRoute(
         builder: (context) => SignUpScreen(),
       );
-      break;
 
 /* <--------- Passenger Screens--------------> */
 
@@ -40,7 +37,6 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(
         builder: (context) => PassengerHomeScreen(),
       );
-      break;
 
 /* <----------- Driver Screens--------------> */
 
@@ -48,26 +44,22 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(
         builder: (context) => DriverHomeScreen(),
       );
-      break;
 
 /* <------------- Stop Screen -----------> */
     case kStopSearchScreen:
       return MaterialPageRoute(
         builder: (context) => StopSearchScreen(),
       );
-      break;
 
     case kStopListScreen:
       return MaterialPageRoute(
         builder: (context) => StopsListScreen(),
       );
-      break;
 
     case kAddStopScreen:
       return MaterialPageRoute(
         builder: (context) => AddStopScreen(),
       );
-      break;
 
 /* <---------------- Bus Screen --------------> */
     case kBusDetailScreen:
@@ -75,25 +67,21 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         builder: (context) =>
             BusDetailScreen(settings.arguments as Map<String, dynamic>?),
       );
-      break;
 
     case kBusListScreen:
       return MaterialPageRoute(
         builder: (context) =>
             BusListScreen(settings.arguments as Map<String, dynamic>?),
       );
-      break;
 
     case kAddBusScreen:
       return MaterialPageRoute(
         builder: (context) => CreateBusScreen(),
       );
-      break;
 
     default:
       return MaterialPageRoute(
         builder: (context) => UnknownRoutePage(),
       );
-      break;
   }
 }

@@ -1,7 +1,7 @@
 class Constants {
   Constants._();
 
-  static const String appName = "Where is my bus";
+  static const String appName = "Bus locator";
 
   static const int animatedSwitcherDuration = 1;
 

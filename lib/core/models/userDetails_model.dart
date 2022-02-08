@@ -16,9 +16,9 @@ class UserDetails {
     this.data,
   });
 
-  bool? success;
-  String? message;
-  Data? data;
+  late final bool? success;
+  late final String? message;
+  late final Data? data;
 
   factory UserDetails.fromJson(Map<String, dynamic> json) => UserDetails(
         success: json["success"],
@@ -46,15 +46,15 @@ class Data {
     this.onBus,
   });
 
-  Location? location;
-  String? id;
-  String? name;
-  String? email;
-  String? password;
-  String? type;
-  bool? isActive;
-  int? v;
-  String? onBus;
+  late final Location? location;
+  late final String? id;
+  late final String? name;
+  late final String? email;
+  late final String? password;
+  late final String? type;
+  late final bool? isActive;
+  late final int? v;
+  late final String? onBus;
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
         location: Location.fromJson(json["location"]),
@@ -86,7 +86,7 @@ class Location {
     this.coordinates,
   });
 
-  List<double>? coordinates;
+  late final List<double>? coordinates;
 
   factory Location.fromJson(Map<String, dynamic> json) => Location(
         coordinates:

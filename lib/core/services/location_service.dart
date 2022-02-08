@@ -1,3 +1,5 @@
+// ignore_for_file: cancel_subscriptions, close_sinks
+
 import 'dart:async';
 import 'dart:ui';
 
@@ -7,14 +9,7 @@ import 'package:geolocator/geolocator.dart';
 
 // import 'package:location/location.dart';
 
-import '../locator.dart';
 import '../service_import.dart';
-
-void backgroundMain() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await LocatorInjector.setupLocator();
-  LocationService().getLiveLocation();
-}
 
 class LocationService extends ServiceImport {
   Map<String, dynamic>? busData;
@@ -28,25 +23,23 @@ class LocationService extends ServiceImport {
 
   StreamSubscription<Position>? positionStream;
 
-  getLiveLocation() async {
+  getLiveLocation(Map<String, dynamic> bData) async {
     final hasPermission = await handlePermission();
     if (hasPermission) {
       print("has permission");
       positionStream =
           Geolocator.getPositionStream().listen((Position position) {
-        print(position == null
-            ? 'Unknown'
-            : "My Location:" +
-                position.latitude.toString() +
-                ', ' +
-                position.longitude.toString());
+        print("My Location:" +
+            position.latitude.toString() +
+            ', ' +
+            position.longitude.toString());
         Map<String, dynamic> data = {
-          "type": userType,
-          "bus": busData,
+          "type": userService!.userDetails!.data!.type.toString(),
+          "bus": bData,
           "latitude": position.latitude.toString(),
           "longitude": position.longitude.toString(),
         };
-        streamSocket!.sendLocation(data);
+        streamSocket?.sendLocation(data);
       });
     }
   }
@@ -69,12 +62,10 @@ class LocationService extends ServiceImport {
     if (hasPermission) {
       mYositionStream =
           Geolocator.getPositionStream().listen((Position position) {
-        print(position == null
-            ? 'Unknown'
-            : "My Live-Location:" +
-                position.latitude.toString() +
-                ', ' +
-                position.longitude.toString());
+        print("My Live-Location:" +
+            position.latitude.toString() +
+            ', ' +
+            position.longitude.toString());
         controller.sink.add(position.toJson());
       });
     }
@@ -114,35 +105,26 @@ class LocationService extends ServiceImport {
     return true;
   }
 
-  Future<Position> getStaticLocation() async {
+  Future getStaticLocation() async {
     /* await Location.instance.getLocation().then((value) =>
         print(value.latitude.toString() + "," + value.longitude.toString())); */
-    final position = await Geolocator.getCurrentPosition();
-    print("Current Loc: " + position.toJson().toString());
+    late Position position;
+    bool isPermited = await handlePermission();
+    if (isPermited) {
+      position = await Geolocator.getCurrentPosition();
+      print("Current Loc: " + position.toJson().toString());
+    }
     return position;
   }
 
-  startServiceInPlatform() async {
-    try {
-      var methodChannel = MethodChannel("com.example.BusTracking_App/Start");
-      var calbackHandle = PluginUtilities.getCallbackHandle(backgroundMain)!;
-      methodChannel.invokeMethod("startService", calbackHandle.toRawHandle());
-    } catch (e) {
+  startService() async {
+    try {} catch (e) {
       print("ERROR WHILE STATING BG SERVICE: " + e.toString());
     }
     return true;
   }
 
-  stopServiceInPlatform() {
-    print("Stoping android service");
-    var methodChannel = MethodChannel("com.example.BusTracking_App/Stop");
-    // methodChannel.invokeMethod("stopService", -1.0.toDouble());
-    methodChannel.invokeMethod("stopService");
-    stop();
-    // stop();
-  }
-
-  void stop() {
+  void stopService() {
     print("DRAINing");
     streamSocket!.removeDriver();
     // stopServiceInPlatform();

@@ -39,51 +39,46 @@ class Stops {
 
 class StopsData {
   StopsData({
-    this.stopLocation,
     this.id,
     this.stopName,
+    this.stopLocation,
     this.stopCity,
-    this.v,
   });
+  late final String? id;
+  late final String? stopName;
+  late final StopLocation? stopLocation;
+  late final String? stopCity;
 
-  StopLocation? stopLocation;
-  String? id;
-  String? stopName;
-  String? stopCity;
-  int? v;
+  StopsData.fromJson(Map<String, dynamic> json) {
+    id = json['_id'];
+    stopName = json['stopName'];
+    stopLocation = StopLocation.fromJson(json['stopLocation']);
+    stopCity = json['stopCity'];
+  }
 
-  factory StopsData.fromJson(Map<String, dynamic> json) => StopsData(
-        stopLocation: StopLocation.fromJson(json["stopLocation"]),
-        id: json["_id"],
-        stopName: json["stopName"],
-        stopCity: json["stopCity"],
-        v: json["__v"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "stopLocation": stopLocation!.toJson(),
-        "_id": id,
-        "stopName": stopName,
-        "stopCity": stopCity,
-        "__v": v,
-      };
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['_id'] = id;
+    _data['stopName'] = stopName;
+    _data['stopLocation'] = stopLocation?.toJson();
+    _data['stopCity'] = stopCity;
+    return _data;
+  }
 }
 
 class StopLocation {
   StopLocation({
-    this.coordinates,
+    required this.coordinates,
   });
+  late final List<double?> coordinates;
 
-  List<double>? coordinates;
+  StopLocation.fromJson(Map<String, dynamic> json) {
+    coordinates = List.castFrom<dynamic, Null>(json['coordinates']);
+  }
 
-  factory StopLocation.fromJson(Map<String, dynamic> json) => StopLocation(
-        coordinates: json["coordinates"] == null
-            ? null
-            : List<double>.from(json["coordinates"]
-                .map((x) => x == null ? null : x.toDouble())),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "coordinates": List<dynamic>.from(coordinates!.map((x) => x)),
-      };
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['coordinates'] = coordinates;
+    return _data;
+  }
 }
