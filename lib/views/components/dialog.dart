@@ -113,8 +113,8 @@ class _DialogManagerState extends State<DialogManager> {
             TextButton(
               child: Text(
                 request.buttonTitle!,
-                style:
-                    appTheme.textTheme.subtitle2!.copyWith(color: kPrimaryColor),
+                style: appTheme.textTheme.subtitle2!
+                    .copyWith(color: kPrimaryColor),
               ),
               onPressed: () {
                 _dialogService!.dialogComplete(AlertResponse(confirmed: true));

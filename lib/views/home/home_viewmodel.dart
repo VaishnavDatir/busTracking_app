@@ -8,7 +8,8 @@ class HomeViewModel extends BaseViewModel with ServiceImport {
   initializeScreen() async {
     // await Future.delayed(Duration(seconds: 2));
     bool isSignedIn =
-        await sharedPrefsService!.read(Constants.sharedPrefsIsSignedIn) ?? false;
+        await sharedPrefsService!.read(Constants.sharedPrefsIsSignedIn) ??
+            false;
     if (isSignedIn) {
       await authService!.getUserToken();
       await userService!.getUserData();

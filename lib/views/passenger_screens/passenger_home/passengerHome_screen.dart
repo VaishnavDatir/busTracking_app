@@ -87,8 +87,8 @@ class _PassengerHomeScreenState extends State<PassengerHomeScreen>
     return StreamBuilder(
       stream: model.stream,
       builder: (context, snapshot) {
-        List<Marker> markers = List<Marker>();
-        List streamData = snapshot.data == null ? [] : snapshot.data;
+        List<Marker> markers = <Marker>[];
+        List streamData = snapshot.data == null ? [] : snapshot.data as List;
         // model.buildMarkers(streamData);
         if (mainSnapShot.hasData) {
           markers.add(Marker(
@@ -293,8 +293,8 @@ class _PassengerHomeScreenState extends State<PassengerHomeScreen>
                                             size: kIconSize,
                                             color: kPrimaryColor,
                                           )),
-                                      title: Text(
-                                          model.busModelData![index].busNumber!),
+                                      title: Text(model
+                                          .busModelData![index].busNumber!),
                                       subtitle: Text(
                                           model.busModelData![index].busType!),
                                       trailing: Chip(

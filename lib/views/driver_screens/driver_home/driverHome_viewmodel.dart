@@ -55,7 +55,7 @@ class DriverHomeViewModel extends StreamViewModel with ServiceImport {
     _userDetails = userService!.userDetails;
     if (_userDetails!.success == false) {
       await dialogService!.showDialog(
-          description: _userDetails!.message.toString() ??
+          description: _userDetails?.message.toString() ??
               "There was an error while getting data.");
       handleLogout();
       return;
@@ -74,7 +74,7 @@ class DriverHomeViewModel extends StreamViewModel with ServiceImport {
   changeIsDriverOnBus() async {
     dialogService!.showLoadingDialog();
 
-    Map<String, dynamic> response = await (userService!.removeDriverOnBus() as FutureOr<Map<String, dynamic>>);
+    Map<String, dynamic> response = await (userService!.removeDriverOnBus());
 
     // locationService.stop();
     locationService!.stopServiceInPlatform();

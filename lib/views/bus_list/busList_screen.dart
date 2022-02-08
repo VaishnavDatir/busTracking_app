@@ -87,7 +87,8 @@ class BusListScreen extends StatelessWidget {
                                                   color: kPrimaryColor,
                                                 )),
                                             title: Text(model
-                                                .busModelData![index].busNumber!),
+                                                .busModelData![index]
+                                                .busNumber!),
                                             subtitle: Text(model
                                                 .busModelData![index].busType!),
                                             trailing: Chip(
@@ -119,18 +120,20 @@ class BusListScreen extends StatelessWidget {
                           ],
                         ),
                       ),
-                floatingActionButton:  model.isDriver! ? model.driverGoingOnDuty!
-                    ? null
-                    : FloatingActionButton.extended(
-                        onPressed: () => model.addBuss(),
-                        icon: Icon(
-                          Icons.add,
-                          color: kWhite,
-                        ),
-                        label: Text("Create Bus",
-                            style: appTheme.textTheme.button!
-                                .copyWith(color: kWhite)),
-                      ):null,
+                floatingActionButton: model.isDriver!
+                    ? model.driverGoingOnDuty!
+                        ? null
+                        : FloatingActionButton.extended(
+                            onPressed: () => model.addBuss(),
+                            icon: Icon(
+                              Icons.add,
+                              color: kWhite,
+                            ),
+                            label: Text("Create Bus",
+                                style: appTheme.textTheme.button!
+                                    .copyWith(color: kWhite)),
+                          )
+                    : null,
               );
       },
     );

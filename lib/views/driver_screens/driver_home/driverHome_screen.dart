@@ -101,7 +101,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen>
       stream: model.stream,
       builder: (context, snapshot) {
         List<Marker> markers = [];
-        List streamData = snapshot.data == null ? [] : snapshot.data;
+        List streamData = snapshot.data == null ? [] : snapshot.data as List;
         if (streamData.isNotEmpty) {
           print(streamData.toString());
           streamData.forEach((element) {

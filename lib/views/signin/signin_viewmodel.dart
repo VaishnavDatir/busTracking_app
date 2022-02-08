@@ -51,13 +51,13 @@ class SignInViewModel extends BaseViewModel with ServiceImport {
 
   handleSignInTap(BuildContext context) async {
     if (_emailTC.text.trim().length < 4 || !_emailTC.text.contains("@")) {
-      await dialogService!.showDialog(
-          description: "Please enter correct email address");
+      await dialogService!
+          .showDialog(description: "Please enter correct email address");
 
       FocusScope.of(context).requestFocus(_emailFN);
     } else if (_passwordTC.text.length < 4) {
-      await dialogService!.showDialog(
-          description: "Password cannot be less than 4 characters");
+      await dialogService!
+          .showDialog(description: "Password cannot be less than 4 characters");
       FocusScope.of(context).requestFocus(_passwordFN);
     } else {
       dialogService!.showLoadingDialog();
@@ -66,19 +66,19 @@ class SignInViewModel extends BaseViewModel with ServiceImport {
       _password = _passwordTC.text.toString().trim();
 
       Map<String, dynamic> signInResponse =
-          await (authService!.signInUser(_emailId, _password) as FutureOr<Map<String, dynamic>>);
+          await (authService!.signInUser(_emailId, _password));
 
       if (signInResponse["success"]) {
-        await sharedPrefsService!.write(
-            Constants.sharedPrefsToken, signInResponse["token"]);
+        await sharedPrefsService!
+            .write(Constants.sharedPrefsToken, signInResponse["token"]);
 
-        await sharedPrefsService!.write(
-            Constants.sharedPrefsUserId, signInResponse["userId"]);
+        await sharedPrefsService!
+            .write(Constants.sharedPrefsUserId, signInResponse["userId"]);
 
         bool _isDriver =
             signInResponse["type"].toString().toLowerCase().contains("driver");
-        await sharedPrefsService!.write(
-            Constants.sharedPrefsUserType, _isDriver);
+        await sharedPrefsService!
+            .write(Constants.sharedPrefsUserType, _isDriver);
 
         await sharedPrefsService!.write(Constants.sharedPrefsIsSignedIn, true);
 
@@ -95,8 +95,8 @@ class SignInViewModel extends BaseViewModel with ServiceImport {
           navigationService!.popEverythingAndNavigateTo(kPassengerHomeScreen);
         }
       } else {
-        await dialogService!.showDialog(
-            title: "Oops!", description: signInResponse["message"]);
+        await dialogService!
+            .showDialog(title: "Oops!", description: signInResponse["message"]);
       }
 
       dialogService!.dialogDismiss();

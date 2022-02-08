@@ -11,8 +11,8 @@ class CustomMarker extends ShapeBorder {
   EdgeInsetsGeometry get dimensions =>
       EdgeInsets.only(bottom: usePadding ? 20 : 0);
 
-  @override
-  Path getInnerPath(Rect rect, {TextDirection? textDirection}) => null;
+  /* @override
+  Path getInnerPath(Rect rect, {TextDirection? textDirection}) => null; */
 
   @override
   Path getOuterPath(Rect rect, {TextDirection? textDirection}) {
@@ -30,4 +30,11 @@ class CustomMarker extends ShapeBorder {
 
   @override
   ShapeBorder scale(double t) => this;
+
+  @override
+  Path getInnerPath(Rect rect, {TextDirection? textDirection}) {
+    // TODO: implement getInnerPath
+    // throw UnimplementedError();
+    return Path();
+  }
 }

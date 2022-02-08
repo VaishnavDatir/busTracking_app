@@ -125,7 +125,7 @@ class PassengerViewModel extends StreamViewModel with ServiceImport {
 
     if (_userDetails!.success == false) {
       await dialogService!.showDialog(
-          description: _userDetails!.message.toString() ??
+          description: _userDetails?.message.toString() ??
               "There was an error while getting data.");
       handleLogout();
       return;
@@ -186,15 +186,15 @@ class PassengerViewModel extends StreamViewModel with ServiceImport {
         _showBottomBusSheet = true;
       }
     } else {
-      await dialogService!.showDialog(
-          description: "Please specify required stops");
+      await dialogService!
+          .showDialog(description: "Please specify required stops");
     }
     notifyListeners();
     dialogService!.dialogDismiss();
   }
 
   Future<StopsData> getStop() async {
-    _selectedStop = await (navigationService!.navigateTo(kStopSearchScreen) as FutureOr<StopsData?>);
+    _selectedStop = await (navigationService!.navigateTo(kStopSearchScreen));
     return _selectedStop ?? StopsData();
   }
 

@@ -54,7 +54,8 @@ class _SigninScreenState extends State<SigninScreen> {
                           ),
                           Text(
                             "Welcome back!",
-                            style: appTheme.primaryTextTheme.headline4!.copyWith(
+                            style:
+                                appTheme.primaryTextTheme.headline4!.copyWith(
                               color: kBlack,
                               fontSize: kXLSpace,
                             ),

@@ -41,13 +41,13 @@ class SignUpViewModel extends BaseViewModel with ServiceImport {
       FocusScope.of(context).requestFocus(_nameTextFN);
     } else if (_emailTC.text.trim().length < 4 ||
         !_emailTC.text.contains("@")) {
-      await dialogService!.showDialog(
-          description: "Please enter correct email address");
+      await dialogService!
+          .showDialog(description: "Please enter correct email address");
 
       FocusScope.of(context).requestFocus(_emailFN);
     } else if (_passwordTC.text.length < 4) {
-      await dialogService!.showDialog(
-          description: "Password cannot be less than 4 characters");
+      await dialogService!
+          .showDialog(description: "Password cannot be less than 4 characters");
       FocusScope.of(context).requestFocus(_passwordFN);
     } else {
       dialogService!.showLoadingDialog();
@@ -57,27 +57,28 @@ class SignUpViewModel extends BaseViewModel with ServiceImport {
       String _type = _isDriver ? "Driver" : "Passenger";
 
       Map<String, dynamic> signUpResponse =
-          await (authService!.signUpUser(_name, _emailId, _password, _type) as FutureOr<Map<String, dynamic>>);
+          await (authService!.signUpUser(_name, _emailId, _password, _type));
 
       if (signUpResponse["success"]) {
         Map<String, dynamic> signInResponse =
-            await (authService!.signInUser(_emailId, _password) as FutureOr<Map<String, dynamic>>);
+            await (authService!.signInUser(_emailId, _password));
 
         if (signInResponse["success"]) {
-          await sharedPrefsService!.write(
-              Constants.sharedPrefsToken, signInResponse["token"]);
+          await sharedPrefsService!
+              .write(Constants.sharedPrefsToken, signInResponse["token"]);
 
-          await sharedPrefsService!.write(
-              Constants.sharedPrefsUserId, signInResponse["userId"]);
+          await sharedPrefsService!
+              .write(Constants.sharedPrefsUserId, signInResponse["userId"]);
 
           bool _isDriver = signInResponse["type"]
               .toString()
               .toLowerCase()
               .contains("driver");
-          await sharedPrefsService!.write(
-              Constants.sharedPrefsUserType, _isDriver);
+          await sharedPrefsService!
+              .write(Constants.sharedPrefsUserType, _isDriver);
 
-          await sharedPrefsService!.write(Constants.sharedPrefsIsSignedIn, true);
+          await sharedPrefsService!
+              .write(Constants.sharedPrefsIsSignedIn, true);
           streamSocket!.socketConnect();
 
           await authService!.getUserToken();
