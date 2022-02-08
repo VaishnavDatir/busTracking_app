@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../core/service_import.dart';
+import '../components/setup_dialog_ui.dart';
 
 class AddStopViewModel extends BaseViewModel with ServiceImport {
   TextEditingController stopNameController = TextEditingController();
@@ -11,7 +12,7 @@ class AddStopViewModel extends BaseViewModel with ServiceImport {
   Map<String, dynamic>? get response => this._response;
 
   addStop() async {
-    dialogService!.showLoadingDialog();
+    dialogService.showCustomDialog(variant: DialogType.loading);
 
     String stopName = stopNameController.text.toString().trim();
     String stopCity = stopCityController.text.toString().trim();
@@ -23,16 +24,16 @@ class AddStopViewModel extends BaseViewModel with ServiceImport {
         await busService!.getAllStops();
       }
 
-      await dialogService!.showDialog(
+      await dialogService.showDialog(
           title: _response!["success"] ? "Success" : "Oops!",
           description: _response!["message"].toString());
 
-      navigationService!.pop();
+      navigationService.back();
     } else {
-      await dialogService!
-          .showDialog(description: "Please fill the information correctly");
+      await dialogService.showDialog(
+          description: "Please fill the information correctly");
     }
 
-    dialogService!.dialogDismiss();
+    navigationService.back();
   }
 }

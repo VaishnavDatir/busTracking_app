@@ -1,9 +1,9 @@
+import '../../app/app.router.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../core/constants.dart';
 import '../../core/models/bus_model.dart';
-import '../../core/routes/router_path.dart';
 import '../../core/service_import.dart';
 
 class BusListViewModel extends BaseViewModel with ServiceImport {
@@ -43,10 +43,15 @@ class BusListViewModel extends BaseViewModel with ServiceImport {
   }
 
   handleOnBusTap(String? busId) {
-    navigationService!.navigateTo(kBusDetailScreen, arguments: {
+    /* navigationService.navigateTo(kBusDetailScreen, arguments: {
       "busId": busId,
       "driverGoingOnDuty": driverGoingOnDuty,
-    });
+    }); */
+    navigationService.navigateTo(Routes.busDetailScreen,
+        arguments: BusDetailScreenArguments(screenData: {
+          "busId": busId,
+          "driverGoingOnDuty": driverGoingOnDuty,
+        }));
   }
 
   void filterSearchResults(String query) async {
@@ -77,7 +82,8 @@ class BusListViewModel extends BaseViewModel with ServiceImport {
   }
 
   void addBuss() async {
-    await navigationService!.navigateTo(kAddBusScreen);
+    // await navigationService.navigateTo(kAddBusScreen);
+    await navigationService.navigateTo(Routes.createBusScreen);
     setScreenData();
   }
 

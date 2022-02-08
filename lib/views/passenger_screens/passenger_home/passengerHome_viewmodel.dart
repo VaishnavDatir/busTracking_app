@@ -8,14 +8,14 @@ import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:stacked/stacked.dart';
 
+import '../../../app/app.router.dart';
 import '../../../core/models/bus_model.dart';
-import '../../../core/models/dialog_model.dart';
 import '../../../core/models/stops_model.dart';
 import '../../../core/models/userDetails_model.dart';
-import '../../../core/routes/router_path.dart';
 import '../../../core/service_import.dart';
 import '../../../theme/colors.dart';
 import '../../../theme/dimensions.dart';
+import '../../components/setup_dialog_ui.dart';
 
 class PassengerViewModel extends StreamViewModel with ServiceImport {
   Stream get stream => this._getLiveData();
@@ -124,7 +124,7 @@ class PassengerViewModel extends StreamViewModel with ServiceImport {
     _userDetails = userService!.userDetails;
 
     if (_userDetails!.success == false) {
-      await dialogService!.showDialog(
+      await dialogService.showDialog(
           description: _userDetails?.message.toString() ??
               "There was an error while getting data.");
       handleLogout();
@@ -138,13 +138,16 @@ class PassengerViewModel extends StreamViewModel with ServiceImport {
   }
 
   showBusList() {
-    navigationService!.navigateTo(
+    /* navigationService!.navigateTo(
       kBusListScreen,
-    );
+    ); */
+    navigationService.navigateTo(Routes.busListScreen,
+        arguments: BusListScreenArguments(screenData: {}));
   }
 
   showStopList() {
-    navigationService!.navigateTo(kStopListScreen);
+    // navigationService!.navigateTo(kStopListScreen);
+    navigationService.navigateTo(Routes.stopsListScreen);
   }
 
   void handleLogout() {
@@ -171,9 +174,10 @@ class PassengerViewModel extends StreamViewModel with ServiceImport {
   }
 
   void serachBus() async {
-    dialogService!.showLoadingDialog();
+    dialogService.showCustomDialog(variant: DialogType.loading);
+
     if (_sourceStop == _destinationStop) {
-      await dialogService!.showDialog(
+      await dialogService.showDialog(
           description: "Source and Destination stop cannot be same");
     } else if (_sourceStop != null && _destinationStop != null) {
       _busModel = await busService!.searchBusBySourceAndDestination(
@@ -186,15 +190,17 @@ class PassengerViewModel extends StreamViewModel with ServiceImport {
         _showBottomBusSheet = true;
       }
     } else {
-      await dialogService!
-          .showDialog(description: "Please specify required stops");
+      await dialogService.showDialog(
+          description: "Please specify required stops");
     }
     notifyListeners();
-    dialogService!.dialogDismiss();
+    navigationService.back();
   }
 
   Future<StopsData> getStop() async {
-    _selectedStop = await (navigationService!.navigateTo(kStopSearchScreen));
+    // _selectedStop = await (navigationService!.navigateTo(kStopSearchScreen));
+    _selectedStop = await navigationService.navigateTo(Routes.stopSearchScreen);
+
     return _selectedStop ?? StopsData();
   }
 
@@ -222,34 +228,40 @@ class PassengerViewModel extends StreamViewModel with ServiceImport {
   }
 
   handleOnBusTap(String? busId) {
-    navigationService!.navigateTo(kBusDetailScreen, arguments: {
+    /* navigationService!.navigateTo(kBusDetailScreen, arguments: {
       "busId": busId,
       "sourceStop": _sourceStop!.id,
       "destinationStop": _destinationStop!.id,
-    });
+    }); */
+    navigationService.navigateTo(Routes.busDetailScreen,
+        arguments: BusDetailScreenArguments(screenData: {
+          "busId": busId,
+          "sourceStop": _sourceStop!.id,
+          "destinationStop": _destinationStop!.id,
+        }));
   }
 
   handleExit() async {
-    AlertResponse exit = await dialogService!.showDialog(
+    var exit = await dialogService.showDialog(
       title: "Exit",
       description: "Are you sure you want to exit?",
-      showNegativeButton: true,
-      buttonNegativeTitle: "Cancel",
+      cancelTitle: "Cancel",
       buttonTitle: "Yes",
     );
-    if (exit.confirmed!) {
+    if (exit!.confirmed) {
       SystemNavigator.pop();
     }
   }
 
   fabClick() async {
-    dialogService!.showLoadingDialog();
+    dialogService.showCustomDialog(variant: DialogType.loading);
     pos = await locationService!.getStaticLocation();
-    dialogService!.dialogDismiss();
+    navigationService.back();
+
     // mapController.move(LatLng(pos.latitude, pos.longitude), 16);
     if (_isShowingBottomSheet) {
       _selectedBusClientId = "";
-      navigationService!.pop();
+      navigationService.back();
       _isShowingBottomSheet = false;
     }
     animatedMapMove(
@@ -297,7 +309,7 @@ class PassengerViewModel extends StreamViewModel with ServiceImport {
   handleMapTap() {
     if (_isShowingBottomSheet) {
       _selectedBusClientId = "";
-      navigationService!.pop();
+      navigationService.back();
       _isShowingBottomSheet = false;
     }
     notifyListeners();
@@ -380,7 +392,7 @@ class PassengerViewModel extends StreamViewModel with ServiceImport {
                 options: CarouselOptions(
                   initialPage: streamData.indexOf(element),
                   viewportFraction: 1,
-                  enableInfiniteScroll: false,
+                  enableInfiniteScroll: streamData.length > 1 ? true : false,
                   height: 120,
                   onPageChanged: (index, reason) {
                     _selectedBusClientId = streamData[index]["client_id"];

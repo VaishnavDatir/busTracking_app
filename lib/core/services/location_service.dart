@@ -1,10 +1,7 @@
 // ignore_for_file: cancel_subscriptions, close_sinks
 
 import 'dart:async';
-import 'dart:ui';
 
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 
 // import 'package:location/location.dart';
@@ -79,10 +76,10 @@ class LocationService extends ServiceImport {
     if (!serviceEnabled) {
       print("@@ location: service is not enabled");
 
-      await dialogService!.showDialog(
-          description: "Please enable location",
-          buttonNegativeTitle: "Cancel",
-          showNegativeButton: true);
+      await dialogService.showDialog(
+        description: "Please enable location",
+        cancelTitle: "Cancel",
+      );
 
       return false;
     }

@@ -33,8 +33,6 @@ class CustomMarker extends ShapeBorder {
 
   @override
   Path getInnerPath(Rect rect, {TextDirection? textDirection}) {
-    // TODO: implement getInnerPath
-    // throw UnimplementedError();
     return Path();
   }
 }

@@ -78,7 +78,7 @@ class SignUpScreen extends StatelessWidget {
                 ),
                 Align(
                   alignment: Alignment.centerRight,
-                  child: RaisedButton(
+                  child: ElevatedButton(
                     onPressed: () => model.handleSignUpTap(context),
                     child: Text(
                       "Sign up",

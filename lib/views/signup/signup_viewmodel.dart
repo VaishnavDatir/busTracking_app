@@ -1,9 +1,10 @@
+import '../../app/app.router.dart';
 import 'package:flutter/widgets.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../core/constants.dart';
-import '../../core/routes/router_path.dart';
 import '../../core/service_import.dart';
+import '../components/setup_dialog_ui.dart';
 
 class SignUpViewModel extends BaseViewModel with ServiceImport {
   TextEditingController _nameTextController = TextEditingController();
@@ -36,21 +37,21 @@ class SignUpViewModel extends BaseViewModel with ServiceImport {
 
   handleSignUpTap(BuildContext context) async {
     if (_nameTextController.text.trim().length < 4) {
-      await dialogService!.showDialog(description: "Please enter correct name");
+      await dialogService.showDialog(description: "Please enter correct name");
 
       FocusScope.of(context).requestFocus(_nameTextFN);
     } else if (_emailTC.text.trim().length < 4 ||
         !_emailTC.text.contains("@")) {
-      await dialogService!
-          .showDialog(description: "Please enter correct email address");
+      await dialogService.showDialog(
+          description: "Please enter correct email address");
 
       FocusScope.of(context).requestFocus(_emailFN);
     } else if (_passwordTC.text.length < 4) {
-      await dialogService!
-          .showDialog(description: "Password cannot be less than 4 characters");
+      await dialogService.showDialog(
+          description: "Password cannot be less than 4 characters");
       FocusScope.of(context).requestFocus(_passwordFN);
     } else {
-      dialogService!.showLoadingDialog();
+      dialogService.showCustomDialog(variant: DialogType.loading);
       _name = _nameTextController.text.toString().trim();
       _emailId = _emailTC.text.toString().trim();
       _password = _passwordTC.text.toString().trim();
@@ -87,16 +88,18 @@ class SignUpViewModel extends BaseViewModel with ServiceImport {
           await busService!.getAllBusList();
 
           if (_isDriver) {
-            navigationService!.popEverythingAndNavigateTo(kDriverHomeScreen);
+            // navigationService!.popEverythingAndNavigateTo(kDriverHomeScreen);
+            navigationService.navigateTo(Routes.driverHomeScreen);
           } else {
-            navigationService!.popEverythingAndNavigateTo(kPassengerHomeScreen);
+            // navigationService!.popEverythingAndNavigateTo(kPassengerHomeScreen);
+            navigationService.navigateTo(Routes.passengerHomeScreen);
           }
         } else {
-          await dialogService!.showDialog(
+          await dialogService.showDialog(
               title: "Oops!", description: signInResponse["message"]);
         }
       } else {
-        await dialogService!.showDialog(
+        await dialogService.showDialog(
             title: "Oops!",
             description: signUpResponse["message"] +
                 "\n" +
@@ -104,7 +107,7 @@ class SignUpViewModel extends BaseViewModel with ServiceImport {
                     ? ""
                     : signUpResponse["data"] ?? ""));
       }
-      dialogService!.dialogDismiss();
+      navigationService.back();
     }
   }
 

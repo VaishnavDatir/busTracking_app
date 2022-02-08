@@ -127,17 +127,18 @@ class CreateBusScreen extends StatelessWidget {
         ),
         Container(
           // width: double.infinity,
-          child: RaisedButton.icon(
+          child: ElevatedButton.icon(
               onPressed: () => model.addRoute(),
-              color: kWhite,
-              elevation: 0,
+              style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.white),
+                  elevation: MaterialStateProperty.all(0),
+                  shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(kRadius),
+                      side: BorderSide(color: kPrimaryColor)))),
               icon: Icon(
                 Icons.add_circle_outline,
                 color: kPrimaryColor,
               ),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(kRadius),
-                  side: BorderSide(color: kPrimaryColor)),
               label: Text("Add Stop",
                   style: appTheme.textTheme.button!
                       .copyWith(color: kPrimaryColor))),
@@ -165,17 +166,18 @@ class CreateBusScreen extends StatelessWidget {
                           label: Text(model.busTimingList[index]),
                           onDeleted: () => model.removeTiming(index)),
                     )),
-            RaisedButton.icon(
+            ElevatedButton.icon(
                 onPressed: () => model.addTiming(context),
-                color: kWhite,
-                elevation: 0,
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Colors.white),
+                    elevation: MaterialStateProperty.all(0),
+                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(kRadius),
+                        side: BorderSide(color: kPrimaryColor)))),
                 icon: Icon(
                   Icons.add_circle_outline,
                   color: kPrimaryColor,
                 ),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(kRadius),
-                    side: BorderSide(color: kPrimaryColor)),
                 label: Text("Add Time",
                     style: appTheme.textTheme.button!
                         .copyWith(color: kPrimaryColor))),

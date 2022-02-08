@@ -60,7 +60,8 @@ class StopSearchScreenViewModel extends BaseViewModel with ServiceImport {
   }
 
   void handleStopTap(StopsData _selectedStop) {
-    navigationService!.pop(arguments: _selectedStop);
+    // navigationService.pop(arguments: _selectedStop);
+    navigationService.back(result: _selectedStop);
   }
 
   Future refreshStopList() async {

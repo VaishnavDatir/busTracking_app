@@ -10,9 +10,7 @@ final ThemeData systemTheme = setSystemTheme();
 
 ThemeData buildAppTheme() {
   return ThemeData(
-    colorScheme: ColorScheme.light(primary: kPrimaryColor),
     primaryColor: kPrimaryColor,
-    accentColor: kPrimaryColor,
     scaffoldBackgroundColor: kWhite,
     canvasColor: kWhite,
     cardColor: kWhite,
@@ -25,10 +23,13 @@ ThemeData buildAppTheme() {
           // titleTextStyle: GoogleFonts.comfortaa(),
           iconTheme: IconThemeData(color: kBlack),
           color: kTransparent,
-          brightness: Brightness.light,
-          textTheme: buildAppTextTheme(
+          systemOverlayStyle: SystemUiOverlayStyle.dark,
+          toolbarTextStyle: buildAppTextTheme(
             GoogleFonts.promptTextTheme(),
-          ),
+          ).bodyText2,
+          titleTextStyle: buildAppTextTheme(
+            GoogleFonts.promptTextTheme(),
+          ).headline6,
         ),
     /*  buttonTheme: ThemeData.light().buttonTheme.copyWith(
           shape: RoundedRectangleBorder(
@@ -43,6 +44,8 @@ ThemeData buildAppTheme() {
     floatingActionButtonTheme: FloatingActionButtonThemeData(
       backgroundColor: kPrimaryColor,
     ),
+    colorScheme: ColorScheme.light(primary: kPrimaryColor)
+        .copyWith(secondary: kPrimaryColor),
   );
 }
 

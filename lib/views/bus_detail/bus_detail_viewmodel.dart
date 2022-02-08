@@ -1,8 +1,9 @@
+import '../../app/app.router.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../core/models/busDetail_model.dart';
-import '../../core/routes/router_path.dart';
 import '../../core/service_import.dart';
+import '../components/setup_dialog_ui.dart';
 
 class BusDetailViewModel extends BaseViewModel with ServiceImport {
   BusDetailModel? _busDetailModel;
@@ -43,7 +44,7 @@ class BusDetailViewModel extends BaseViewModel with ServiceImport {
   }
 
   setDriverForBus() async {
-    dialogService!.showLoadingDialog();
+    dialogService.showCustomDialog(variant: DialogType.loading);
 
     Map<String, dynamic> response =
         await (userService!.updateUserIsActive(true));
@@ -55,17 +56,18 @@ class BusDetailViewModel extends BaseViewModel with ServiceImport {
       await locationService!.getLiveLocation(response1["data"]);
       await userService!.getUserData();
 
-      await dialogService!.showDialog(
+      await dialogService.showDialog(
           title: response1["success"].toString(),
           description: response1["message"]);
 
-      navigationService!.popEverythingAndNavigateTo(kDriverHomeScreen);
+      // navigationService!.popEverythingAndNavigateTo(kDriverHomeScreen);
+      navigationService.clearStackAndShow(Routes.driverHomeScreen);
     } else {
-      await dialogService!.showDialog(
+      await dialogService.showDialog(
           description:
               "There was an error while assiging bus for you. Try again later");
     }
 
-    dialogService!.dialogDismiss();
+    navigationService.back();
   }
 }

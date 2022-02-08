@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
+import '../../app/app.router.dart';
+import '../../views/components/setup_dialog_ui.dart';
 import '../constants.dart';
-import '../models/dialog_model.dart';
-import '../routes/router_path.dart';
 import '../service_import.dart';
 import 'api/endpoints.dart';
 
@@ -85,20 +85,27 @@ class AuthService extends ServiceImport {
   void logout() async {
     print("called AuthService:logout");
 
-    dialogService!.showLoadingDialog();
+    dialogService.showCustomDialog(variant: DialogType.loading);
 
-    AlertResponse _dialogRes = await dialogService!.showDialog(
+    var _dialogRes = await dialogService.showDialog(
+      title: "Logout?",
+      description: "Are you sure you want to logout?",
+      buttonTitle: "Yes",
+      cancelTitle: "No",
+    );
+
+    /* AlertResponse _dialogRes = await dialogService?.showDialog(
         title: "Logout.",
         description: "Are you sure you want to logout?",
         showNegativeButton: true,
         buttonNegativeTitle: "No",
-        buttonTitle: "Yes");
+        buttonTitle: "Yes"); */
 
-    if (_dialogRes.confirmed!) {
+    if (_dialogRes!.confirmed) {
       sharedPrefsService!.clear();
-      navigationService!.popEverythingAndNavigateTo(kHomeScreen);
+      // navigationService!.popEverythingAndNavigateTo(kHomeScreen);
+      navigationService.clearStackAndShow(Routes.homeScreen);
     }
-
-    dialogService!.dialogDismiss();
+    navigationService.back();
   }
 }

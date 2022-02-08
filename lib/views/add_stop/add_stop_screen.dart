@@ -32,7 +32,7 @@ class AddStopScreen extends StatelessWidget {
                 SizedBox(
                   height: kMediumSpace,
                 ),
-                RaisedButton(
+                ElevatedButton(
                   onPressed: () => model.addStop(),
                   child: Text("Create", style: appTheme.textTheme.button),
                 ),

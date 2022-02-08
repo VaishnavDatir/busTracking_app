@@ -1,12 +1,11 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 
+import '../../app/app.router.dart';
 import '../../core/models/stops_model.dart';
-import '../../core/routes/router_path.dart';
 import '../../core/service_import.dart';
+import '../components/setup_dialog_ui.dart';
 
 class CreateBusViewModel extends BaseViewModel with ServiceImport {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
@@ -47,7 +46,7 @@ class CreateBusViewModel extends BaseViewModel with ServiceImport {
       // print(selectedTime.toString());
 
       if (_busTimingList.contains(selectedTime)) {
-        await dialogService!.showDialog(
+        await dialogService.showDialog(
             description: "${selectedTime.toString()} is already added!");
       } else {
         _busTimingList.add(selectedTime);
@@ -58,23 +57,24 @@ class CreateBusViewModel extends BaseViewModel with ServiceImport {
   }
 
   removeTiming(int index) async {
-    dialogService!.showLoadingDialog();
+    dialogService.showCustomDialog(variant: DialogType.loading);
     _busTimingList.removeAt(index);
     notifyListeners();
-    dialogService!.dialogDismiss();
+    navigationService.back();
   }
 
   addRoute() async {
     FocusScope.of(scaffoldKey.currentContext!).unfocus();
 
     StopsData? _selectedStop =
-        await navigationService!.navigateTo(kStopSearchScreen);
+        // await navigationService.navigateTo(kStopSearchScreen);
+        await navigationService.navigateTo(Routes.stopSearchScreen);
 
     if (_selectedStop != null) {
       // print(_selectedStop.id);
 
       if (_busRouteList.contains(_selectedStop)) {
-        await dialogService!.showDialog(
+        await dialogService.showDialog(
             description:
                 "${_selectedStop.stopName}, ${_selectedStop.stopCity} is already added!}");
       } else {
@@ -91,7 +91,7 @@ class CreateBusViewModel extends BaseViewModel with ServiceImport {
     StopsData _lastStopRemoved = _busRouteList[index];
     _busRouteList.removeAt(index);
 
-    scaffoldKey.currentState!.showSnackBar(SnackBar(
+    /* scaffoldKey.currentState!.showSnackBar(SnackBar(
       content: Text('${_lastStopRemoved.stopName} removed!'),
       duration: Duration(seconds: 1),
       action: SnackBarAction(
@@ -101,12 +101,21 @@ class CreateBusViewModel extends BaseViewModel with ServiceImport {
           notifyListeners();
         },
       ),
-    ));
+    )); */
+    snackbarService.showSnackbar(
+        message: '${_lastStopRemoved.stopName} removed!',
+        duration: Duration(seconds: 1),
+        mainButtonTitle: 'Undo',
+        onMainButtonTapped: () {
+          _busRouteList.insert(index, _lastStopRemoved);
+          notifyListeners();
+        });
+
     notifyListeners();
   }
 
   createBus() async {
-    dialogService!.showLoadingDialog();
+    dialogService.showCustomDialog(variant: DialogType.loading);
 
     var response = await busService!.createBus(
       busNoTEC.text.toString().trim(),
@@ -118,18 +127,18 @@ class CreateBusViewModel extends BaseViewModel with ServiceImport {
 
     if (response["success"]) {
       await busService!.getAllBusList();
-      await dialogService!.showDialog(
+      await dialogService.showDialog(
           title: "Success",
           description:
               "Bus no. ${busNoTEC.text.toString().trim()} has been added");
-      navigationService!.pop();
+      navigationService.back();
     } else {
-      await dialogService!.showDialog(
+      await dialogService.showDialog(
           title: "Oh ho!",
           description:
               "${busNoTEC.text.toString().trim()} has could not be added");
     }
 
-    dialogService!.dialogDismiss();
+    navigationService.back();
   }
 }

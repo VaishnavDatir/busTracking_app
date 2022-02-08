@@ -5,10 +5,10 @@ import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:stacked/stacked.dart';
 
-import '../../../core/models/dialog_model.dart';
+import '../../../app/app.router.dart';
 import '../../../core/models/userDetails_model.dart';
-import '../../../core/routes/router_path.dart';
 import '../../../core/service_import.dart';
+import '../../components/setup_dialog_ui.dart';
 
 class DriverHomeViewModel extends StreamViewModel with ServiceImport {
   @override
@@ -54,7 +54,7 @@ class DriverHomeViewModel extends StreamViewModel with ServiceImport {
 
     _userDetails = userService!.userDetails;
     if (_userDetails!.success == false) {
-      await dialogService!.showDialog(
+      await dialogService.showDialog(
           description: _userDetails?.message.toString() ??
               "There was an error while getting data.");
       handleLogout();
@@ -72,7 +72,7 @@ class DriverHomeViewModel extends StreamViewModel with ServiceImport {
   }
 
   changeIsDriverOnBus() async {
-    dialogService!.showLoadingDialog();
+    dialogService.showCustomDialog(variant: DialogType.loading);
 
     Map<String, dynamic> response = await (userService!.removeDriverOnBus());
 
@@ -84,7 +84,7 @@ class DriverHomeViewModel extends StreamViewModel with ServiceImport {
     await userService!.getUserData();
     _isDriverOnBus = _userDetails!.data!.isActive;
 
-    await dialogService!.showDialog(
+    await dialogService.showDialog(
         title: response["success"].toString(),
         description: response["message"]);
 
@@ -92,28 +92,28 @@ class DriverHomeViewModel extends StreamViewModel with ServiceImport {
 
     notifyListeners();
 
-    dialogService!.dialogDismiss();
+    navigationService.back();
   }
 
   showBusList() {
-    navigationService!.navigateTo(
-      kBusListScreen,
-    );
+    navigationService.navigateTo(Routes.busListScreen,
+        arguments: BusListScreenArguments(screenData: {}));
   }
 
   showStopList() {
-    navigationService!.navigateTo(kStopListScreen);
+    navigationService.navigateTo(Routes.stopsListScreen);
   }
 
   handleGoOnDuty() async {
     if (_isDriverOnBus!) {
-      await dialogService!.showDialog(
+      await dialogService.showDialog(
           description:
               "Your already on duty.\nTo select new bus go off-duty and then select.");
     } else {
-      await navigationService!.navigateTo(kBusListScreen, arguments: {
-        "driverGoingOnDuty": true,
-      });
+      await navigationService.navigateTo(Routes.busListScreen,
+          arguments: BusListScreenArguments(screenData: {
+            "driverGoingOnDuty": true,
+          }));
     }
   }
 
@@ -122,22 +122,24 @@ class DriverHomeViewModel extends StreamViewModel with ServiceImport {
   }
 
   handleExit() async {
-    AlertResponse exit = await dialogService!.showDialog(
+    var exit = await dialogService.showDialog(
       title: "Exit",
       description: "Are you sure you want to exit?",
-      showNegativeButton: true,
-      buttonNegativeTitle: "Cancel",
+      cancelTitle: "Canecl",
       buttonTitle: "Yes",
     );
-    if (exit.confirmed!) {
+
+    if (exit!.confirmed) {
       SystemNavigator.pop();
     }
   }
 
   fabClick(TickerProvider tc) async {
-    dialogService!.showLoadingDialog();
+    dialogService.showCustomDialog(variant: DialogType.loading);
+
     pos = await locationService!.getStaticLocation();
-    dialogService!.dialogDismiss();
+    navigationService.back();
+
     // mapController.move(LatLng(pos.latitude, pos.longitude), 16);
     animatedMapMove(LatLng(pos.latitude, pos.longitude), tc);
   }

@@ -1,9 +1,9 @@
+import '../../app/app.router.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../core/constants.dart';
 import '../../core/models/stops_model.dart';
-import '../../core/routes/router_path.dart';
 import '../../core/service_import.dart';
 
 class StopListViewModel extends BaseViewModel with ServiceImport {
@@ -66,7 +66,8 @@ class StopListViewModel extends BaseViewModel with ServiceImport {
   }
 
   addstop() async {
-    await navigationService!.navigateTo(kAddStopScreen);
+    // await navigationService.navigateTo(kAddStopScreen);
+    await navigationService.navigateTo(Routes.addStopScreen);
     initializeScreen();
   }
 }
