@@ -1,3 +1,5 @@
+import 'package:BusTracking_App/theme/colors.dart';
+import 'package:BusTracking_App/theme/dimensions.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
@@ -15,9 +17,23 @@ class HomeScreen extends StatelessWidget {
         return Scaffold(
           body: Container(
             child: Center(
-              child: Text(
-                Constants.appName,
-                style: appTheme.primaryTextTheme.headline5,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.directions_bus,
+                    color: kPrimaryColor,
+                    size: kLargeIconSize,
+                  ),
+                  SizedBox(
+                    height: kMediumSpace,
+                  ),
+                  Text(
+                    Constants.appName,
+                    style: appTheme.primaryTextTheme.headline5,
+                  ),
+                ],
               ),
             ),
           ),

@@ -17,8 +17,8 @@ class BusDetailModel {
     this.busDetailData,
   });
 
-  late final bool? success;
-  late final BusDetailData? busDetailData;
+  bool? success;
+  BusDetailData? busDetailData;
 
   factory BusDetailModel.fromJson(Map<String, dynamic> json) => BusDetailModel(
         success: json["success"] == null ? null : json["success"],
@@ -44,13 +44,13 @@ class BusDetailData {
     this.v,
   });
 
-  late final String? id;
-  late final String? busType;
-  late final List<StopsData>? busStops;
-  late final List<String>? busTimings;
-  late final String? busProvider;
-  late final String? busNumber;
-  late final int? v;
+  String? id;
+  String? busType;
+  List<StopsData>? busStops;
+  List<String>? busTimings;
+  String? busProvider;
+  String? busNumber;
+  int? v;
 
   factory BusDetailData.fromJson(Map<String, dynamic> json) => BusDetailData(
         id: json["_id"] == null ? null : json["_id"],

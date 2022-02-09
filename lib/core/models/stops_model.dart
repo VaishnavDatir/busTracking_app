@@ -44,10 +44,10 @@ class StopsData {
     this.stopLocation,
     this.stopCity,
   });
-  late final String? id;
-  late final String? stopName;
-  late final StopLocation? stopLocation;
-  late final String? stopCity;
+  String? id;
+  String? stopName;
+  StopLocation? stopLocation;
+  String? stopCity;
 
   StopsData.fromJson(Map<String, dynamic> json) {
     id = json['_id'];
@@ -70,7 +70,7 @@ class StopLocation {
   StopLocation({
     required this.coordinates,
   });
-  late final List<double?> coordinates;
+  late List<double?> coordinates;
 
   StopLocation.fromJson(Map<String, dynamic> json) {
     coordinates = List.castFrom<dynamic, Null>(json['coordinates']);

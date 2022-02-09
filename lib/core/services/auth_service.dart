@@ -14,7 +14,7 @@ class AuthService extends ServiceImport {
 
   Future getUserToken() async {
     print("called AuthService:getUserToken");
-    _userToken = await sharedPrefsService!.read(Constants.sharedPrefsToken);
+    _userToken = await sharedPrefsService.read(Constants.sharedPrefsToken);
   }
 
   Future signInUser(String? emailId, String? password) async {
@@ -102,7 +102,7 @@ class AuthService extends ServiceImport {
         buttonTitle: "Yes"); */
 
     if (_dialogRes!.confirmed) {
-      sharedPrefsService!.clear();
+      sharedPrefsService.clear();
       // navigationService!.popEverythingAndNavigateTo(kHomeScreen);
       navigationService.clearStackAndShow(Routes.homeScreen);
     }

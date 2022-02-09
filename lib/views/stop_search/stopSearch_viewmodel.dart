@@ -21,7 +21,7 @@ class StopSearchScreenViewModel extends BaseViewModel with ServiceImport {
   void initializeScreen() async {
     setBusy(true);
     // print("GOT: " + screenData.id?.toString() ?? "ASD");
-    _stops = busService!.stops;
+    _stops = busService.stops;
     if (_stops!.success!) {
       _stopsDataList = _stops!.data;
       _stopsDataListMain = _stops!.data;
@@ -65,7 +65,7 @@ class StopSearchScreenViewModel extends BaseViewModel with ServiceImport {
   }
 
   Future refreshStopList() async {
-    await busService!.getAllStops();
+    await busService.getAllStops();
     initializeScreen();
     notifyListeners();
   }

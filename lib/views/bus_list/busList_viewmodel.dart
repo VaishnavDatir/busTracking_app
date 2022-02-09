@@ -22,7 +22,7 @@ class BusListViewModel extends BaseViewModel with ServiceImport {
 
   initializeScreen(Map<String, dynamic>? screenData) async {
     setBusy(true);
-    isDriver = await sharedPrefsService!.read(Constants.sharedPrefsUserType);
+    isDriver = await sharedPrefsService.read(Constants.sharedPrefsUserType);
 
     driverGoingOnDuty =
         screenData == null ? false : screenData["driverGoingOnDuty"] ?? false;
@@ -33,7 +33,7 @@ class BusListViewModel extends BaseViewModel with ServiceImport {
   }
 
   setScreenData() async {
-    _busModel = busService!.busModel;
+    _busModel = busService.busModel;
     if (_busModel!.success!) {
       _busDataListMain = busModel!.data;
 
@@ -88,7 +88,7 @@ class BusListViewModel extends BaseViewModel with ServiceImport {
   }
 
   doRefresh() async {
-    await busService!.getAllBusList();
+    await busService.getAllBusList();
     setScreenData();
   }
 }

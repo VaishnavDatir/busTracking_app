@@ -19,21 +19,21 @@ class StopListViewModel extends BaseViewModel with ServiceImport {
 
   initializeScreen() async {
     setBusy(true);
-    _stops = busService!.stops;
+    _stops = busService.stops;
 
     if (stops!.success!) {
       _stopsDataList = stops!.data;
       _stopsDataListMain = _stops!.data;
     }
 
-    isDriver = await sharedPrefsService!.read(Constants.sharedPrefsUserType);
+    isDriver = await sharedPrefsService.read(Constants.sharedPrefsUserType);
     notifyListeners();
 
     setBusy(false);
   }
 
   refreshStopList() async {
-    await busService!.getAllStops();
+    await busService.getAllStops();
 
     notifyListeners();
   }

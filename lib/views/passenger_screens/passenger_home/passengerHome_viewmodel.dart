@@ -21,13 +21,13 @@ class PassengerViewModel extends StreamViewModel with ServiceImport {
   Stream get stream => this._getLiveData();
 
   Stream _getLiveData() {
-    return streamSocket!.getResponse;
+    return streamSocket.getResponse;
   }
 
   Stream get myStream => this._myGetLiveData();
 
   Stream _myGetLiveData() {
-    return locationService!.controller.stream;
+    return locationService.controller.stream;
   }
 
   String? clientId;
@@ -92,7 +92,7 @@ class PassengerViewModel extends StreamViewModel with ServiceImport {
     /*   print(_locationData.latitude.toString() +
         " " +
         _locationData.longitude.toString()); */
-    pos = await locationService!.getStaticLocation();
+    pos = await locationService.getStaticLocation();
     _mapController!.move(LatLng(pos.latitude, pos.longitude), 16);
 
     print("got loc");
@@ -120,8 +120,8 @@ class PassengerViewModel extends StreamViewModel with ServiceImport {
     _selectedBusClientId = "";
     _isShowingBottomSheet = false;
 
-    clientId = streamSocket!.myClientId;
-    _userDetails = userService!.userDetails;
+    clientId = streamSocket.myClientId;
+    _userDetails = userService.userDetails;
 
     if (_userDetails!.success == false) {
       await dialogService.showDialog(
@@ -130,7 +130,7 @@ class PassengerViewModel extends StreamViewModel with ServiceImport {
       handleLogout();
       return;
     }
-    locationService!.getMyLiveLocation();
+    locationService.getMyLiveLocation();
     setBusy(false);
     await getLoc();
     // wow(tccc);
@@ -151,8 +151,8 @@ class PassengerViewModel extends StreamViewModel with ServiceImport {
   }
 
   void handleLogout() {
-    locationService!.streamClose();
-    authService!.logout();
+    locationService.streamClose();
+    authService.logout();
   }
 
   void handleSourceStopFieldTap({bool? isDestination}) async {
@@ -180,7 +180,7 @@ class PassengerViewModel extends StreamViewModel with ServiceImport {
       await dialogService.showDialog(
           description: "Source and Destination stop cannot be same");
     } else if (_sourceStop != null && _destinationStop != null) {
-      _busModel = await busService!.searchBusBySourceAndDestination(
+      _busModel = await busService.searchBusBySourceAndDestination(
         sourceId: _sourceStop!.id,
         destinationId: _destinationStop!.id,
       );
@@ -255,7 +255,7 @@ class PassengerViewModel extends StreamViewModel with ServiceImport {
 
   fabClick() async {
     dialogService.showCustomDialog(variant: DialogType.loading);
-    pos = await locationService!.getStaticLocation();
+    pos = await locationService.getStaticLocation();
     navigationService.back();
 
     // mapController.move(LatLng(pos.latitude, pos.longitude), 16);

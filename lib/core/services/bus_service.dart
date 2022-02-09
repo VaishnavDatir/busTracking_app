@@ -93,7 +93,7 @@ class BusService extends ServiceImport {
               Endpoints.herokuServer, Endpoints.getBusDetail + "/$busId");
 
       var response = await http.get(url, headers: {
-        "Authorization": "Bearer ${authService!.userToken}",
+        "Authorization": "Bearer ${authService.userToken}",
         'Content-Type': 'application/json'
       });
 
@@ -118,7 +118,7 @@ class BusService extends ServiceImport {
 
       var bodyData = json.encode({"stopName": stopName, "stopCity": stopCity});
       var response = await http.post(url, body: bodyData, headers: {
-        "Authorization": "Bearer ${authService!.userToken}",
+        "Authorization": "Bearer ${authService.userToken}",
         'Content-Type': 'application/json'
       });
 
@@ -159,7 +159,7 @@ class BusService extends ServiceImport {
         url,
         body: bodyData,
         headers: {
-          "Authorization": "Bearer ${authService!.userToken}",
+          "Authorization": "Bearer ${authService.userToken}",
           'Content-Type': 'application/json'
         },
       );

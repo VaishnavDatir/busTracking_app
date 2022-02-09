@@ -15,7 +15,7 @@ class DriverHomeViewModel extends StreamViewModel with ServiceImport {
   Stream get stream => this._getLiveData();
 
   Stream _getLiveData() {
-    return streamSocket!.getResponse;
+    return streamSocket.getResponse;
   }
 
   UserDetails? _userDetails;
@@ -40,7 +40,7 @@ class DriverHomeViewModel extends StreamViewModel with ServiceImport {
     /*   print(_locationData.latitude.toString() +
         " " +
         _locationData.longitude.toString()); */
-    pos = await locationService!.getStaticLocation();
+    pos = await locationService.getStaticLocation();
     mapController!.move(LatLng(pos.latitude, pos.longitude), 16);
 
     print("got loc");
@@ -52,7 +52,7 @@ class DriverHomeViewModel extends StreamViewModel with ServiceImport {
     _mapController = mapController;
     setBusy(true);
 
-    _userDetails = userService!.userDetails;
+    _userDetails = userService.userDetails;
     if (_userDetails!.success == false) {
       await dialogService.showDialog(
           description: _userDetails?.message.toString() ??
@@ -62,7 +62,7 @@ class DriverHomeViewModel extends StreamViewModel with ServiceImport {
     }
     _isDriverOnBus = _userDetails!.data!.isActive;
 
-    clientId = streamSocket!.myClientId;
+    clientId = streamSocket.myClientId;
     print(clientId ?? "no id");
 
     setBusy(false);
@@ -74,14 +74,13 @@ class DriverHomeViewModel extends StreamViewModel with ServiceImport {
   changeIsDriverOnBus() async {
     dialogService.showCustomDialog(variant: DialogType.loading);
 
-    Map<String, dynamic> response = await (userService!.removeDriverOnBus());
+    Map<String, dynamic> response = await (userService.removeDriverOnBus());
 
-    // locationService.stop();
-    locationService!.stopService();
+    locationService.stopService();
 
     // streamSocket.socketDisconnect();
 
-    await userService!.getUserData();
+    await userService.getUserData();
     _isDriverOnBus = _userDetails!.data!.isActive;
 
     await dialogService.showDialog(
@@ -118,7 +117,7 @@ class DriverHomeViewModel extends StreamViewModel with ServiceImport {
   }
 
   handleLogout() {
-    authService!.logout();
+    authService.logout();
   }
 
   handleExit() async {
@@ -137,7 +136,7 @@ class DriverHomeViewModel extends StreamViewModel with ServiceImport {
   fabClick(TickerProvider tc) async {
     dialogService.showCustomDialog(variant: DialogType.loading);
 
-    pos = await locationService!.getStaticLocation();
+    pos = await locationService.getStaticLocation();
     navigationService.back();
 
     // mapController.move(LatLng(pos.latitude, pos.longitude), 16);

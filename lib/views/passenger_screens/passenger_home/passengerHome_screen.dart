@@ -370,7 +370,10 @@ class _PassengerHomeScreenState extends State<PassengerHomeScreen>
               leading: Icon(Icons.logout),
               title: Text("Logout"),
               onTap: () => model.handleLogout(),
-            )
+            ),
+            Spacer(),
+            Text("Made in INDIA"),
+            SizedBox(height: kLargeSpace)
           ],
         ),
       ),

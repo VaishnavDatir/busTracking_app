@@ -10,7 +10,6 @@ import 'views/components/setup_dialog_ui.dart';
 void main() async {
   try {
     WidgetsFlutterBinding.ensureInitialized();
-    // await LocatorInjector.setupLocator();
     await setupLocator();
     setupDialogUi();
 

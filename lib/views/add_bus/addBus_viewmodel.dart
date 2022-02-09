@@ -117,7 +117,7 @@ class CreateBusViewModel extends BaseViewModel with ServiceImport {
   createBus() async {
     dialogService.showCustomDialog(variant: DialogType.loading);
 
-    var response = await busService!.createBus(
+    var response = await busService.createBus(
       busNoTEC.text.toString().trim(),
       busTypeTEC.text.toString().trim(),
       busProviderTEC.text.toString().trim(),
@@ -126,7 +126,7 @@ class CreateBusViewModel extends BaseViewModel with ServiceImport {
     );
 
     if (response["success"]) {
-      await busService!.getAllBusList();
+      await busService.getAllBusList();
       await dialogService.showDialog(
           title: "Success",
           description:

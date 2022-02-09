@@ -22,7 +22,7 @@ class UserService extends ServiceImport {
       var response = await http.get(
         url,
         headers: {
-          'Authorization': 'Bearer ${authService!.userToken}',
+          'Authorization': 'Bearer ${authService.userToken}',
           'Content-Type': 'application/json'
         },
       );
@@ -52,7 +52,7 @@ class UserService extends ServiceImport {
         url,
         body: bodayData,
         headers: {
-          'Authorization': 'Bearer ${authService!.userToken}',
+          'Authorization': 'Bearer ${authService.userToken}',
           'Content-Type': 'application/json'
         },
       );
@@ -88,7 +88,7 @@ class UserService extends ServiceImport {
         url,
         body: bodayData,
         headers: {
-          'Authorization': 'Bearer ${authService!.userToken}',
+          'Authorization': 'Bearer ${authService.userToken}',
           'Content-Type': 'application/json'
         },
       );
@@ -120,7 +120,7 @@ class UserService extends ServiceImport {
       http.Response response = await http.get(
         url,
         headers: {
-          'Authorization': 'Bearer ${authService!.userToken}',
+          'Authorization': 'Bearer ${authService.userToken}',
           'Content-Type': 'application/json'
         },
       );
@@ -159,7 +159,7 @@ class UserService extends ServiceImport {
         url,
         body: bodayData,
         headers: {
-          'Authorization': 'Bearer ${authService!.userToken}',
+          'Authorization': 'Bearer ${authService.userToken}',
           'Content-Type': 'application/json'
         },
       );

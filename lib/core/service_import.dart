@@ -12,11 +12,11 @@ class ServiceImport {
   NavigationService get navigationService => locator<NavigationService>();
   DialogService get dialogService => locator<DialogService>();
   SnackbarService get snackbarService => locator<SnackbarService>();
-  SharedPreferencesService? get sharedPrefsService =>
+  SharedPreferencesService get sharedPrefsService =>
       locator<SharedPreferencesService>();
-  AuthService? get authService => locator<AuthService>();
-  UserService? get userService => locator<UserService>();
-  BusService? get busService => locator<BusService>();
-  LocationService? get locationService => locator<LocationService>();
-  StreamSocket? get streamSocket => locator<StreamSocket>();
+  AuthService get authService => locator<AuthService>();
+  UserService get userService => locator<UserService>();
+  BusService get busService => locator<BusService>();
+  LocationService get locationService => locator<LocationService>();
+  StreamSocket get streamSocket => locator<StreamSocket>();
 }

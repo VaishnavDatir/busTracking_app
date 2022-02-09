@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-const kDarkPrimaryColor = const Color(0xFF080E3E);
-const kPrimaryColor = const Color(0xFF6644C5);
-const kSecondaryPrimaryColor = const Color(0xFF6A37FF);
+const kDarkPrimaryColor = const Color(0xFF3779DC);
+const kPrimaryColor = Color.fromARGB(255, 86, 122, 241);
+const kSecondaryPrimaryColor = const Color(0xFF1E3067);
 
 const kBackgroundColor = const Color(0xFFDADCEB);
 var kSecondaryBackgroundColor = const Color(0xFFFAFAFC);
@@ -17,8 +17,8 @@ const kBGCardLight = const Color(0xFFdfdddd);
 
 var kNormalSplashColor = kBGCard.withOpacity(0.1);
 
-const kTextBlue = const Color(0xFF6644C5);
-const kTextGrey = const Color(0xFF929292);
+const kTextBlue = const Color.fromARGB(255, 86, 122, 241);
+const kTextGrey = Color.fromARGB(255, 170, 170, 170);
 const kTextLightGrey = const Color(0xFF929292);
 const kTextOffWhite = const Color(0xFFD9DBE1);
 const kTextWhite = const Color(0xFFffffff);

@@ -18,6 +18,8 @@ ThemeData buildAppTheme() {
     primaryTextTheme: buildAppTextTheme(GoogleFonts.poppinsTextTheme()),
     textTheme: buildAppTextTheme(GoogleFonts.latoTextTheme()),
     bottomSheetTheme: BottomSheetThemeData(backgroundColor: kTransparent),
+    switchTheme:
+        SwitchThemeData(thumbColor: MaterialStateProperty.all(kPrimaryColor)),
     appBarTheme: ThemeData.light().appBarTheme.copyWith(
           elevation: 0,
           // titleTextStyle: GoogleFonts.comfortaa(),

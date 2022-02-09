@@ -67,28 +67,28 @@ class SignInViewModel extends BaseViewModel with ServiceImport {
       _password = _passwordTC.text.toString().trim();
 
       Map<String, dynamic> signInResponse =
-          await (authService!.signInUser(_emailId, _password));
+          await (authService.signInUser(_emailId, _password));
 
       if (signInResponse["success"]) {
-        await sharedPrefsService!
-            .write(Constants.sharedPrefsToken, signInResponse["token"]);
+        await sharedPrefsService.write(
+            Constants.sharedPrefsToken, signInResponse["token"]);
 
-        await sharedPrefsService!
-            .write(Constants.sharedPrefsUserId, signInResponse["userId"]);
+        await sharedPrefsService.write(
+            Constants.sharedPrefsUserId, signInResponse["userId"]);
 
         bool _isDriver =
             signInResponse["type"].toString().toLowerCase().contains("driver");
-        await sharedPrefsService!
-            .write(Constants.sharedPrefsUserType, _isDriver);
+        await sharedPrefsService.write(
+            Constants.sharedPrefsUserType, _isDriver);
 
-        await sharedPrefsService!.write(Constants.sharedPrefsIsSignedIn, true);
+        await sharedPrefsService.write(Constants.sharedPrefsIsSignedIn, true);
 
-        streamSocket!.socketConnect();
+        streamSocket.socketConnect();
 
-        await authService!.getUserToken();
-        await userService!.getUserData();
-        await busService!.getAllStops();
-        await busService!.getAllBusList();
+        await authService.getUserToken();
+        await userService.getUserData();
+        await busService.getAllStops();
+        await busService.getAllBusList();
 
         if (_isDriver) {
           // navigationService!.popEverythingAndNavigateTo(kDriverHomeScreen);

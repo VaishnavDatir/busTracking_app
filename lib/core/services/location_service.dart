@@ -3,24 +3,23 @@
 import 'dart:async';
 
 import 'package:geolocator/geolocator.dart';
-
-// import 'package:location/location.dart';
+import 'package:flutter_background/flutter_background.dart';
 
 import '../service_import.dart';
 
 class LocationService extends ServiceImport {
-  Map<String, dynamic>? busData;
-
-  String? userType;
-
-  setBusData(Map<String, dynamic>? data, String type) {
-    busData = data;
-    userType = type;
-  }
+  final androidConfig = FlutterBackgroundAndroidConfig(
+    notificationTitle: "Bus locator",
+    notificationText: "Sharing location in background",
+    notificationImportance: AndroidNotificationImportance.Default,
+    notificationIcon: AndroidResource(
+        name: 'background_icon',
+        defType: 'drawable'), // Default is ic_launcher from folder mipmap
+  );
 
   StreamSubscription<Position>? positionStream;
 
-  getLiveLocation(Map<String, dynamic> bData) async {
+  getAndShareLiveLocation(Map<String, dynamic> bData) async {
     final hasPermission = await handlePermission();
     if (hasPermission) {
       print("has permission");
@@ -31,12 +30,12 @@ class LocationService extends ServiceImport {
             ', ' +
             position.longitude.toString());
         Map<String, dynamic> data = {
-          "type": userService!.userDetails!.data!.type.toString(),
+          "type": userService.userDetails!.data!.type.toString(),
           "bus": bData,
           "latitude": position.latitude.toString(),
           "longitude": position.longitude.toString(),
         };
-        streamSocket?.sendLocation(data);
+        streamSocket.sendLocation(data);
       });
     }
   }
@@ -103,8 +102,6 @@ class LocationService extends ServiceImport {
   }
 
   Future getStaticLocation() async {
-    /* await Location.instance.getLocation().then((value) =>
-        print(value.latitude.toString() + "," + value.longitude.toString())); */
     late Position position;
     bool isPermited = await handlePermission();
     if (isPermited) {
@@ -114,19 +111,36 @@ class LocationService extends ServiceImport {
     return position;
   }
 
-  startService() async {
-    try {} catch (e) {
+  startService(Map<String, dynamic> bData) async {
+    try {
+      await FlutterBackground.initialize(androidConfig: androidConfig);
+      bool hasPermissions = await FlutterBackground.hasPermissions;
+      if (hasPermissions) {
+        final backgroundExecution =
+            await FlutterBackground.enableBackgroundExecution();
+        if (backgroundExecution) {
+          locationService.getAndShareLiveLocation(bData);
+        }
+      }
+      return true;
+    } catch (e) {
       print("ERROR WHILE STATING BG SERVICE: " + e.toString());
+      return false;
     }
-    return true;
   }
 
-  void stopService() {
+  void stopService() async {
     print("DRAINing");
-    streamSocket!.removeDriver();
-    // stopServiceInPlatform();
+    streamSocket.removeDriver();
+
     if (positionStream != null) {
       positionStream!.cancel();
+    }
+
+    // await FlutterBackground.initialize(androidConfig: androidConfig);
+    bool enabled = FlutterBackground.isBackgroundExecutionEnabled;
+    if (enabled) {
+      await FlutterBackground.disableBackgroundExecution();
     }
     print("DRAINED");
   }

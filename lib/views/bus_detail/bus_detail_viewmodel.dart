@@ -25,7 +25,7 @@ class BusDetailViewModel extends BaseViewModel with ServiceImport {
     busId = screenDetails["busId"];
     driverGoingOnDuty = screenDetails["driverGoingOnDuty"] ?? false;
 
-    _busDetailModel = await busService!.getBusDetail(busId);
+    _busDetailModel = await busService.getBusDetail(busId);
 
     if (_busDetailModel!.success!) {
       _busDetailData = _busDetailModel!.busDetailData;
@@ -47,14 +47,15 @@ class BusDetailViewModel extends BaseViewModel with ServiceImport {
     dialogService.showCustomDialog(variant: DialogType.loading);
 
     Map<String, dynamic> response =
-        await (userService!.updateUserIsActive(true));
+        await (userService.updateUserIsActive(true));
 
     if (response["success"]) {
       Map<String, dynamic> response1 =
-          await (userService!.setDriverOnBus(busId));
+          await (userService.setDriverOnBus(busId));
 
-      await locationService!.getLiveLocation(response1["data"]);
-      await userService!.getUserData();
+      // await locationService.getAndShareLiveLocation(response1["data"]);
+      await locationService.startService(response1['data']);
+      await userService.getUserData();
 
       await dialogService.showDialog(
           title: response1["success"].toString(),

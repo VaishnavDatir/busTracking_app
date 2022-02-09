@@ -18,10 +18,10 @@ class AddStopViewModel extends BaseViewModel with ServiceImport {
     String stopCity = stopCityController.text.toString().trim();
 
     if (stopName.isNotEmpty && stopCity.isNotEmpty) {
-      _response = await busService!.createStop(stopName, stopCity);
+      _response = await busService.createStop(stopName, stopCity);
 
       if (_response!["success"]) {
-        await busService!.getAllStops();
+        await busService.getAllStops();
       }
 
       await dialogService.showDialog(

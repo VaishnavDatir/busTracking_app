@@ -58,34 +58,33 @@ class SignUpViewModel extends BaseViewModel with ServiceImport {
       String _type = _isDriver ? "Driver" : "Passenger";
 
       Map<String, dynamic> signUpResponse =
-          await (authService!.signUpUser(_name, _emailId, _password, _type));
+          await (authService.signUpUser(_name, _emailId, _password, _type));
 
       if (signUpResponse["success"]) {
         Map<String, dynamic> signInResponse =
-            await (authService!.signInUser(_emailId, _password));
+            await (authService.signInUser(_emailId, _password));
 
         if (signInResponse["success"]) {
-          await sharedPrefsService!
-              .write(Constants.sharedPrefsToken, signInResponse["token"]);
+          await sharedPrefsService.write(
+              Constants.sharedPrefsToken, signInResponse["token"]);
 
-          await sharedPrefsService!
-              .write(Constants.sharedPrefsUserId, signInResponse["userId"]);
+          await sharedPrefsService.write(
+              Constants.sharedPrefsUserId, signInResponse["userId"]);
 
           bool _isDriver = signInResponse["type"]
               .toString()
               .toLowerCase()
               .contains("driver");
-          await sharedPrefsService!
-              .write(Constants.sharedPrefsUserType, _isDriver);
+          await sharedPrefsService.write(
+              Constants.sharedPrefsUserType, _isDriver);
 
-          await sharedPrefsService!
-              .write(Constants.sharedPrefsIsSignedIn, true);
-          streamSocket!.socketConnect();
+          await sharedPrefsService.write(Constants.sharedPrefsIsSignedIn, true);
+          streamSocket.socketConnect();
 
-          await authService!.getUserToken();
-          await userService!.getUserData();
-          await busService!.getAllStops();
-          await busService!.getAllBusList();
+          await authService.getUserToken();
+          await userService.getUserData();
+          await busService.getAllStops();
+          await busService.getAllBusList();
 
           if (_isDriver) {
             // navigationService!.popEverythingAndNavigateTo(kDriverHomeScreen);
