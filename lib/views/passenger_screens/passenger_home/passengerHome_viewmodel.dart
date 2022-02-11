@@ -54,7 +54,7 @@ class PassengerViewModel extends StreamViewModel with ServiceImport {
   StopsData? _destinationStop;
   StopsData? get destinationStop => this._destinationStop;
 
-  StopsData? _selectedStop;
+  late StopsData? _selectedStop;
 
   /* <------------------------------------------------------> */
 
@@ -199,7 +199,8 @@ class PassengerViewModel extends StreamViewModel with ServiceImport {
 
   Future<StopsData> getStop() async {
     // _selectedStop = await (navigationService!.navigateTo(kStopSearchScreen));
-    _selectedStop = await navigationService.navigateTo(Routes.stopSearchScreen);
+    _selectedStop = await navigationService.navigateTo(Routes.stopSearchScreen)
+        as StopsData?;
 
     return _selectedStop ?? StopsData();
   }

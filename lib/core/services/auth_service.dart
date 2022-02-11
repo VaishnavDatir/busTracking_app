@@ -85,8 +85,6 @@ class AuthService extends ServiceImport {
   void logout() async {
     print("called AuthService:logout");
 
-    dialogService.showCustomDialog(variant: DialogType.loading);
-
     var _dialogRes = await dialogService.showDialog(
       title: "Logout?",
       description: "Are you sure you want to logout?",
@@ -102,6 +100,8 @@ class AuthService extends ServiceImport {
         buttonTitle: "Yes"); */
 
     if (_dialogRes!.confirmed) {
+      dialogService.showCustomDialog(variant: DialogType.loading);
+
       sharedPrefsService.clear();
       // navigationService!.popEverythingAndNavigateTo(kHomeScreen);
       navigationService.clearStackAndShow(Routes.homeScreen);

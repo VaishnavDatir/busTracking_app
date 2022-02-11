@@ -68,7 +68,8 @@ class CreateBusViewModel extends BaseViewModel with ServiceImport {
 
     StopsData? _selectedStop =
         // await navigationService.navigateTo(kStopSearchScreen);
-        await navigationService.navigateTo(Routes.stopSearchScreen);
+        await navigationService.navigateTo(Routes.stopSearchScreen)
+            as StopsData?;
 
     if (_selectedStop != null) {
       // print(_selectedStop.id);
