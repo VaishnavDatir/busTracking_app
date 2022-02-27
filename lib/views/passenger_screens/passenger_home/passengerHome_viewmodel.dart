@@ -365,8 +365,8 @@ class PassengerViewModel extends StreamViewModel with ServiceImport {
                                   label: Text(
                                       streamData[index]["data"]["bus"]
                                           ["busProvider"],
-                                      style: TextStyle(color: kWhite)),
-                                  backgroundColor: kBlack.withOpacity(0.5),
+                                      style: TextStyle(color: kBlack)),
+                                  backgroundColor: kWhite.withOpacity(0.5),
                                 ),
                               ),
                               Container(

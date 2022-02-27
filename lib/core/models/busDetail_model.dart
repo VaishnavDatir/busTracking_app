@@ -41,6 +41,7 @@ class BusDetailData {
     this.busTimings,
     this.busProvider,
     this.busNumber,
+    this.activeDrivers,
     this.v,
   });
 
@@ -50,6 +51,8 @@ class BusDetailData {
   List<String>? busTimings;
   String? busProvider;
   String? busNumber;
+  List<String>? activeDrivers;
+
   int? v;
 
   factory BusDetailData.fromJson(Map<String, dynamic> json) => BusDetailData(
@@ -64,6 +67,9 @@ class BusDetailData {
             : List<String>.from(json["busTimings"].map((x) => x)),
         busProvider: json["busProvider"] == null ? null : json["busProvider"],
         busNumber: json["busNumber"] == null ? null : json["busNumber"],
+        activeDrivers: json["activeDrivers"] == null
+            ? null
+            : List<String>.from(json["activeDrivers"].map((x) => x)),
         v: json["__v"] == null ? null : json["__v"],
       );
 

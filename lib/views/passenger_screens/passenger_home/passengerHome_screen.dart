@@ -296,10 +296,15 @@ class _PassengerHomeScreenState extends State<PassengerHomeScreen>
                                       title: Text(model
                                           .busModelData![index].busNumber!),
                                       subtitle: Text(
-                                          model.busModelData![index].busType!),
+                                          model.busModelData![index].busType! +
+                                              "\nOn Route: " +
+                                              model.busModelData![index]
+                                                  .activeDrivers!.length
+                                                  .toString()),
                                       trailing: Chip(
                                           label: Text(model.busModelData![index]
                                               .busProvider!)),
+                                      isThreeLine: true,
                                     );
                                   },
                                   separatorBuilder: (context, index) {
