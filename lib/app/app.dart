@@ -1,4 +1,4 @@
-import '../views/home/homescreen.dart';
+import 'package:BusTracking_App/views/about/about_view.dart';
 import 'package:stacked/stacked_annotations.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -19,11 +19,13 @@ import '../core/services/location_service.dart';
 import '../core/services/sharedprefs_service.dart';
 import '../core/services/user_service.dart';
 import '../core/stream_socket.dart';
+import '../views/home/homescreen.dart';
 
 @StackedApp(routes: [
   MaterialRoute(page: HomeScreen, initial: true),
   MaterialRoute(page: SigninScreen),
   MaterialRoute(page: SignUpScreen),
+  MaterialRoute(page: AboutView),
 
 /* <--------- Passenger Screens--------------> */
 

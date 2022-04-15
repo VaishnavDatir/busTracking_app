@@ -524,4 +524,8 @@ class PassengerViewModel extends StreamViewModel with ServiceImport {
     }
     notifyListeners();
   } */
+
+  handleAboutTap() {
+    navigationService.navigateTo(Routes.aboutView);
+  }
 }

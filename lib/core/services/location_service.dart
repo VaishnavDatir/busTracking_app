@@ -2,14 +2,15 @@
 
 import 'dart:async';
 
-import 'package:geolocator/geolocator.dart';
+import 'package:BusTracking_App/core/constants.dart';
 import 'package:flutter_background/flutter_background.dart';
+import 'package:geolocator/geolocator.dart';
 
 import '../service_import.dart';
 
 class LocationService extends ServiceImport {
   final androidConfig = FlutterBackgroundAndroidConfig(
-    notificationTitle: "Bus locator",
+    notificationTitle: Constants.appName,
     notificationText: "Sharing location in background",
     notificationImportance: AndroidNotificationImportance.Default,
     notificationIcon: AndroidResource(

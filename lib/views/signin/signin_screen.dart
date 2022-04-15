@@ -18,7 +18,7 @@ class _SigninScreenState extends State<SigninScreen> {
     // final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
-    return ViewModelBuilder<SignInViewModel>.nonReactive(
+    return ViewModelBuilder<SignInViewModel>.reactive(
       viewModelBuilder: () => SignInViewModel(),
       onModelReady: (model) => model.initializeScreen(),
       builder: (context, model, child) {

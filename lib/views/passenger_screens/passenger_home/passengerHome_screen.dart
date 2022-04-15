@@ -1,4 +1,3 @@
-import '../../components/customMarkar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
@@ -8,6 +7,7 @@ import '../../../core/constants.dart';
 import '../../../theme/colors.dart';
 import '../../../theme/dimensions.dart';
 import '../../../theme/themes.dart';
+import '../../components/customMarkar.dart';
 import '../../components/customTextInputField.dart';
 import 'passengerHome_viewmodel.dart';
 
@@ -376,8 +376,13 @@ class _PassengerHomeScreenState extends State<PassengerHomeScreen>
               title: Text("Logout"),
               onTap: () => model.handleLogout(),
             ),
+            ListTile(
+              leading: Icon(Icons.info_outline),
+              title: Text("About"),
+              onTap: () => model.handleAboutTap(),
+            ),
             Spacer(),
-            Text("Made in INDIA"),
+            Text("Made in INDIA 🇮🇳"),
             SizedBox(height: kLargeSpace)
           ],
         ),

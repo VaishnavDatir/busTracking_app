@@ -1,6 +1,6 @@
-import '../../app/app.router.dart';
 import 'package:stacked/stacked.dart';
 
+import '../../app/app.router.dart';
 import '../../core/constants.dart';
 import '../../core/service_import.dart';
 
@@ -22,15 +22,12 @@ class HomeViewModel extends BaseViewModel with ServiceImport {
             await sharedPrefsService.read(Constants.sharedPrefsUserType);
 
         if (isDriver) {
-          // navigationService!.popEverythingAndNavigateTo(kDriverHomeScreen);
           navigationService.clearStackAndShow(Routes.driverHomeScreen);
         } else {
-          // navigationService!.popEverythingAndNavigateTo(kPassengerHomeScreen);
           navigationService.clearStackAndShow(Routes.passengerHomeScreen);
         }
       } else {
         sharedPrefsService.clear();
-        // await navigationService!.popEverythingAndNavigateTo(kSigninScreen);
         navigationService.clearStackAndShow(Routes.signinScreen);
       }
     } else {

@@ -8,7 +8,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stacked/stacked_annotations.dart';
 
+import '../views/about/about_view.dart';
 import '../views/add_bus/addBus_screen.dart';
 import '../views/add_stop/add_stop_screen.dart';
 import '../views/bus_detail/bus_detail_screenn.dart';
@@ -25,6 +27,7 @@ class Routes {
   static const String homeScreen = '/';
   static const String signinScreen = '/signin-screen';
   static const String signUpScreen = '/sign-up-screen';
+  static const String aboutView = '/about-view';
   static const String passengerHomeScreen = '/passenger-home-screen';
   static const String driverHomeScreen = '/driver-home-screen';
   static const String stopSearchScreen = '/stop-search-screen';
@@ -37,6 +40,7 @@ class Routes {
     homeScreen,
     signinScreen,
     signUpScreen,
+    aboutView,
     passengerHomeScreen,
     driverHomeScreen,
     stopSearchScreen,
@@ -55,6 +59,7 @@ class StackedRouter extends RouterBase {
     RouteDef(Routes.homeScreen, page: HomeScreen),
     RouteDef(Routes.signinScreen, page: SigninScreen),
     RouteDef(Routes.signUpScreen, page: SignUpScreen),
+    RouteDef(Routes.aboutView, page: AboutView),
     RouteDef(Routes.passengerHomeScreen, page: PassengerHomeScreen),
     RouteDef(Routes.driverHomeScreen, page: DriverHomeScreen),
     RouteDef(Routes.stopSearchScreen, page: StopSearchScreen),
@@ -82,6 +87,12 @@ class StackedRouter extends RouterBase {
     SignUpScreen: (data) {
       return MaterialPageRoute<dynamic>(
         builder: (context) => SignUpScreen(),
+        settings: data,
+      );
+    },
+    AboutView: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => const AboutView(),
         settings: data,
       );
     },

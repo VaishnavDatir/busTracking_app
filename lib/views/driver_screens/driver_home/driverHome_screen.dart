@@ -229,8 +229,13 @@ class _DriverHomeScreenState extends State<DriverHomeScreen>
               title: Text("Logout"),
               onTap: () => model.handleLogout(),
             ),
+            ListTile(
+              leading: Icon(Icons.info_outline),
+              title: Text("About"),
+              onTap: () => model.handleAboutTap(),
+            ),
             Spacer(),
-            Text("Made in INDIA"),
+            Text("Made in INDIA 🇮🇳"),
             SizedBox(height: kLargeSpace)
           ],
         ),

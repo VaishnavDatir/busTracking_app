@@ -1,3 +1,4 @@
+import 'package:BusTracking_App/core/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -5,6 +6,7 @@ import 'package:stacked_services/stacked_services.dart';
 import 'app/app.locator.dart';
 import 'app/app.router.dart';
 import 'theme/themes.dart' as theme;
+import 'views/components/betaBanner.dart';
 import 'views/components/setup_dialog_ui.dart';
 
 void main() async {
@@ -27,12 +29,14 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: "Bus Locator",
-      theme: theme.appTheme,
-      onGenerateRoute: StackedRouter().onGenerateRoute,
-      navigatorKey: StackedService.navigatorKey,
+    return BetaBanner(
+      child: MaterialApp(
+        // debugShowCheckedModeBanner: false,
+        title: Constants.appName,
+        theme: theme.appTheme,
+        onGenerateRoute: StackedRouter().onGenerateRoute,
+        navigatorKey: StackedService.navigatorKey,
+      ),
     );
   }
 }

@@ -175,4 +175,8 @@ class DriverHomeViewModel extends StreamViewModel with ServiceImport {
 
     controller.forward();
   }
+
+  handleAboutTap() {
+    navigationService.navigateTo(Routes.aboutView);
+  }
 }
