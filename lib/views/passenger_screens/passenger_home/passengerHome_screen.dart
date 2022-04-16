@@ -55,7 +55,6 @@ class _PassengerHomeScreenState extends State<PassengerHomeScreen>
                       child: Stack(
                         children: [
                           // buildMap(model),
-
                           StreamBuilder(
                             stream: model.myStream,
                             builder: (context, snapshot) {
@@ -178,9 +177,6 @@ class _PassengerHomeScreenState extends State<PassengerHomeScreen>
             onTap: (tapPosition, point) {
               model.handleMapTap();
             },
-            /* onTap: (point) {
-              model.handleMapTap();
-            }, */
           ),
           nonRotatedLayers: [
             TileLayerOptions(

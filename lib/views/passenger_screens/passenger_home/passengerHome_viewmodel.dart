@@ -133,20 +133,15 @@ class PassengerViewModel extends StreamViewModel with ServiceImport {
     locationService.getMyLiveLocation();
     setBusy(false);
     await getLoc();
-    // wow(tccc);
     notifyListeners();
   }
 
   showBusList() {
-    /* navigationService!.navigateTo(
-      kBusListScreen,
-    ); */
     navigationService.navigateTo(Routes.busListScreen,
         arguments: BusListScreenArguments(screenData: {}));
   }
 
   showStopList() {
-    // navigationService!.navigateTo(kStopListScreen);
     navigationService.navigateTo(Routes.stopsListScreen);
   }
 
@@ -229,11 +224,6 @@ class PassengerViewModel extends StreamViewModel with ServiceImport {
   }
 
   handleOnBusTap(String? busId) {
-    /* navigationService!.navigateTo(kBusDetailScreen, arguments: {
-      "busId": busId,
-      "sourceStop": _sourceStop!.id,
-      "destinationStop": _destinationStop!.id,
-    }); */
     navigationService.navigateTo(Routes.busDetailScreen,
         arguments: BusDetailScreenArguments(screenData: {
           "busId": busId,
@@ -327,72 +317,83 @@ class PassengerViewModel extends StreamViewModel with ServiceImport {
             width: double.infinity,
             color: kTransparent,
             margin: const EdgeInsets.only(top: 20),
-            padding: const EdgeInsets.all(kXXLSpace),
+            padding: const EdgeInsets.symmetric(vertical: kXXLSpace),
             child: CarouselSlider(
                 carouselController: _carouselController,
                 items: List<Widget>.generate(
                     streamData.length,
-                    (index) => Container(
-                          color: kPrimaryColor,
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              ListTile(
-                                onTap: () {
-                                  print(index);
-                                  // handleOnBusTap(element["data"]["bus"]["_id"]);
-                                },
-                                leading: Container(
-                                    height: double.infinity,
-                                    padding: const EdgeInsets.all(kMediumSpace),
-                                    decoration: BoxDecoration(
-                                        color: kWhite.withOpacity(0.5),
-                                        shape: BoxShape.circle),
-                                    child: const Icon(
-                                      Icons.directions_bus,
-                                      size: kIconSize,
-                                      color: kWhite,
-                                    )),
-                                title: Text(
-                                  streamData[index]["data"]["bus"]["busNumber"],
-                                  style: const TextStyle(color: kWhite),
+                    (index) => GestureDetector(
+                          onTap: () {
+                            navigationService.navigateTo(Routes.busDetailScreen,
+                                arguments:
+                                    BusDetailScreenArguments(screenData: {
+                                  "busId": element["data"]["bus"]["_id"],
+                                }));
+                          },
+                          child: Container(
+                            color: kPrimaryColor,
+                            margin:
+                                EdgeInsets.symmetric(horizontal: kMediumSpace),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                ListTile(
+                                  leading: Container(
+                                      height: double.infinity,
+                                      padding:
+                                          const EdgeInsets.all(kMediumSpace),
+                                      decoration: BoxDecoration(
+                                          color: kWhite.withOpacity(0.5),
+                                          shape: BoxShape.circle),
+                                      child: const Icon(
+                                        Icons.directions_bus,
+                                        size: kIconSize,
+                                        color: kWhite,
+                                      )),
+                                  title: Text(
+                                    streamData[index]["data"]["bus"]
+                                        ["busNumber"],
+                                    style: const TextStyle(color: kWhite),
+                                  ),
+                                  subtitle: Text(
+                                    streamData[index]["data"]["bus"]["busType"],
+                                    style: const TextStyle(color: kWhite),
+                                  ),
+                                  trailing: Chip(
+                                    label: Text(
+                                        streamData[index]["data"]["bus"]
+                                            ["busProvider"],
+                                        style: TextStyle(color: kBlack)),
+                                    backgroundColor: kWhite.withOpacity(0.5),
+                                  ),
                                 ),
-                                subtitle: Text(
-                                  streamData[index]["data"]["bus"]["busType"],
-                                  style: const TextStyle(color: kWhite),
-                                ),
-                                trailing: Chip(
-                                  label: Text(
-                                      streamData[index]["data"]["bus"]
-                                          ["busProvider"],
-                                      style: TextStyle(color: kBlack)),
-                                  backgroundColor: kWhite.withOpacity(0.5),
-                                ),
-                              ),
-                              Container(
-                                padding: EdgeInsets.fromLTRB(kLargeSpace,
-                                    kMediumSpace, kLargeSpace, kLargeSpace),
-                                child: Text(
-                                  Geolocator.distanceBetween(
-                                              double.parse(streamData[index]
-                                                  ["data"]["latitude"]),
-                                              double.parse(streamData[index]
-                                                  ["data"]["longitude"]),
-                                              pos.latitude,
-                                              pos.longitude)
-                                          .round()
-                                          .toString() +
-                                      "m away from you",
-                                  style: TextStyle(
-                                      color: kWhite, fontSize: kLargeSpace),
-                                ),
-                              )
-                            ],
+                                FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  child: Container(
+                                    child: Text(
+                                      Geolocator.distanceBetween(
+                                                  double.parse(streamData[index]
+                                                      ["data"]["latitude"]),
+                                                  double.parse(streamData[index]
+                                                      ["data"]["longitude"]),
+                                                  pos.latitude,
+                                                  pos.longitude)
+                                              .round()
+                                              .toString() +
+                                          "m away from you",
+                                      style: TextStyle(
+                                          color: kWhite, fontSize: kLargeSpace),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                         )),
                 options: CarouselOptions(
                   initialPage: streamData.indexOf(element),
-                  viewportFraction: 1,
+                  viewportFraction: 0.8,
+                  enlargeCenterPage: true,
                   enableInfiniteScroll: streamData.length > 1 ? true : false,
                   height: 120,
                   onPageChanged: (index, reason) {
