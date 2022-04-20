@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:stacked/stacked.dart';
 
@@ -110,6 +111,28 @@ class _PassengerHomeScreenState extends State<PassengerHomeScreen>
         }
         if (streamData.isNotEmpty) {
           streamData.forEach((element) {
+            double distance = Geolocator.distanceBetween(
+                double.parse(element["data"]["latitude"]),
+                double.parse(element["data"]["longitude"]),
+                double.parse(mainSnapShot.data!["latitude"].toString()),
+                double.parse(mainSnapShot.data!["longitude"].toString()));
+            if (distance < 30 &&
+                !element["passengers"].contains(model.clientId)) {
+              Map<String, dynamic> _data = {
+                "bus_client_id": element["client_id"],
+              };
+              model.addPassToBus(_data);
+            } else if (distance > 30 &&
+                element["passengers"].contains(model.clientId)) {
+              Map<String, dynamic> _data = {
+                "bus_client_id": element["client_id"],
+              };
+              model.removePassFromBus(_data);
+            }
+            // print("BUSDATA: " + element.toString());
+            double _passCap =
+                (int.parse(element["passengers"]!.length.toString()) /
+                    element["data"]["bus"]["sittingCap"]);
             markers.add(Marker(
               height:
                   model.selectedBusClientId == element["client_id"] ? 75 : 65,
@@ -140,26 +163,80 @@ class _PassengerHomeScreenState extends State<PassengerHomeScreen>
                       ],
                     ),
                     padding: EdgeInsets.symmetric(horizontal: kLargeSpace),
-                    child: Row(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(
-                          Icons.directions_bus,
-                          color:
-                              model.selectedBusClientId == element["client_id"]
-                                  ? kWhite
-                                  : kPrimaryColor,
-                        ),
-                        Spacer(),
-                        Text(
-                          element["data"]["bus"]["busNumber"],
-                          style: TextStyle(
-                              fontSize: kLargeSpace,
+                        Visibility(
+                            visible: model.selectedBusClientId ==
+                                    element["client_id"]
+                                ? true
+                                : false,
+                            child: Container(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    (_passCap * 100).round().toString() +
+                                        "% Full",
+                                    style: appTheme.textTheme.bodyText1!
+                                        .copyWith(color: kWhite),
+                                  ),
+                                  SizedBox(
+                                    height: kMediumSpace,
+                                  ),
+                                  LinearProgressIndicator(
+                                    color: kWhite,
+                                    backgroundColor: kWhite,
+                                    minHeight: kSmallSpace,
+                                    value: _passCap,
+                                    valueColor: _passCap <=
+                                            (element["data"]["bus"]
+                                                    ["sittingCap"] /
+                                                6)
+                                        ? AlwaysStoppedAnimation<Color>(
+                                            Colors.green.shade400)
+                                        : _passCap >
+                                                    (element["data"]["bus"]
+                                                            ["sittingCap"] /
+                                                        6) &&
+                                                _passCap <
+                                                    (element["data"]["bus"]
+                                                            ["sittingCap"] /
+                                                        3)
+                                            ? AlwaysStoppedAnimation<Color>(
+                                                Colors.yellow.shade400)
+                                            : AlwaysStoppedAnimation<Color>(
+                                                Colors.red.shade400),
+                                  ),
+                                  SizedBox(
+                                    height: kMediumSpace,
+                                  )
+                                ],
+                              ),
+                            )),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.directions_bus,
                               color: model.selectedBusClientId ==
                                       element["client_id"]
                                   ? kWhite
                                   : kPrimaryColor,
-                              fontWeight: FontWeight.bold),
-                        )
+                            ),
+                            Spacer(),
+                            Text(
+                              element["data"]["bus"]["busNumber"],
+                              style: TextStyle(
+                                  fontSize: kLargeSpace,
+                                  color: model.selectedBusClientId ==
+                                          element["client_id"]
+                                      ? kWhite
+                                      : kPrimaryColor,
+                                  fontWeight: FontWeight.bold),
+                            )
+                          ],
+                        ),
                       ],
                     ),
                   ),
@@ -193,7 +270,7 @@ class _PassengerHomeScreenState extends State<PassengerHomeScreen>
   Widget buildBottomBusSheet(PassengerViewModel model) {
     return Positioned.fill(
       child: AnimatedSwitcher(
-        duration: Duration(milliseconds: 500),
+        duration: Duration(milliseconds: 250),
         child: model.showBottomBusSheet
             ? DraggableScrollableSheet(
                 initialChildSize: 0.3,
@@ -229,7 +306,7 @@ class _PassengerHomeScreenState extends State<PassengerHomeScreen>
                                   padding: EdgeInsets.symmetric(
                                       horizontal: kMediumSpace),
                                   child: Text(model.sourceStop!.stopName! +
-                                      " --- " +
+                                      " ---> " +
                                       model.destinationStop!.stopName!),
                                 ),
                               ],

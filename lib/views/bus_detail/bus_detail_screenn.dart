@@ -35,24 +35,23 @@ class BusDetailScreen extends StatelessWidget {
                                 color: kBGCard,
                                 height: 2,
                               ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: kLargeSpace),
-                                child: Text(
-                                    "Currenty on route: ${model.busDetailData!.activeDrivers!.length.toString()}",
-                                    style: TextStyle(
-                                        fontSize: kLargeSpace,
-                                        color: kDarkPrimaryColor)),
-                              ),
-                              Divider(
-                                color: kBGCard,
-                                height: 2,
-                              ),
                               Expanded(
                                 child: SingleChildScrollView(
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
+                                      CurrentlyOnRouteText(model.busDetailData!
+                                          .activeDrivers!.length),
+                                      Divider(
+                                        color: kBGCard,
+                                        height: 2,
+                                      ),
+                                      SittingCapText(model
+                                          .busDetailData!.seatingCapacity!),
+                                      Divider(
+                                        color: kBGCard,
+                                        height: 2,
+                                      ),
                                       buildBusTimings(model),
                                       Divider(
                                         color: kBGCard,
@@ -208,6 +207,72 @@ class BusDetailScreen extends StatelessWidget {
       ),
       subtitle: Text(model.busDetailData!.busType!),
       trailing: Chip(label: Text(model.busDetailData!.busProvider!)),
+    );
+  }
+}
+
+class CurrentlyOnRouteText extends StatelessWidget {
+  final int cOnRoute;
+  const CurrentlyOnRouteText(this.cOnRoute);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(
+        horizontal: kMediumSpace,
+        vertical: kLargeSpace,
+      ),
+      child: Row(
+        children: [
+          Text(
+            "Currently on route",
+            style: appTheme.textTheme.headline6!
+                .copyWith(fontWeight: FontWeight.bold),
+          ),
+          Spacer(),
+          Text(
+            cOnRoute.toString(),
+            style: appTheme.textTheme.headline6!,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class SittingCapText extends StatelessWidget {
+  final int seatingCap;
+  SittingCapText(this.seatingCap);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(
+        horizontal: kMediumSpace,
+        vertical: kLargeSpace,
+      ),
+      child: Row(
+        children: [
+          Text(
+            "Seating capacity",
+            style: appTheme.textTheme.headline6!
+                .copyWith(fontWeight: FontWeight.bold),
+          ),
+          Spacer(),
+          Text(
+            seatingCap.toString(),
+            style: appTheme.textTheme.headline6!,
+          ),
+          SizedBox(width: kMediumSpace),
+          Icon(
+            Icons.chair_sharp,
+            color: kBGCard,
+            size: kSmallIconSize,
+          ),
+        ],
+      ),
     );
   }
 }

@@ -225,6 +225,7 @@ class CreateBusScreen extends StatelessWidget {
           focusNode: model.busTypeFN,
           hintText: "",
           labelText: "Bus Type",
+          textInputAction: TextInputAction.next,
           textCapitalization: TextCapitalization.characters,
         ),
         Text(
@@ -233,6 +234,17 @@ class CreateBusScreen extends StatelessWidget {
             color: kTextGrey,
             fontStyle: FontStyle.italic,
           ),
+        ),
+        SizedBox(
+          height: kMediumSpace,
+        ),
+        CustomTextInputField(
+          controller: model.busSittingCapTEC,
+          focusNode: model.busSittingCapFN,
+          hintText: "",
+          labelText: "Bus Sitting Capacity",
+          keyboardType: TextInputType.number,
+          textInputAction: TextInputAction.done,
         ),
       ],
     );

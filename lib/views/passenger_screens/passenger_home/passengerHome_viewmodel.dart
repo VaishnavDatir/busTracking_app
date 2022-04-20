@@ -100,14 +100,6 @@ class PassengerViewModel extends StreamViewModel with ServiceImport {
     notifyListeners();
   }
 
-  /* wow(TickerProvider tccc) {
-    print("in Wow");
-    locationService.controller.stream.listen((event) {
-      print("Data:" + event.toString());
-      animatedMapMove(LatLng(event["latitude"], event["longitude"]), tccc);
-    });
-  } */
-
   void initializeScreen(
       {MapController? mapController,
       TickerProvider? tickerProvicer,
@@ -133,6 +125,7 @@ class PassengerViewModel extends StreamViewModel with ServiceImport {
     locationService.getMyLiveLocation();
     setBusy(false);
     await getLoc();
+
     notifyListeners();
   }
 
@@ -183,6 +176,7 @@ class PassengerViewModel extends StreamViewModel with ServiceImport {
       if (_busModel!.success!) {
         _busModelData = _busModel!.data;
         _showBottomBusSheet = true;
+        handleMapTap();
       }
     } else {
       await dialogService.showDialog(
@@ -480,7 +474,15 @@ class PassengerViewModel extends StreamViewModel with ServiceImport {
     notifyListeners();
   }
 
-  addPassToBus() async {}
+  addPassToBus(Map<String, dynamic> passData) async {
+    print("called addPassToBus");
+    streamSocket.addPassengerToBus(passData);
+  }
+
+  removePassFromBus(Map<String, dynamic> passData) async {
+    print("called removePassFromBus");
+    streamSocket.removePassengerFromBus(passData);
+  }
 
   handleAboutTap() {
     navigationService.navigateTo(Routes.aboutView);

@@ -17,7 +17,7 @@ class HomeViewModel extends BaseViewModel with ServiceImport {
         busService.getAllStops();
         busService.getAllBusList();
         streamSocket.socketConnect();
-
+        await Future.delayed(Duration(seconds: 1));
         bool isDriver =
             await sharedPrefsService.read(Constants.sharedPrefsUserType);
 

@@ -20,6 +20,9 @@ class CreateBusViewModel extends BaseViewModel with ServiceImport {
   final TextEditingController busTypeTEC = TextEditingController();
   final FocusNode busTypeFN = FocusNode();
 
+  final TextEditingController busSittingCapTEC = TextEditingController();
+  final FocusNode busSittingCapFN = FocusNode();
+
   List<String> _busTimingList = [];
   List<String> get busTimingList => this._busTimingList;
 
@@ -92,17 +95,6 @@ class CreateBusViewModel extends BaseViewModel with ServiceImport {
     StopsData _lastStopRemoved = _busRouteList[index];
     _busRouteList.removeAt(index);
 
-    /* scaffoldKey.currentState!.showSnackBar(SnackBar(
-      content: Text('${_lastStopRemoved.stopName} removed!'),
-      duration: Duration(seconds: 1),
-      action: SnackBarAction(
-        label: 'Undo',
-        onPressed: () {
-          _busRouteList.insert(index, _lastStopRemoved);
-          notifyListeners();
-        },
-      ),
-    )); */
     snackbarService.showSnackbar(
         message: '${_lastStopRemoved.stopName} removed!',
         duration: Duration(seconds: 1),
@@ -124,6 +116,7 @@ class CreateBusViewModel extends BaseViewModel with ServiceImport {
       busProviderTEC.text.toString().trim(),
       _busTimingList,
       _busRouteList,
+      int.parse(busSittingCapTEC.text.toString().trim()),
     );
 
     if (response["success"]) {

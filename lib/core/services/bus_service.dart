@@ -140,6 +140,7 @@ class BusService extends ServiceImport {
     String busProvider,
     List busTimings,
     List busStops,
+    int busSittingCap,
   ) async {
     print("called BusService:createBus with $busNumber");
     try {
@@ -152,7 +153,8 @@ class BusService extends ServiceImport {
         "busType": busType,
         "busProvider": busProvider,
         "busTimings": busTimings,
-        "busStops": busStops
+        "busStops": busStops,
+        "sittingCap": busSittingCap
       });
 
       var response = await http.post(

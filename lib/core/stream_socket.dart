@@ -62,8 +62,19 @@ class StreamSocket extends ServiceImport {
   }
 
   //Add Passenger to bus
-  addPassengerToBus() {
-    socket.emit("addPassOnBus");
+  addPassengerToBus(Map<String, dynamic> passData) {
+    var dataToAdd = json.encode({
+      "bus_client_id": passData["bus_client_id"],
+    });
+    socket.emit("addPassOnBus", dataToAdd);
+  }
+
+  //Remove Passenger from bus
+  removePassengerFromBus(Map<String, dynamic> passData) {
+    var dataToAdd = json.encode({
+      "bus_client_id": passData["bus_client_id"],
+    });
+    socket.emit("removePassFromBus", dataToAdd);
   }
 
   removeDriver() {
