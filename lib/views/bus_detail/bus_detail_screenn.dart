@@ -35,6 +35,19 @@ class BusDetailScreen extends StatelessWidget {
                                 color: kBGCard,
                                 height: 2,
                               ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: kLargeSpace),
+                                child: Text(
+                                    "Currenty on route: ${model.busDetailData!.activeDrivers!.length.toString()}",
+                                    style: TextStyle(
+                                        fontSize: kLargeSpace,
+                                        color: kDarkPrimaryColor)),
+                              ),
+                              Divider(
+                                color: kBGCard,
+                                height: 2,
+                              ),
                               Expanded(
                                 child: SingleChildScrollView(
                                   child: Column(

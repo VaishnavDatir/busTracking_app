@@ -61,6 +61,11 @@ class StreamSocket extends ServiceImport {
     socket.emit("location", locationData);
   }
 
+  //Add Passenger to bus
+  addPassengerToBus() {
+    socket.emit("addPassOnBus");
+  }
+
   removeDriver() {
     socket.emit("userOfDuty", socket.id);
   }

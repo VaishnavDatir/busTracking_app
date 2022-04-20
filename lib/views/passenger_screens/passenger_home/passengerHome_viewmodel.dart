@@ -370,20 +370,41 @@ class PassengerViewModel extends StreamViewModel with ServiceImport {
                                 FittedBox(
                                   fit: BoxFit.scaleDown,
                                   child: Container(
-                                    child: Text(
-                                      Geolocator.distanceBetween(
-                                                  double.parse(streamData[index]
-                                                      ["data"]["latitude"]),
-                                                  double.parse(streamData[index]
-                                                      ["data"]["longitude"]),
-                                                  pos.latitude,
-                                                  pos.longitude)
-                                              .round()
-                                              .toString() +
-                                          "m away from you",
-                                      style: TextStyle(
-                                          color: kWhite, fontSize: kLargeSpace),
-                                    ),
+                                    child: StreamBuilder(
+                                        stream: myStream,
+                                        builder: (context,
+                                            AsyncSnapshot<dynamic> snapshot) {
+                                          if (snapshot.hasData) {
+                                            return Text(
+                                              Geolocator.distanceBetween(
+                                                          double.parse(
+                                                              streamData[index]
+                                                                      ["data"]
+                                                                  ["latitude"]),
+                                                          double.parse(
+                                                              streamData[index]
+                                                                      ["data"][
+                                                                  "longitude"]),
+                                                          double.parse(snapshot
+                                                              .data!["latitude"]
+                                                              .toString()),
+                                                          double.parse(snapshot
+                                                              .data!["longitude"]
+                                                              .toString()))
+                                                      .round()
+                                                      .toString() +
+                                                  "m away from you",
+                                              style: TextStyle(
+                                                  color: kWhite,
+                                                  fontSize: kLargeSpace),
+                                            );
+                                          } else {
+                                            return Text("Calculating distance",
+                                                style: TextStyle(
+                                                    color: kWhite,
+                                                    fontSize: kLargeSpace));
+                                          }
+                                        }),
                                   ),
                                 )
                               ],
@@ -459,72 +480,7 @@ class PassengerViewModel extends StreamViewModel with ServiceImport {
     notifyListeners();
   }
 
-  //WORKING BEST
-  /* handleMarkerTap(dynamic element, BuildContext ctx) async {
-    if (_selectedBusClientId != element["client_id"]) {
-      _selectedBusClientId = element["client_id"];
-      animatedMapMove(LatLng(double.parse(element["data"]["latitude"]),
-          double.parse(element["data"]["longitude"])));
-      scaffoldKey.currentState.showBottomSheet((context) => Container(
-            width: double.infinity,
-            color: kTransparent,
-            margin: const EdgeInsets.only(top: 20),
-            padding: const EdgeInsets.all(kXXLSpace),
-            child: Container(
-              color: kPrimaryColor,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  ListTile(
-                    onTap: () => handleOnBusTap(element["data"]["bus"]["_id"]),
-                    leading: Container(
-                        height: double.infinity,
-                        padding: const EdgeInsets.all(kMediumSpace),
-                        decoration: BoxDecoration(
-                            color: kWhite.withOpacity(0.5),
-                            shape: BoxShape.circle),
-                        child: const Icon(
-                          Icons.directions_bus,
-                          size: kIconSize,
-                          color: kWhite,
-                        )),
-                    title: Text(
-                      element["data"]["bus"]["busNumber"],
-                      style: const TextStyle(color: kWhite),
-                    ),
-                    subtitle: Text(
-                      element["data"]["bus"]["busType"],
-                      style: const TextStyle(color: kWhite),
-                    ),
-                    trailing: Chip(
-                      label: Text(element["data"]["bus"]["busProvider"],
-                          style: TextStyle(color: kWhite)),
-                      backgroundColor: kBlack.withOpacity(0.5),
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.fromLTRB(
-                        kLargeSpace, kMediumSpace, kLargeSpace, kLargeSpace),
-                    child: Text(
-                      Geolocator.distanceBetween(
-                                  double.parse(element["data"]["latitude"]),
-                                  double.parse(element["data"]["longitude"]),
-                                  pos.latitude,
-                                  pos.longitude)
-                              .round()
-                              .toString() +
-                          "m away from you",
-                      style: TextStyle(color: kWhite, fontSize: kLargeSpace),
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ));
-      _isShowingBottomSheet = true;
-    }
-    notifyListeners();
-  } */
+  addPassToBus() async {}
 
   handleAboutTap() {
     navigationService.navigateTo(Routes.aboutView);
