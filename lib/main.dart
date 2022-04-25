@@ -30,6 +30,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BetaBanner(
+      showBetaBanner: false,
       child: MaterialApp(
         // debugShowCheckedModeBanner: false,
         title: Constants.appName,

@@ -135,9 +135,9 @@ class _PassengerHomeScreenState extends State<PassengerHomeScreen>
                     element["data"]["bus"]["sittingCap"]);
             markers.add(Marker(
               height:
-                  model.selectedBusClientId == element["client_id"] ? 75 : 65,
+                  model.selectedBusClientId == element["client_id"] ? 100 : 65,
               width:
-                  model.selectedBusClientId == element["client_id"] ? 105 : 95,
+                  model.selectedBusClientId == element["client_id"] ? 110 : 95,
               point: LatLng(double.parse(element["data"]["latitude"]),
                   double.parse(element["data"]["longitude"])),
               builder: (context) {

@@ -43,7 +43,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen>
                   child: Scaffold(
                       extendBodyBehindAppBar: true,
                       appBar: AppBar(),
-                      drawer: buildDrawer(model),
+                      drawer: DriverScreenDrawer(model),
                       body: Stack(
                         children: [
                           buildMap(model),
@@ -172,8 +172,14 @@ class _DriverHomeScreenState extends State<DriverHomeScreen>
       },
     );
   }
+}
 
-  Drawer buildDrawer(DriverHomeViewModel model) {
+class DriverScreenDrawer extends StatelessWidget {
+  final DriverHomeViewModel model;
+  const DriverScreenDrawer(this.model);
+
+  @override
+  Widget build(BuildContext context) {
     return Drawer(
       child: Container(
         child: Column(
