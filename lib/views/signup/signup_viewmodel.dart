@@ -1,7 +1,7 @@
-import '../../app/app.router.dart';
 import 'package:flutter/widgets.dart';
 import 'package:stacked/stacked.dart';
 
+import '../../app/app.router.dart';
 import '../../core/constants.dart';
 import '../../core/service_import.dart';
 import '../components/setup_dialog_ui.dart';
@@ -85,13 +85,15 @@ class SignUpViewModel extends BaseViewModel with ServiceImport {
           await userService.getUserData();
           await busService.getAllStops();
           await busService.getAllBusList();
-
+          print("%%%" + _isDriver.toString());
           if (_isDriver) {
             // navigationService!.popEverythingAndNavigateTo(kDriverHomeScreen);
-            navigationService.navigateTo(Routes.driverHomeScreen);
+            // navigationService.navigateTo(Routes.driverHomeScreen);
+            navigationService.clearStackAndShow(Routes.driverHomeScreen);
           } else {
             // navigationService!.popEverythingAndNavigateTo(kPassengerHomeScreen);
-            navigationService.navigateTo(Routes.passengerHomeScreen);
+            // navigationService.navigateTo(Routes.passengerHomeScreen);
+            navigationService.clearStackAndShow(Routes.passengerHomeScreen);
           }
         } else {
           await dialogService.showDialog(
